@@ -1,15 +1,21 @@
 {
   "dependencies": {
+    "com.cysharp.memorypack": "1.10.0",
+    "com.cysharp.unitask": "2.5.10",
+    "com.dbrizov.naughtyattributes": "2.1.4",
+    "com.neuecc.unirx": "7.1.0",
+    "com.svermeulen.extenject": "9.1.0",
+    "com.tendedtarsier.core": "file:../../core/Core/Assets",
     "com.unity.ai.navigation": "2.0.9",
     "com.unity.cinemachine": "3.1.4",
     "com.unity.collab-proxy": "2.9.3",
     "com.unity.ide.rider": "3.0.37",
     "com.unity.ide.visualstudio": "2.0.23",
-    "com.unity.inputsystem": "1.13.1",
+    "com.unity.inputsystem": "1.14.2",
     "com.unity.multiplayer.center": "1.0.0",
     "com.unity.netcode.gameobjects": "2.5.0",
     "com.unity.render-pipelines.universal": "17.0.4",
-    "com.unity.test-framework": "1.4.6",
+    "com.unity.test-framework": "1.5.1",
     "com.unity.timeline": "1.8.9",
     "com.unity.ugui": "2.0.0",
     "com.unity.visualscripting": "1.9.8",
@@ -45,5 +51,20 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  }
+  },
+  "scopedRegistries": [
+    {
+      "name": "package.openupm.com",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.openupm",
+        "com.neuecc.unirx",
+        "com.cysharp.unitask",
+        "com.cysharp.memorypack",
+        "com.svermeulen.extenject",
+        "com.dbrizov.naughtyattributes",
+        "com.system-community.systemruntimecompilerservicesunsafe"
+      ]
+    }
+  ]
 }
