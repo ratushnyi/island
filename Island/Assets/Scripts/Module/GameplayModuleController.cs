@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using TendedTarsier.Core.Services.Modules;
+using UnityEngine;
 
 public class GameplayModuleController : ModuleControllerBase
 {
