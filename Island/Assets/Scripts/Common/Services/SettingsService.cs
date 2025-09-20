@@ -23,10 +23,10 @@ namespace Island.Common
             set => PlayerPrefs.SetInt("Fov", value);
         }
 
-        public float CameraSensitivity
+        public int CameraSensitivity
         {
-            get => PlayerPrefs.GetFloat("CameraSensitivity", _cameraConfig.DefaultCameraSensitivity);
-            set => PlayerPrefs.SetFloat("CameraSensitivity", value);
+            get => PlayerPrefs.GetInt("CameraSensitivity", _cameraConfig.DefaultCameraSensitivity);
+            set => PlayerPrefs.SetInt("CameraSensitivity", value);
         }
     }
 }

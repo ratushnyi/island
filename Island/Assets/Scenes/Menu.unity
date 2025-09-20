@@ -171,6 +171,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MenuModule
       objectReference: {fileID: 0}
+    - target: {fileID: 2110130364953323515, guid: 74c914d493a69478cb266125ebd3823c, type: 3}
+      propertyPath: <ModuleConfig>k__BackingField
+      value: 
+      objectReference: {fileID: 11400000, guid: df608c5f3f50c46d2b523b3f13b6d68b, type: 2}
     - target: {fileID: 5455495177938933389, guid: 74c914d493a69478cb266125ebd3823c, type: 3}
       propertyPath: _monoInstallers.Array.size
       value: 2
@@ -205,6 +209,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cameraConfig: {fileID: 11400000, guid: 145386ffc49f242e688dcac7122f2a2f, type: 2}
+  _settingsPanel: {fileID: 7918920839453004830, guid: 06b6aa841de604db4bd88a6222e613b8, type: 3}
+  _canvas: {fileID: 1691920036}
+--- !u!223 &1691920036 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 6368572181665773501, guid: 74c914d493a69478cb266125ebd3823c, type: 3}
+  m_PrefabInstance: {fileID: 1691920033}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

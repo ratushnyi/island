@@ -93,7 +93,7 @@ namespace Island.Gameplay.Player
         
         private void HandleCamera()
         {
-            var lookInput = _inputService.PlayerActions.Look.ReadValue<Vector2>() * _settingsService.CameraSensitivity;
+            var lookInput = _inputService.PlayerActions.Look.ReadValue<Vector2>() * _settingsService.CameraSensitivity / 100;
             
             transform.Rotate(Vector3.up * lookInput.x);
             _cameraPitch -= lookInput.y;
