@@ -3,7 +3,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Network
+namespace Island.Common.Network
 {
     public class NetworkManagerUIController : MonoBehaviour
     {

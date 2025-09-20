@@ -1,12 +1,12 @@
-using System;
 using MemoryPack;
 using TendedTarsier.Core.Services.Profile;
 
-namespace Module
+namespace Island.Gameplay.Profiles
 {
-    public class PlayerProfile : ProfileBase
+    [MemoryPackable(GenerateType.VersionTolerant)]
+    public partial class PlayerProfile : ProfileBase
     {
-        public override string Name { get; } = "PlayerProfile";
+        public override string Name => "PlayerProfile";
         
         [MemoryPackOrder(0)]
         public int Level { get; set; }

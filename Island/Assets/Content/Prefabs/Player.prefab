@@ -135,12 +135,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   _characterController: {fileID: 600560912083758617}
-  _camera: {fileID: 9008524523055093778}
   _jumpForce: 0.5
-  _gravity: 0.00001
-  _movementSpeed: 0.0001
-  _cameraSensitivity: 0.05
+  _gravity: 1
+  _walkSpeed: 5
+  _sprintSpeed: 10
+  _sprintGetSpeed: 1
+  _sprintFallSpeed: 20
+  _camera: {fileID: 9008524523055093778}
+  _fovSprintModifier: 1.5
   _pitchLimits: {x: -85, y: 85}
+  _fov: 75
+  _cameraSensitivity: 0.05
 --- !u!143 &600560912083758617
 CharacterController:
   m_ObjectHideFlags: 0

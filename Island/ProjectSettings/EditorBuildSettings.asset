@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Packages/com.tendedtarsier.core/Demo/Scenes/Loading.unity
     guid: cfdce72e331471b40ba68670bffd9abb
   - enabled: 1
-    path: Packages/com.tendedtarsier.core/Demo/Scenes/Menu.unity
-    guid: 24737e2a0d0d64f90b19ab89ea8b8b97
+    path: Assets/Scenes/Menu.unity
+    guid: 5cccca82a2e364b948f3b7d3dfc228fb
   - enabled: 1
     path: Assets/Scenes/Gameplay.unity
     guid: b8a140bd45dabe206ab3e3b69f0d1cce

@@ -418,7 +418,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moduleController: {fileID: 2006302207401808471}
-  <Config>k__BackingField: {fileID: 11400000, guid: 5c03b666417499842b936d20027a1e83, type: 2}
+  _playerConfig: {fileID: 11400000, guid: 23959e38303344073ac33a72a0560a25, type: 2}
+  _cameraConfig: {fileID: 11400000, guid: 145386ffc49f242e688dcac7122f2a2f, type: 2}
 --- !u!1 &535735355
 GameObject:
   m_ObjectHideFlags: 0

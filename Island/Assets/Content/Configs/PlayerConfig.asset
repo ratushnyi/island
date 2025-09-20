@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fab1f2858405e41688a0d7f7ba6c02df, type: 3}
+  m_Name: PlayerConfig
+  m_EditorClassIdentifier: 
+  <JumpForce>k__BackingField: 5
+  <Gravity>k__BackingField: 1
+  <WalkSpeed>k__BackingField: 5
+  <SprintCost>k__BackingField: 10
+  <SprintSpeed>k__BackingField: 10
+  <SprintGetSpeed>k__BackingField: 1
+  <SprintFallSpeed>k__BackingField: 20
