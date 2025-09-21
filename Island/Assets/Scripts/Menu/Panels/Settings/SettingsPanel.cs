@@ -1,14 +1,13 @@
 using Cysharp.Threading.Tasks;
-using Island.Common;
 using Island.Common.Services;
-using Island.Gameplay.Services;
+using Island.Menu.Panels.Setting;
 using TendedTarsier.Core.Panels;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace Island.Menu.Panels.SettingsPanel
+namespace Island.Menu.Panels.Settings
 {
     public class SettingsPanel : PanelBase
     {

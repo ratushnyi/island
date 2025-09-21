@@ -208,7 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e8fdad5a441643b795991d1f0f9ff2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cameraConfig: {fileID: 11400000, guid: 145386ffc49f242e688dcac7122f2a2f, type: 2}
+  _joinPanel: {fileID: 6491630989853268623, guid: deb66e2bd8d1445dd9c23926a73f5f79, type: 3}
   _settingsPanel: {fileID: 7918920839453004830, guid: 06b6aa841de604db4bd88a6222e613b8, type: 3}
   _canvas: {fileID: 1691920036}
 --- !u!223 &1691920036 stripped

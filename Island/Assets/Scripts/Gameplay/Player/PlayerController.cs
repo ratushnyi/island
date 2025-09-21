@@ -8,6 +8,7 @@ using TendedTarsier.Core.Services.Input;
 using UniRx;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Zenject;
 
 namespace Island.Gameplay.Player
@@ -50,13 +51,14 @@ namespace Island.Gameplay.Player
             _cameraConfig = cameraConfig;
         }
 
-        private void Start()
+        public override void OnNetworkSpawn()
         {
             if (!IsOwner)
             {
                 return;
             }
 
+            _camera.gameObject.SetActive(true);
             _camera.fieldOfView = _settingsService.Fov;
 
             Observable.EveryUpdate().Subscribe(OnTick).AddTo(this);
@@ -90,7 +92,7 @@ namespace Island.Gameplay.Player
         {
             var movementSpeed = Mathf.Lerp(_playerConfig.WalkSpeed, _playerConfig.SprintSpeed, _sprintLerp);
             var moveInput = _inputService.PlayerActions.Move.ReadValue<Vector2>() * movementSpeed;
-            var moveDirection = transform.right * moveInput.x + transform.forward * moveInput.y + Vector3.up * _verticalVelocity;
+            var moveDirection = NetworkObject.transform.right * moveInput.x + NetworkObject.transform.forward * moveInput.y + Vector3.up * _verticalVelocity;
             moveDirection *= deltaTime;
 
             _characterController.Move(moveDirection);
@@ -138,9 +140,14 @@ namespace Island.Gameplay.Player
 
         private void HandleCamera()
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+            
             var lookInput = _inputService.PlayerActions.Look.ReadValue<Vector2>() * _settingsService.CameraSensitivity / 100;
 
-            transform.Rotate(Vector3.up * lookInput.x);
+            NetworkObject.transform.Rotate(Vector3.up * lookInput.x);
             _cameraPitch -= lookInput.y;
             _cameraPitch = Mathf.Clamp(_cameraPitch, _cameraConfig.PitchLimits.x, _cameraConfig.PitchLimits.y);
             _camera.transform.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);

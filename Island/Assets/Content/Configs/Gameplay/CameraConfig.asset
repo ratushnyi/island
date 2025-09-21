@@ -15,4 +15,4 @@ MonoBehaviour:
   <FovSprintModifier>k__BackingField: 1.5
   <PitchLimits>k__BackingField: {x: -85, y: 85}
   <DefaultFov>k__BackingField: 75
-  <DefaultCameraSensitivity>k__BackingField: 1
+  <DefaultCameraSensitivity>k__BackingField: 100

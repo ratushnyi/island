@@ -4,7 +4,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Island.Menu.Panels.SettingsPanel
+namespace Island.Menu.Panels.Setting
 {
     public class SettingsSlider : MonoBehaviour
     {
