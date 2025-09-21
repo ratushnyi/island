@@ -13,6 +13,7 @@ namespace Island.Gameplay.Panels.HUD
 {
     public class HUDPanel : PanelBase
     {
+        [field: SerializeField] public InfoTitleView InfoTitle { get; set; }
         [field: SerializeField] public InventoryCellView SelectedItem { get; set; }
         [field: SerializeField] public Transform StatsBarContainer { get; set; }
         [field: SerializeField, Scene] public string MenuScene { get; set; }
@@ -46,6 +47,11 @@ namespace Island.Gameplay.Panels.HUD
 
                 SelectedItem.SetItem(_inventoryConfig[itemId], _inventoryProfile.InventoryItems[itemId]);
             }).AddTo(CompositeDisposable);
+        }
+
+        public InfoTitleView GetInfoTitle()
+        {
+            return InfoTitle;
         }
 
         public StatBarView GetStatBar(StatType statType)

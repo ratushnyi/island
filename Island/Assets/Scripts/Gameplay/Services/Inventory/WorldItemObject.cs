@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Island.Gameplay.Services.Inventory
 {
-    public class WorldItemObject
+    public class WorldItemObject : MonoBehaviour
     {
         public Collider Collider;
         public ItemEntity ItemEntity;

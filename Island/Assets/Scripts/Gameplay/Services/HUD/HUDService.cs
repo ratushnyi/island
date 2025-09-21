@@ -53,7 +53,7 @@ namespace Island.Gameplay.Services.HUD
         private void SubscribeOnInput()
         {
             _inputService.OnOptionsButtonPerformed
-                .Subscribe(_ => SwitchInventory())
+                .Subscribe(_ => SwitchInventory().Forget())
                 .AddTo(CompositeDisposable);
 
             _inputService.OnMenuButtonPerformed
@@ -63,7 +63,7 @@ namespace Island.Gameplay.Services.HUD
             _eventSystem.SetSelectedGameObject(_hudPanel.Instance.SelectedItem.gameObject);
         }
 
-        private async void SwitchInventory()
+        private async UniTask SwitchInventory()
         {
             if (_inventoryPanel.Instance != null)
             {
@@ -84,6 +84,11 @@ namespace Island.Gameplay.Services.HUD
             _moduleService.LoadModule(_hudPanel.Instance.MenuScene).Forget();
         }
 
+        public void SetInfoTitle(string title)
+        {
+            _hudPanel.Instance.GetInfoTitle().UpdateValue(title);
+        }
+        
         public void ShowStatBar(StatType statType, StatModel statModel, StatProfileElement statProfile)
         {
             var statBar = _hudPanel.Instance.GetStatBar(statType);

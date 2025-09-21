@@ -1,5 +1,8 @@
+using Island.Common;
 using Island.Common.Services;
 using Island.Gameplay.Services;
+using Island.Gameplay.Services.HUD;
+using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Settings;
 using TendedTarsier.Core.Services.Input;
 using UniRx;
@@ -17,6 +20,8 @@ namespace Island.Gameplay.Player
         private InputService _inputService;
         private EnergyService _energyService;
         private SettingsService _settingsService;
+        private InventoryService _inventoryService;
+        private HUDService _hudService;
         private PlayerConfig _playerConfig;
         private CameraConfig _cameraConfig;
 
@@ -34,11 +39,13 @@ namespace Island.Gameplay.Player
         private bool _sprintButtonToggleState;
 
         [Inject]
-        private void Construct(InputService inputService, EnergyService energyService, SettingsService settingsService, PlayerConfig playerConfig, CameraConfig cameraConfig)
+        private void Construct(InputService inputService, EnergyService energyService, SettingsService settingsService, InventoryService inventoryService, HUDService hudService, PlayerConfig playerConfig, CameraConfig cameraConfig)
         {
             _inputService = inputService;
             _energyService = energyService;
             _settingsService = settingsService;
+            _inventoryService = inventoryService;
+            _hudService = hudService;
             _playerConfig = playerConfig;
             _cameraConfig = cameraConfig;
         }
@@ -111,6 +118,22 @@ namespace Island.Gameplay.Player
                 SprintButtonToggleState = false;
                 _sprintLerp = Mathf.Lerp(_sprintLerp, 0, deltaTime * _playerConfig.SprintFallSpeed);
             }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            switch (other.tag)
+            {
+                case CommonConstants.ItemTag:
+                    var mapItem = other.GetComponent<WorldItemObject>();
+                    _hudService.SetInfoTitle(mapItem.ItemEntity.Id);
+                    break;
+            }
+        }
+        
+        private void OnTriggerExit(Collider other)
+        {
+            _hudService.SetInfoTitle(string.Empty);
         }
 
         private void HandleCamera()
