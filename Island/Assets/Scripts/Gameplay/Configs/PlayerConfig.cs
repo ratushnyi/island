@@ -1,3 +1,4 @@
+using Island.Gameplay.Configs.Stats;
 using UnityEngine;
 
 namespace Island.Gameplay.Settings
@@ -10,9 +11,9 @@ namespace Island.Gameplay.Settings
         [field: SerializeField] public int WalkSpeed { get; private set; } = 5;
         
         [Header("Sprint")]
-        [field: SerializeField] public int SprintCost { get; private set; } = 10;
         [field: SerializeField] public int SprintSpeed { get; private set; } = 10;
         [field: SerializeField] public int SprintGetSpeed { get; private set; } = 1;
         [field: SerializeField] public int SprintFallSpeed { get; private set; } = 20;
+        [field: SerializeField] public StatFeeModel SprintFee { get; set; }
     }
 }

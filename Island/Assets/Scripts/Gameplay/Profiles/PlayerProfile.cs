@@ -10,14 +10,6 @@ namespace Island.Gameplay.Profiles
         
         [MemoryPackOrder(0)]
         public int Level { get; set; }
-
-        [MemoryPackOrder(1)]
-        public int Energy { get; set; }
-
-        public override void OnSectionCreated()
-        {
-            Energy = 100;
-        }
         
     }
 }

@@ -4,7 +4,7 @@ using TendedTarsier.Core.Services;
 using UnityEngine;
 using Zenject;
 
-namespace Island.Common
+namespace Island.Common.Services
 {
     [UsedImplicitly]
     public class SettingsService : ServiceBase

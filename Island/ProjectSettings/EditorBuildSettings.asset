@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Packages/com.tendedtarsier.core/Demo/Scenes/Loading.unity
-    guid: cfdce72e331471b40ba68670bffd9abb
+    path: Assets/Scenes/Loading.unity
+    guid: fb8f04562d8bd45bd81ceb469ede5769
   - enabled: 1
     path: Assets/Scenes/Menu.unity
     guid: 5cccca82a2e364b948f3b7d3dfc228fb

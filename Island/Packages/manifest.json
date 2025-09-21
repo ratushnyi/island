@@ -3,6 +3,7 @@
     "com.cysharp.memorypack": "1.10.0",
     "com.cysharp.unitask": "2.5.10",
     "com.dbrizov.naughtyattributes": "2.1.4",
+    "com.marijnzwemmer.unity-toolbar-extender": "1.4.2",
     "com.neuecc.unirx": "7.1.0",
     "com.svermeulen.extenject": "9.1.0",
     "com.tendedtarsier.core": "file:../../core/Core/Assets",
@@ -70,7 +71,8 @@
         "com.cysharp.memorypack",
         "com.svermeulen.extenject",
         "com.dbrizov.naughtyattributes",
-        "com.system-community.systemruntimecompilerservicesunsafe"
+        "com.system-community.systemruntimecompilerservicesunsafe",
+        "com.marijnzwemmer.unity-toolbar-extender"
       ]
     }
   ]

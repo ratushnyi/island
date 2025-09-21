@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a191d6ded8ace46718029e23fe4bfa5c, type: 3}
+  m_Name: InventoryConfig
+  m_EditorClassIdentifier: 
+  <InventoryCellView>k__BackingField: {fileID: 8281480634303324935, guid: 834a674fb393a4c4da566030af850898, type: 3}
+  <InventoryCapacity>k__BackingField: 9
+  <InventoryItems>k__BackingField:
+  - <Id>k__BackingField: Potion
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 427cfa16a8bc9423ebdbd00b3a8777ff, type: 3}
+    <Tool>k__BackingField: {fileID: 11400000, guid: 20a712c97988b46a0b34057de4d4d76b, type: 2}
+    <IsCountable>k__BackingField: 1
+  - <Id>k__BackingField: Soda
+    <Sprite>k__BackingField: {fileID: 21300000, guid: d12298e6fed6b4ff892d6b9877a0e15c, type: 3}
+    <Tool>k__BackingField: {fileID: 11400000, guid: 21af956a8b0ab41e290de6646dd33610, type: 2}
+    <IsCountable>k__BackingField: 1
+  - <Id>k__BackingField: Steak
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 5b94d485335dc4707968d788f8765c74, type: 3}
+    <Tool>k__BackingField: {fileID: 11400000, guid: 0db8027521f0b4358ac620337d7b6755, type: 2}
+    <IsCountable>k__BackingField: 1

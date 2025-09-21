@@ -1,6 +1,8 @@
-using Island.Common;
+using Island.Common.Services;
+using Island.Gameplay.Profiles;
+using Island.Gameplay.Profiles.Inventory;
+using Island.Gameplay.Profiles.Stats;
 using Island.Gameplay.Settings;
-using Island.Menu.Panels;
 using Island.Menu.Panels.SettingsPanel;
 using TendedTarsier.Core.Utilities.Extensions;
 using UnityEngine;
@@ -19,6 +21,7 @@ namespace Island.Menu.Module
             BindServices();
             BindConfigs();
             BindPanels();
+            BindProfiles();
         }
 
         private void BindServices()
@@ -34,6 +37,13 @@ namespace Island.Menu.Module
         private void BindPanels()
         {
             Container.BindPanel<SettingsPanel>(_settingsPanel, _canvas);
+        }
+
+        private void BindProfiles()
+        {
+            Container.BindProfile<StatsProfile>();
+            Container.BindProfile<InventoryProfile>();
+            Container.BindProfile<PlayerProfile>();
         }
     }
 }

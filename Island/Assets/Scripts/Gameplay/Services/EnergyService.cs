@@ -1,55 +1,40 @@
-using System;
-using Island.Gameplay.Profiles;
+using Island.Gameplay.Services.Stats;
 using Island.Gameplay.Settings;
+using JetBrains.Annotations;
 using TendedTarsier.Core.Services;
-using UniRx;
-using UnityEngine;
 using Zenject;
 
 namespace Island.Gameplay.Services
 {
-    public class EnergyService : ServiceBase, IInitializable
+    [UsedImplicitly]
+    public class EnergyService : ServiceBase
     {
-        private PlayerProfile _playerProfile;
         private PlayerConfig _playerConfig;
-        
+        private StatsService _statsService;
+
         private float _sprintDeposit;
 
         [Inject]
-        private void Construct(PlayerProfile playerProfile, PlayerConfig playerConfig)
+        private void Construct(PlayerConfig playerConfig, StatsService statsService)
         {
-            _playerProfile = playerProfile;
             _playerConfig = playerConfig;
-        }
-
-        public void Initialize()
-        {
-            Observable.Timer(TimeSpan.FromSeconds(1)).Repeat().Subscribe(OnTick).AddTo(CompositeDisposable);
-        }
-
-        private void OnTick(long deltaTime)
-        {
-            Debug.Log($"Energy: {_playerProfile.Energy}");
-            _playerProfile.Energy = Mathf.Min(_playerProfile.Energy + 1, 100);
+            _statsService = statsService;
         }
 
         public bool TrackSprint(float duration)
         {
             var result = false;
-            if(_sprintDeposit > duration)
+            if (_sprintDeposit > duration)
             {
                 _sprintDeposit -= duration;
                 result = true;
             }
-            else if(_playerProfile.Energy > _playerConfig.SprintCost)
+            else if (_statsService.ApplyValue(_playerConfig.SprintFee))
             {
-                _sprintDeposit = 1;
-                _playerProfile.Energy-=10;
+                _sprintDeposit = _playerConfig.SprintFee.Rate;
                 result = true;
             }
-            
-            Debug.Log($"Energy: {_playerProfile.Energy}");
-            
+
             return result;
         }
     }
