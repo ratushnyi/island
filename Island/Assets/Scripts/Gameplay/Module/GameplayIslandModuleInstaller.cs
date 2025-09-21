@@ -20,6 +20,7 @@ namespace Island.Gameplay.Module
         [SerializeField] private StatsConfig _statsConfig;
         [SerializeField] private InventoryConfig _inventoryConfig;
         [SerializeField] private InventoryPanel _inventoryPanel;
+        [SerializeField] private InputPanel _inputPanel;
         [SerializeField] private HUDPanel _hudPanel;
         [SerializeField] private Canvas _canvas;
 
@@ -33,6 +34,7 @@ namespace Island.Gameplay.Module
         private void BindPanels()
         {
             ;Container.BindPanel<InventoryPanel>(_inventoryPanel, _canvas);
+            ;Container.BindPanel<InputPanel>(_inputPanel, _canvas);
             ;Container.BindPanel<HUDPanel>(_hudPanel, _canvas);
         }
 

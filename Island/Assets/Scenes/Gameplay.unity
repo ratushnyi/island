@@ -419,10 +419,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moduleController: {fileID: 2006302207401808471}
   _playerConfig: {fileID: 11400000, guid: 23959e38303344073ac33a72a0560a25, type: 2}
-  _cameraConfig: {fileID: 11400000, guid: 145386ffc49f242e688dcac7122f2a2f, type: 2}
   _statsConfig: {fileID: 11400000, guid: c5adf31d4e8fb471884b73b6ce7814ca, type: 2}
   _inventoryConfig: {fileID: 11400000, guid: cee975dcfa07f4712b6dd3199b44f1d4, type: 2}
   _inventoryPanel: {fileID: 5131322837647147988, guid: f8319b42121934e4dba985a1972ec944, type: 3}
+  _inputPanel: {fileID: 4842827540725903201, guid: 062822cee88454521a5782aa3c6c178d, type: 3}
   _hudPanel: {fileID: -6269519497728431671, guid: 4c8eaa2e4c5bc4a61826480b0aea28ed, type: 3}
   _canvas: {fileID: 6368572182129791260}
 --- !u!1 &535735355

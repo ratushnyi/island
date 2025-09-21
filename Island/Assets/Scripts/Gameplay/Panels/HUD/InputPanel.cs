@@ -5,6 +5,6 @@ namespace Island.Gameplay.Panels.HUD
 {
     public class InputPanel : PanelBase
     {
-        public override bool ShowInstantly => Application.isMobilePlatform || Application.isEditor;
+        public override bool ShowInstantly => Application.isMobilePlatform;
     }
 }

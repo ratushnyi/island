@@ -6,8 +6,8 @@ namespace Island.Gameplay.Settings
     [CreateAssetMenu(menuName = "Island/PlayerConfig", fileName = "PlayerConfig")]
     public class PlayerConfig : ScriptableObject
     {
-        [field: SerializeField] public int JumpForce { get; private set; } = 5;
-        [field: SerializeField] public int Gravity { get; private set; } = 1;
+        [field: SerializeField] public float JumpForce { get; private set; } = 0.5f;
+        [field: SerializeField] public float Gravity { get; private set; } = 1;
         [field: SerializeField] public int WalkSpeed { get; private set; } = 5;
         
         [Header("Sprint")]
