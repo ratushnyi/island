@@ -5,9 +5,9 @@ namespace Island.Gameplay.Module
 {
     public class GameplayIslandModuleController : ModuleControllerBase
     {
-        public override async UniTask Initialize()
+        public override UniTask Initialize()
         {
-            await UniTask.Delay(1000);
+            return UniTask.Delay(1);
         }
     }
 }
