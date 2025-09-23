@@ -1,5 +1,6 @@
 using System.Linq;
 using Island.Gameplay.Configs;
+using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Profiles.Inventory;
 using TendedTarsier.Core.Panels;
 using UniRx;

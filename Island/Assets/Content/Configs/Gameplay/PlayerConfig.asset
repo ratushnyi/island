@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fab1f2858405e41688a0d7f7ba6c02df, type: 3}
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
-  <JumpForce>k__BackingField: 0.05
-  <Gravity>k__BackingField: 0.5
+  <JumpForce>k__BackingField: 5
+  <Gravity>k__BackingField: 10
   <WalkSpeed>k__BackingField: 5
   <SprintSpeed>k__BackingField: 10
   <SprintGetSpeed>k__BackingField: 1

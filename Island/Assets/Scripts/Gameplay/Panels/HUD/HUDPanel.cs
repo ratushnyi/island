@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Island.Gameplay.Configs;
+using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Configs.Stats;
 using Island.Gameplay.Panels.Inventory;
 using Island.Gameplay.Profiles.Inventory;

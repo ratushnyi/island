@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Island.Gameplay.Configs;
+using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Panels.HUD;
 using Island.Gameplay.Profiles.Inventory;
 using Island.Gameplay.Settings;
@@ -142,7 +143,7 @@ namespace Island.Gameplay.Services.Inventory
 
         public bool TryPut(WorldItemObject worldItem)
         {
-            return worldItem.Collider.enabled && TryPut(worldItem.ItemEntity.Id, worldItem.ItemEntity.Count, () => UniTask.CompletedTask);
+            return TryPut(worldItem.ItemEntity.Id, worldItem.ItemEntity.Count, () => UniTask.CompletedTask);
         }
 
         public async UniTask<bool> Perform()

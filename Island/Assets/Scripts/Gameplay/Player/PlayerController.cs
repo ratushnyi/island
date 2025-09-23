@@ -1,14 +1,17 @@
+using System;
 using Island.Common;
 using Island.Common.Services;
 using Island.Gameplay.Services;
 using Island.Gameplay.Services.HUD;
 using Island.Gameplay.Services.Inventory;
+using Island.Gameplay.Services.World;
 using Island.Gameplay.Settings;
 using TendedTarsier.Core.Services.Input;
 using UniRx;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using Zenject;
 
 namespace Island.Gameplay.Player
@@ -19,6 +22,7 @@ namespace Island.Gameplay.Player
         [SerializeField] private CharacterController _characterController;
 
         private InputService _inputService;
+        private WorldService _worldService;
         private EnergyService _energyService;
         private SettingsService _settingsService;
         private InventoryService _inventoryService;
@@ -29,20 +33,23 @@ namespace Island.Gameplay.Player
         private float _cameraPitch;
         private float _verticalVelocity;
         private float _sprintLerp;
+        private bool _sprintButtonToggleState;
+        
+        private WorldItemObject _targetObject;
+        private IDisposable _targetObjectDispose;
 
-        private bool IsSprintButtonToggle => Application.isMobilePlatform;
         private bool SprintButtonToggleState
         {
-            get => IsSprintButtonToggle && _sprintButtonToggleState;
+            get => (Application.isMobilePlatform || Application.isConsolePlatform) && _sprintButtonToggleState;
             set => _sprintButtonToggleState = value;
         }
 
-        private bool _sprintButtonToggleState;
 
         [Inject]
-        private void Construct(InputService inputService, EnergyService energyService, SettingsService settingsService, InventoryService inventoryService, HUDService hudService, PlayerConfig playerConfig, CameraConfig cameraConfig)
+        private void Construct(InputService inputService, WorldService worldService, EnergyService energyService, SettingsService settingsService, InventoryService inventoryService, HUDService hudService, PlayerConfig playerConfig, CameraConfig cameraConfig)
         {
             _inputService = inputService;
+            _worldService = worldService;
             _energyService = energyService;
             _settingsService = settingsService;
             _inventoryService = inventoryService;
@@ -62,6 +69,34 @@ namespace Island.Gameplay.Player
             _camera.fieldOfView = _settingsService.Fov;
 
             Observable.EveryUpdate().Subscribe(OnTick).AddTo(this);
+            _inputService.OnAttackButtonStarted.Subscribe(OnAttackButtonClicked).AddTo(this);
+        }
+
+        private void OnCurrentWorldObjectChanged(WorldItemObject item)
+        {
+            _targetObjectDispose?.Dispose();
+            _targetObject = item;
+
+            if (_targetObject != null)
+            {
+                _targetObjectDispose = _targetObject.OnObjectDespawn.Subscribe(OnCurrentWorldObjectChanged);
+            }
+            
+            var itemName = _targetObject?.Name;
+            _hudService.SetInfoTitle(itemName);
+        }
+
+        private void OnAttackButtonClicked(InputAction.CallbackContext _)
+        {
+            if (!IsOwner)
+            {
+                return;
+            }
+
+            if (_targetObject != null)
+            {
+                _targetObject.Destroy_ServerRpc();
+            }
         }
 
         private void OnTick(long frame)
@@ -74,7 +109,7 @@ namespace Island.Gameplay.Player
 
         private void HandleVerticalVelocity(float deltaTime)
         {
-            if (_inputService.PlayerActions.Jump.WasPressedThisFrame())
+            if (_inputService.PlayerActions.Jump.WasPressedThisFrame() && _characterController.isGrounded)
             {
                 _verticalVelocity = _playerConfig.JumpForce;
             }
@@ -100,7 +135,7 @@ namespace Island.Gameplay.Player
 
         private void HandleSprint(float deltaTime)
         {
-            if(_inputService.PlayerActions.Sprint.WasPressedThisFrame())
+            if (_inputService.PlayerActions.Sprint.WasPressedThisFrame())
             {
                 if (SprintButtonToggleState)
                 {
@@ -110,7 +145,7 @@ namespace Island.Gameplay.Player
 
                 SprintButtonToggleState = true;
             }
-            
+
             if ((_inputService.PlayerActions.Sprint.IsPressed() || SprintButtonToggleState) && _energyService.TrackSprint(deltaTime))
             {
                 _sprintLerp = Mathf.Lerp(_sprintLerp, 1, deltaTime * _playerConfig.SprintGetSpeed);
@@ -124,17 +159,37 @@ namespace Island.Gameplay.Player
 
         private void OnTriggerEnter(Collider other)
         {
+            if (!IsOwner)
+            {
+                return;
+            }
+
             switch (other.tag)
             {
                 case CommonConstants.ItemTag:
-                    var mapItem = other.GetComponent<WorldItemObject>();
-                    _hudService.SetInfoTitle(mapItem.ItemEntity.Id);
+                    OnCurrentWorldObjectChanged(other.GetComponent<WorldItemObject>());
                     break;
             }
         }
-        
+
         private void OnTriggerExit(Collider other)
         {
+            if (!IsOwner)
+            {
+                return;
+            }
+
+            switch (other.tag)
+            {
+                case CommonConstants.ItemTag:
+                    if (_targetObject == other.GetComponent<WorldItemObject>())
+                    {
+                        OnCurrentWorldObjectChanged(null);
+                    }
+
+                    break;
+            }
+
             _hudService.SetInfoTitle(string.Empty);
         }
 
@@ -144,7 +199,7 @@ namespace Island.Gameplay.Player
             {
                 return;
             }
-            
+
             var lookInput = _inputService.PlayerActions.Look.ReadValue<Vector2>() * _settingsService.CameraSensitivity / 100;
 
             NetworkObject.transform.Rotate(Vector3.up * lookInput.x);

@@ -4,7 +4,7 @@ using Island.Gameplay.Panels.Inventory;
 using Island.Gameplay.Services.Inventory.Items;
 using UnityEngine;
 
-namespace Island.Gameplay.Configs
+namespace Island.Gameplay.Configs.Inventory
 {
     [CreateAssetMenu(menuName = "Island/InventoryConfig", fileName = "InventoryConfig")]
     public class InventoryConfig : ScriptableObject
