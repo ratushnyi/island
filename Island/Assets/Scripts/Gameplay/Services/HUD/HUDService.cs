@@ -1,19 +1,17 @@
 using Cysharp.Threading.Tasks;
+using Island.Common.Services;
 using Island.Gameplay.Configs.Stats;
 using Island.Gameplay.Panels.HUD;
 using Island.Gameplay.Panels.Inventory;
 using Island.Gameplay.Profiles.Stats;
 using JetBrains.Annotations;
-using TendedTarsier.Core.Modules.Loading;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services;
 using TendedTarsier.Core.Services.Input;
 using TendedTarsier.Core.Services.Modules;
 using TendedTarsier.Core.Services.Profile;
 using UniRx;
-using Unity.Netcode;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace Island.Gameplay.Services.HUD
@@ -25,6 +23,7 @@ namespace Island.Gameplay.Services.HUD
         private ProfileService _profileService;
         private InputService _inputService;
         private ModuleService _moduleService;
+        private NetworkService _networkService;
         private PanelLoader<InventoryPanel> _inventoryPanel;
         private PanelLoader<HUDPanel> _hudPanel;
 
@@ -34,11 +33,13 @@ namespace Island.Gameplay.Services.HUD
             ProfileService profileService,
             InputService inputService,
             ModuleService moduleService,
+            NetworkService networkService,
             PanelLoader<InventoryPanel> inventoryPanel,
             PanelLoader<HUDPanel> hudPanel)
         {
             _hudPanel = hudPanel;
             _inventoryPanel = inventoryPanel;
+            _networkService = networkService;
             _moduleService = moduleService;
             _inputService = inputService;
             _profileService = profileService;
@@ -80,7 +81,7 @@ namespace Island.Gameplay.Services.HUD
         private void OnMenuButtonClick()
         {
             _profileService.SaveAll();
-            NetworkManager.Singleton.Shutdown();
+            _networkService.Shutdown();
             _moduleService.LoadModule(_hudPanel.Instance.MenuScene).Forget();
         }
 

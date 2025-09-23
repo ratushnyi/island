@@ -15,13 +15,7 @@ namespace Island.Menu.Module
 
         public override void InstallBindings()
         {
-            BindServices();
             BindPanels();
-        }
-
-        private void BindServices()
-        {
-            Container.BindService<SettingsService>();
         }
 
         private void BindPanels()

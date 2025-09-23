@@ -35,7 +35,7 @@ namespace Island.Menu.Panels.Settings
         {
             await base.ShowAnimation();
             
-            _closeButton.OnClickAsObservable().Subscribe(t => PerformHide()).AddTo(CompositeDisposable);
+            _closeButton.OnClickAsObservable().Subscribe(t => Hide()).AddTo(CompositeDisposable);
         }
     }
 }

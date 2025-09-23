@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using TendedTarsier.Core.Panels;
 using TMPro;
 using UniRx;
@@ -7,12 +8,12 @@ using UnityEngine.UI;
 
 namespace Island.Menu.Panels.Join
 {
-    public class JoinPanel : PanelBase
+    public class JoinPanel : ResultPanelBase<string>
     {
         [SerializeField] private Button _closeButton;
         [SerializeField] private Button _buttonAccept;
         [SerializeField] private TMP_InputField _textField;
-        public readonly UniTaskCompletionSource<string> Result = new();
+        Tween _tween;
         
         public override async UniTask ShowAnimation()
         {
@@ -24,14 +25,31 @@ namespace Island.Menu.Panels.Join
         
         private void Accept()
         {
-            Result.TrySetResult(_textField.text);
-            PerformHide();
+            if (_textField.text.Length != 6)
+            {
+                _tween?.Kill(true);
+                _tween = _textField.targetGraphic.DOColor(Color.red, 0.1f)
+                    .SetEase(Ease.InOutSine)
+                    .SetLoops(10, LoopType.Yoyo)
+                    .OnComplete(() => {
+                        _textField.targetGraphic.color = Color.white;
+                    });
+                return;
+            }
+            
+            SetResult(_textField.text.ToUpper());
+            Hide();
         }
         
         private void Decline()
         {
-            Result.TrySetResult(null);
-            PerformHide();
+            SetResult(null);
+            Hide();
+        }
+
+        private void OnDestroy()
+        {
+            _tween?.Kill(true);
         }
     }
 }

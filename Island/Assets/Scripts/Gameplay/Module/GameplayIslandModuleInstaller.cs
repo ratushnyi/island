@@ -1,4 +1,3 @@
-using Island.Common.Services;
 using Island.Gameplay.Configs;
 using Island.Gameplay.Configs.Stats;
 using Island.Gameplay.Panels.HUD;
@@ -43,7 +42,6 @@ namespace Island.Gameplay.Module
             Container.BindService<HUDService>();
             Container.BindService<InventoryService>();
             Container.BindService<StatsService>();
-            Container.BindService<SettingsService>();
             Container.BindService<EnergyService>();
         }
 

@@ -1,13 +1,10 @@
 using Cysharp.Threading.Tasks;
+using Island.Common.Services;
 using Island.Menu.Panels.Join;
 using Island.Menu.Panels.Settings;
 using TendedTarsier.Core.Modules.Menu;
 using TendedTarsier.Core.Panels;
 using UniRx;
-using Unity.Netcode;
-using Unity.Netcode.Transports.UTP;
-using Unity.Services.Relay;
-using Unity.Services.Relay.Models;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -20,12 +17,14 @@ namespace Island.Menu.Panels
         [SerializeField] private Button _settingsButton;
         private PanelLoader<SettingsPanel> _settingsPanel;
         private PanelLoader<JoinPanel> _joinPanel;
+        private NetworkService _networkService;
 
         [Inject]
-        private void Construct(PanelLoader<SettingsPanel> settingsPanel, PanelLoader<JoinPanel> joinPanel)
+        private void Construct(PanelLoader<SettingsPanel> settingsPanel, PanelLoader<JoinPanel> joinPanel, NetworkService networkService)
         {
             _settingsPanel = settingsPanel;
             _joinPanel = joinPanel;
+            _networkService = networkService;
         }
 
         protected override void InitButtons()
@@ -57,48 +56,25 @@ namespace Island.Menu.Panels
         protected override async UniTask OnContinueButtonClick()
         {
             await base.OnContinueButtonClick();
-            NetworkManager.Singleton.StartHost();
+            await _networkService.StartHost();
         }
 
         protected override async UniTask OnNewGameButtonClick()
         {
             await base.OnNewGameButtonClick();
-            
-            Allocation alloc = await RelayService.Instance.CreateAllocationAsync(3);
-            string joinCode = await RelayService.Instance.GetJoinCodeAsync(alloc.AllocationId);
-            Debug.Log($"Relay JoinCode: {joinCode}");
-
-            var transport = (UnityTransport)NetworkManager.Singleton.NetworkConfig.NetworkTransport;
-            
-            transport.SetRelayServerData(
-                alloc.RelayServer.IpV4, (ushort)alloc.RelayServer.Port,
-                alloc.AllocationIdBytes, alloc.Key, alloc.ConnectionData,
-                hostConnectionDataBytes: null,
-                isSecure: false
-            );
-
-            NetworkManager.Singleton.StartHost();
+            await _networkService.StartHost();
         }
 
         private async UniTask OnJoinButtonClick()
         {
             var panel = await _joinPanel.Show();
-            var result = await panel.Result.Task;
-            if (string.IsNullOrEmpty(result))
+            var joinCode = await panel.WaitForResult();
+            if (string.IsNullOrEmpty(joinCode))
             {
                 return;
             }
-            
             await base.OnContinueButtonClick();
-            JoinAllocation join = await RelayService.Instance.JoinAllocationAsync(result);
-            var transport = (UnityTransport)NetworkManager.Singleton.NetworkConfig.NetworkTransport;
-            transport.SetRelayServerData(
-                join.RelayServer.IpV4, (ushort)join.RelayServer.Port,
-                join.AllocationIdBytes, join.Key, join.ConnectionData,
-                join.HostConnectionData,
-                isSecure: false);
-
-            NetworkManager.Singleton.StartClient();
+            await _networkService.StartClient(joinCode);
         }
 
         private void OnSettingsButtonClick()

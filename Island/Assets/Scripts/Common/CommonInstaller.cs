@@ -1,3 +1,4 @@
+using Island.Common.Services;
 using Island.Gameplay.Profiles;
 using Island.Gameplay.Profiles.Inventory;
 using Island.Gameplay.Profiles.Stats;
@@ -16,6 +17,7 @@ namespace Island.Common
         {
             BindProfiles();
             BindConfigs();
+            BindServices();
         }
 
         private void BindConfigs()
@@ -28,6 +30,12 @@ namespace Island.Common
             Container.BindProfile<StatsProfile>();
             Container.BindProfile<InventoryProfile>();
             Container.BindProfile<PlayerProfile>();
+        }
+
+        private void BindServices()
+        {
+            Container.BindService<SettingsService>();
+            Container.BindService<NetworkService>();
         }
     }
 }
