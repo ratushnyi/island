@@ -1,15 +1,16 @@
+using System;
 using Cysharp.Threading.Tasks;
 using Island.Common.Services;
 using Island.Gameplay.Configs.Stats;
+using Island.Gameplay.Module;
 using Island.Gameplay.Panels.HUD;
 using Island.Gameplay.Panels.Inventory;
+using Island.Gameplay.Panels.Pause;
 using Island.Gameplay.Profiles.Stats;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services;
 using TendedTarsier.Core.Services.Input;
-using TendedTarsier.Core.Services.Modules;
-using TendedTarsier.Core.Services.Profile;
 using UniRx;
 using UnityEngine.EventSystems;
 using Zenject;
@@ -17,38 +18,41 @@ using Zenject;
 namespace Island.Gameplay.Services.HUD
 {
     [UsedImplicitly]
-    public class HUDService : ServiceBase, IInitializable
+    public class HUDService : ServiceBase, INetworkInitialize
     {
         private EventSystem _eventSystem;
-        private ProfileService _profileService;
         private InputService _inputService;
-        private ModuleService _moduleService;
         private NetworkService _networkService;
+        private PanelLoader<PausePanel> _pausePanel;
         private PanelLoader<InventoryPanel> _inventoryPanel;
         private PanelLoader<HUDPanel> _hudPanel;
+        private IslandGameplayModuleController _islandGameplayModuleController;
+
+        private IDisposable _pauseDisposable;
 
         [Inject]
         private void Construct(
             EventSystem eventSystem,
-            ProfileService profileService,
             InputService inputService,
-            ModuleService moduleService,
             NetworkService networkService,
+            PanelLoader<PausePanel> pausePanel,
             PanelLoader<InventoryPanel> inventoryPanel,
-            PanelLoader<HUDPanel> hudPanel)
+            PanelLoader<HUDPanel> hudPanel,
+            IslandGameplayModuleController islandGameplayModuleController)
         {
+            _islandGameplayModuleController = islandGameplayModuleController;
             _hudPanel = hudPanel;
             _inventoryPanel = inventoryPanel;
+            _pausePanel = pausePanel;
             _networkService = networkService;
-            _moduleService = moduleService;
             _inputService = inputService;
-            _profileService = profileService;
             _eventSystem = eventSystem;
         }
 
-        public void Initialize()
+        public void OnNetworkInitialize()
         {
             SubscribeOnInput();
+            _hudPanel.Instance.OnNetworkInitialize();
         }
 
         private void SubscribeOnInput()
@@ -57,11 +61,64 @@ namespace Island.Gameplay.Services.HUD
                 .Subscribe(_ => SwitchInventory().Forget())
                 .AddTo(CompositeDisposable);
 
-            _inputService.OnMenuButtonPerformed
-                .Subscribe(_ => OnMenuButtonClick())
-                .AddTo(CompositeDisposable);
-
             _eventSystem.SetSelectedGameObject(_hudPanel.Instance.SelectedItem.gameObject);
+
+            SubscribeOnServerPause();
+            SubscribeOnPause();
+        }
+
+        private void SubscribeOnServerPause()
+        {
+            if (!_networkService.IsServer)
+            {
+                _networkService.IsServerPaused.Subscribe(HandleServerPause).AddTo(CompositeDisposable);
+            }
+        }
+
+        private void HandleServerPause(bool value)
+        {
+            if (value)
+            {
+                ShowPause().Forget();
+            }
+            else if (_pausePanel.Instance != null)
+            {
+                _pausePanel.Hide().Forget();
+            }
+        }
+
+        private async UniTask<bool> ShowPause()
+        {
+            var panel = await _pausePanel.Show();
+            var isExit = await panel.WaitForResult();
+            if (isExit)
+            {
+                _islandGameplayModuleController.LoadMenu();
+            }
+
+            return isExit;
+        }
+
+        private async UniTaskVoid HandlePause()
+        {
+            if (_pauseDisposable != null)
+            {
+                CompositeDisposable.Remove(_pauseDisposable);
+                _pauseDisposable.Dispose();
+                _networkService.SetPaused(true);
+                var isExit = await ShowPause();
+                _networkService.SetPaused(false);
+                if(!isExit)
+                {
+                    SubscribeOnPause();
+                }
+            }
+        }
+
+        private void SubscribeOnPause()
+        {
+            _pauseDisposable = _inputService.OnMenuButtonPerformed.Subscribe(_ => HandlePause().Forget())
+                .AddTo(CompositeDisposable);
         }
 
         private async UniTask SwitchInventory()
@@ -78,18 +135,11 @@ namespace Island.Gameplay.Services.HUD
             }
         }
 
-        private void OnMenuButtonClick()
-        {
-            _profileService.SaveAll();
-            _networkService.Shutdown();
-            _moduleService.LoadModule(_hudPanel.Instance.MenuScene).Forget();
-        }
-
         public void SetInfoTitle(string title)
         {
             _hudPanel.Instance.GetInfoTitle().UpdateValue(title);
         }
-        
+
         public void ShowStatBar(StatType statType, StatModel statModel, StatProfileElement statProfile)
         {
             var statBar = _hudPanel.Instance.GetStatBar(statType);

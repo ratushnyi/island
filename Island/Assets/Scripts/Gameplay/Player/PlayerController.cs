@@ -8,6 +8,7 @@ using Island.Gameplay.Services.World;
 using Island.Gameplay.Settings;
 using TendedTarsier.Core.Services.Input;
 using UniRx;
+using Unity.Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -18,7 +19,7 @@ namespace Island.Gameplay.Player
 {
     public class PlayerController : NetworkBehaviour
     {
-        [SerializeField] private Camera _camera;
+        [SerializeField] private CinemachineCamera _camera;
         [SerializeField] private CharacterController _characterController;
 
         private InputService _inputService;
@@ -34,7 +35,7 @@ namespace Island.Gameplay.Player
         private float _verticalVelocity;
         private float _sprintLerp;
         private bool _sprintButtonToggleState;
-        
+
         private WorldItemObject _targetObject;
         private IDisposable _targetObjectDispose;
 
@@ -66,10 +67,11 @@ namespace Island.Gameplay.Player
             }
 
             _camera.gameObject.SetActive(true);
-            _camera.fieldOfView = _settingsService.Fov;
+            _camera.Lens.FieldOfView = _settingsService.Fov.Value;
 
             Observable.EveryUpdate().Subscribe(OnTick).AddTo(this);
             _inputService.OnAttackButtonStarted.Subscribe(OnAttackButtonClicked).AddTo(this);
+            _settingsService.Fov.Subscribe(OnFovChanged).AddTo(this);
         }
 
         private void OnCurrentWorldObjectChanged(WorldItemObject item)
@@ -81,7 +83,7 @@ namespace Island.Gameplay.Player
             {
                 _targetObjectDispose = _targetObject.OnObjectDespawn.Subscribe(OnCurrentWorldObjectChanged);
             }
-            
+
             var itemName = _targetObject?.Name;
             _hudService.SetInfoTitle(itemName);
         }
@@ -97,6 +99,11 @@ namespace Island.Gameplay.Player
             {
                 _targetObject.Destroy_ServerRpc();
             }
+        }
+
+        private void OnFovChanged(int value)
+        {
+            _camera.Lens.FieldOfView = Mathf.Lerp(value, value * _cameraConfig.FovSprintModifier, _sprintLerp);
         }
 
         private void OnTick(long frame)
@@ -200,14 +207,14 @@ namespace Island.Gameplay.Player
                 return;
             }
 
-            var lookInput = _inputService.PlayerActions.Look.ReadValue<Vector2>() * _settingsService.CameraSensitivity / 100;
+            var lookInput = _inputService.PlayerActions.Look.ReadValue<Vector2>() * _settingsService.CameraSensitivity.Value / 100;
 
             NetworkObject.transform.Rotate(Vector3.up * lookInput.x);
             _cameraPitch -= lookInput.y;
             _cameraPitch = Mathf.Clamp(_cameraPitch, _cameraConfig.PitchLimits.x, _cameraConfig.PitchLimits.y);
             _camera.transform.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
 
-            _camera.fieldOfView = Mathf.Lerp(_settingsService.Fov, _settingsService.Fov * _cameraConfig.FovSprintModifier, _sprintLerp);
+            _camera.Lens.FieldOfView = Mathf.Lerp(_settingsService.Fov.Value, _settingsService.Fov.Value * _cameraConfig.FovSprintModifier, _sprintLerp);
         }
     }
 }

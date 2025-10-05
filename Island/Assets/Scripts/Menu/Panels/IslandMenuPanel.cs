@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using Island.Common.Services;
 using Island.Menu.Panels.Join;
@@ -33,8 +34,6 @@ namespace Island.Menu.Panels
             base.InitButtons();
             RegisterButton(_settingsButton);
         }
-        
-        
 
         private static async UniTask EnsureServices()
         {
@@ -73,8 +72,8 @@ namespace Island.Menu.Panels
             {
                 return;
             }
-            await base.OnContinueButtonClick();
-            await _networkService.StartClient(joinCode);
+
+            await _networkService.TryStartClient(joinCode, base.OnContinueButtonClick);
         }
 
         private void OnSettingsButtonClick()

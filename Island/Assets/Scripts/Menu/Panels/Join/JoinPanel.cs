@@ -21,6 +21,7 @@ namespace Island.Menu.Panels.Join
             
             _closeButton.OnClickAsObservable().Subscribe(t => Decline()).AddTo(CompositeDisposable);
             _buttonAccept.OnClickAsObservable().Subscribe(t => Accept()).AddTo(CompositeDisposable);
+            _textField.Select();
         }
         
         private void Accept()
@@ -30,6 +31,7 @@ namespace Island.Menu.Panels.Join
                 _tween?.Kill(true);
                 _tween = _textField.targetGraphic.DOColor(Color.red, 0.1f)
                     .SetEase(Ease.InOutSine)
+                    .SetUpdate(true)
                     .SetLoops(10, LoopType.Yoyo)
                     .OnComplete(() => {
                         _textField.targetGraphic.color = Color.white;
@@ -37,14 +39,12 @@ namespace Island.Menu.Panels.Join
                 return;
             }
             
-            SetResult(_textField.text.ToUpper());
-            Hide();
+            HideWithResult(_textField.text.ToUpper());
         }
         
         private void Decline()
         {
-            SetResult(null);
-            Hide();
+            HideWithResult(null);
         }
 
         private void OnDestroy()
