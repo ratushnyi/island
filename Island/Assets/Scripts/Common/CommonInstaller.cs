@@ -12,7 +12,7 @@ namespace Island.Common
     public class CommonInstaller : MonoInstaller
     {
         [SerializeField] private CameraConfig _cameraConfig;
-        [SerializeField] private NetworkServiceFacade _networkServiceFacade;
+        [SerializeField] private NetworkConfig _networkConfig;
 
         public override void InstallBindings()
         {
@@ -24,6 +24,7 @@ namespace Island.Common
         private void BindConfigs()
         {
             Container.Bind<CameraConfig>().FromInstance(_cameraConfig).AsSingle().NonLazy();
+            Container.Bind<NetworkConfig>().FromInstance(_networkConfig).AsSingle().NonLazy();
         }
 
         private void BindProfiles()
@@ -36,7 +37,7 @@ namespace Island.Common
         private void BindServices()
         {
             Container.BindService<SettingsService>();
-            Container.BindService<NetworkService, NetworkServiceFacade>(_networkServiceFacade);
+            Container.BindService<NetworkService>();
         }
     }
 }

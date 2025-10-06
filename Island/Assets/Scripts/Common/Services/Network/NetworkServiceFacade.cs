@@ -19,6 +19,7 @@ namespace Island.Common.Services
         public override void OnNetworkDespawn()
         {
             _isPausedNetwork.OnValueChanged -= OnPauseChanged;
+            
         }
 
         public void SetPaused(bool value)

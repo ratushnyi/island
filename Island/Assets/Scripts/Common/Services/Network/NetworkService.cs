@@ -16,20 +16,26 @@ namespace Island.Common.Services
     public class NetworkService : ServiceBase
     {
         public string JoinCode { get; private set; }
-        private NetworkServiceFacade _facade;
+        private NetworkConfig _config;
+        private NetworkServiceFacade _networkServiceFacade;
 
         public bool IsReady => NetworkManager.Singleton.IsApproved;
         public bool IsServer => NetworkManager.Singleton.IsServer;
         public bool IsClient => NetworkManager.Singleton.IsClient;
         public bool IsHost => NetworkManager.Singleton.IsHost;
-        public IReadOnlyReactiveProperty<bool> IsServerPaused => _facade.IsPaused;
         public IObservable<Unit> OnServerStopped => Observable.FromEvent(t => NetworkManager.Singleton.OnPreShutdown += t, t => NetworkManager.Singleton.OnPreShutdown -= t);
-        public void SetPaused(bool value) => _facade.SetPaused(value);
+        public void SetPaused(bool value) => _networkServiceFacade.SetPaused(value);
+        public IReadOnlyReactiveProperty<bool> IsServerPaused => _networkServiceFacade.IsPaused;
 
         [Inject]
-        private void Construct(NetworkServiceFacade facade)
+        private void Construct(NetworkConfig config)
         {
-            _facade = facade;
+            _config = config;
+        }
+
+        public void Initialize(NetworkServiceFacade networkServiceFacade)
+        {
+            _networkServiceFacade = networkServiceFacade;
         }
 
         public void Shutdown()

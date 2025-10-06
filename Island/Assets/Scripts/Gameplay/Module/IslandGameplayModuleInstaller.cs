@@ -20,6 +20,7 @@ namespace Island.Gameplay.Module
 {
     public class IslandGameplayModuleInstaller : ModuleInstallerBase<IslandGameplayModuleController>
     {
+        [SerializeField] private NetworkServiceFacade _networkServiceFacade;
         [SerializeField] private WorldConfig _worldConfig;
         [SerializeField] private PlayerConfig _playerConfig;
         [SerializeField] private StatsConfig _statsConfig;
@@ -54,7 +55,7 @@ namespace Island.Gameplay.Module
             Container.BindService<StatsService>();
             Container.BindService<EnergyService>();
             Container.BindService<WorldService>();
-            Container.BindService<NetworkServiceResolver>();
+            Container.BindService<NetworkServiceResolver, NetworkServiceFacade>(_networkServiceFacade);
         }
 
         private void BindConfigs()
