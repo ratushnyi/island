@@ -39,9 +39,11 @@ namespace Island.Gameplay.Player
         private WorldItemObject _targetObject;
         private IDisposable _targetObjectDispose;
 
+        private bool IsMoving => _characterController.velocity.magnitude > 0;
+        private bool IsRunning => IsMoving && (_inputService.PlayerActions.Sprint.IsPressed() || SprintButtonToggleState);
         private bool SprintButtonToggleState
         {
-            get => (Application.isMobilePlatform || Application.isConsolePlatform) && _sprintButtonToggleState;
+            get => (Application.isMobilePlatform || Application.isConsolePlatform || Application.isEditor) && _sprintButtonToggleState;
             set => _sprintButtonToggleState = value;
         }
 
@@ -144,7 +146,7 @@ namespace Island.Gameplay.Player
         {
             if (_inputService.PlayerActions.Sprint.WasPressedThisFrame())
             {
-                if (SprintButtonToggleState)
+                if (SprintButtonToggleState || !IsMoving)
                 {
                     SprintButtonToggleState = false;
                     return;
@@ -153,7 +155,7 @@ namespace Island.Gameplay.Player
                 SprintButtonToggleState = true;
             }
 
-            if ((_inputService.PlayerActions.Sprint.IsPressed() || SprintButtonToggleState) && _energyService.TrackSprint(deltaTime))
+            if (IsRunning && _energyService.TrackSprint(deltaTime))
             {
                 _sprintLerp = Mathf.Lerp(_sprintLerp, 1, deltaTime * _playerConfig.SprintGetSpeed);
             }
