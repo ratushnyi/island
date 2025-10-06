@@ -4,13 +4,13 @@ using Zenject;
 
 namespace Island.Common.Services
 {
-    public class NetworkServiceResolver : ServiceBase, IInitializable
+    public class NetworkServiceBridge : ServiceBase, IInitializable
     {
         private readonly NetworkServiceFacade _networkServiceFacade;
         private readonly NetworkService _networkService;
         private readonly DiContainer _container;
 
-        public NetworkServiceResolver(NetworkServiceFacade networkServiceFacade, NetworkService networkService, DiContainer container)
+        public NetworkServiceBridge(NetworkServiceFacade networkServiceFacade, NetworkService networkService, DiContainer container)
         {
             _networkServiceFacade = networkServiceFacade;
             _networkService = networkService;
@@ -26,8 +26,8 @@ namespace Island.Common.Services
         {
             _networkService.Initialize(_networkServiceFacade);
             await UniTask.WaitUntil(() => _networkService.IsReady);
-            var network = _container.ResolveAll<INetworkInitialize>();
-            network.ForEach(t => t.OnNetworkInitialize());
+            _container.ResolveAll<INetworkPreInitialize>().ForEach(t => t.OnNetworkPreInitialize());
+            _container.ResolveAll<INetworkInitialize>().ForEach(t => t.OnNetworkInitialize());
         }
     }
 }

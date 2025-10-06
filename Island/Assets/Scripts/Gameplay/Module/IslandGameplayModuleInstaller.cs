@@ -5,6 +5,9 @@ using Island.Gameplay.Configs.World;
 using Island.Gameplay.Panels.HUD;
 using Island.Gameplay.Panels.Inventory;
 using Island.Gameplay.Panels.Pause;
+using Island.Gameplay.Profiles;
+using Island.Gameplay.Profiles.Inventory;
+using Island.Gameplay.Profiles.Stats;
 using Island.Gameplay.Services;
 using Island.Gameplay.Services.HUD;
 using Island.Gameplay.Services.Inventory;
@@ -37,6 +40,14 @@ namespace Island.Gameplay.Module
             BindServices();
             BindConfigs();
             BindPanels();
+            BindProfiles();
+        }
+
+        private void BindProfiles()
+        {
+            Container.BindProfile<StatsProfile>();
+            Container.BindProfile<InventoryProfile>();
+            Container.BindProfile<PlayerProfile>();
         }
 
         private void BindPanels()
@@ -55,7 +66,7 @@ namespace Island.Gameplay.Module
             Container.BindService<StatsService>();
             Container.BindService<EnergyService>();
             Container.BindService<WorldService>();
-            Container.BindService<NetworkServiceResolver, NetworkServiceFacade>(_networkServiceFacade);
+            Container.BindService<NetworkServiceBridge, NetworkServiceFacade>(_networkServiceFacade);
         }
 
         private void BindConfigs()

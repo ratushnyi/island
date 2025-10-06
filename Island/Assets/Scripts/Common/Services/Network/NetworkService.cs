@@ -1,7 +1,9 @@
 using System;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
+using TendedTarsier.Core.Modules.Project;
 using TendedTarsier.Core.Services;
+using TendedTarsier.Core.Services.Profile;
 using UniRx;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -16,6 +18,8 @@ namespace Island.Common.Services
     public class NetworkService : ServiceBase
     {
         public string JoinCode { get; private set; }
+        
+        private ProjectProfile _projectProfile;
         private NetworkConfig _config;
         private NetworkServiceFacade _networkServiceFacade;
 
@@ -24,13 +28,15 @@ namespace Island.Common.Services
         public bool IsClient => NetworkManager.Singleton.IsClient;
         public bool IsHost => NetworkManager.Singleton.IsHost;
         public IObservable<Unit> OnServerStopped => Observable.FromEvent(t => NetworkManager.Singleton.OnPreShutdown += t, t => NetworkManager.Singleton.OnPreShutdown -= t);
-        public void SetPaused(bool value) => _networkServiceFacade.SetPaused(value);
         public IReadOnlyReactiveProperty<bool> IsServerPaused => _networkServiceFacade.IsPaused;
+        public void SetPaused(bool value) => _networkServiceFacade.SetPaused(value);
+        public string ServerId => _networkServiceFacade.ServerId;
 
         [Inject]
-        private void Construct(NetworkConfig config)
+        private void Construct(NetworkConfig config, ProjectProfile projectProfile)
         {
             _config = config;
+            _projectProfile = projectProfile;
         }
 
         public void Initialize(NetworkServiceFacade networkServiceFacade)
@@ -42,12 +48,29 @@ namespace Island.Common.Services
         {
             NetworkManager.Singleton.Shutdown();
         }
+        
+        public async UniTask EnsureServices()
+        {
+            if (Unity.Services.Core.UnityServices.State != Unity.Services.Core.ServicesInitializationState.Initialized)
+            {
+                await Unity.Services.Core.UnityServices.InitializeAsync();
+                if (!Unity.Services.Authentication.AuthenticationService.Instance.IsSignedIn)
+                {
+                    await Unity.Services.Authentication.AuthenticationService.Instance.SignInAnonymouslyAsync();
+                }
+            }
+        }
 
-        public async UniTask StartHost()
+        public async UniTask StartHost(bool isNewGame)
         {
             Allocation alloc = await RelayService.Instance.CreateAllocationAsync(3);
             GUIUtility.systemCopyBuffer = JoinCode = await RelayService.Instance.GetJoinCodeAsync(alloc.AllocationId);
             Debug.Log($"Relay JoinCode: {JoinCode}");
+            if (isNewGame)
+            {
+                _projectProfile.ServerId = JoinCode;
+                _projectProfile.Save();
+            }
 
             var transport = (UnityTransport)NetworkManager.Singleton.NetworkConfig.NetworkTransport;
 
@@ -59,6 +82,8 @@ namespace Island.Common.Services
             );
 
             NetworkManager.Singleton.StartHost();
+
+            _networkServiceFacade.SetServerId(_projectProfile.ServerId);
         }
 
         public async UniTask<bool> TryStartClient(string joinCode, Func<UniTask> beforeClientStarted)

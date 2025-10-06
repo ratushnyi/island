@@ -57,11 +57,13 @@ namespace Island.Gameplay.Panels.HUD
         {
             if (_networkService.IsServer)
             {
+                JoinCodeText.color = Color.red;
                 JoinCodeText.SetText(_networkService.JoinCode);
             }
             else
             {
-                JoinCodeText.gameObject.SetActive(false);
+                JoinCodeText.color = Color.green;
+                JoinCodeText.SetText(_networkService.ServerId);
             }
         }
 

@@ -4,7 +4,10 @@ using Island.Common.Services;
 using Island.Menu.Panels.Join;
 using Island.Menu.Panels.Settings;
 using TendedTarsier.Core.Modules.Menu;
+using TendedTarsier.Core.Modules.Project;
 using TendedTarsier.Core.Panels;
+using TendedTarsier.Core.Services.Modules;
+using TendedTarsier.Core.Services.Profile;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,31 +21,30 @@ namespace Island.Menu.Panels
         [SerializeField] private Button _settingsButton;
         private PanelLoader<SettingsPanel> _settingsPanel;
         private PanelLoader<JoinPanel> _joinPanel;
+        private ModuleService _moduleService;
         private NetworkService _networkService;
+        private ProfileService _profileService;
+        private ProjectProfile _projectProfile;
+        private ProjectConfig _projectConfig;
 
         [Inject]
-        private void Construct(PanelLoader<SettingsPanel> settingsPanel, PanelLoader<JoinPanel> joinPanel, NetworkService networkService)
+        private void Construct(PanelLoader<SettingsPanel> settingsPanel, PanelLoader<JoinPanel> joinPanel, NetworkService networkService, ModuleService moduleService, ProfileService profileService, ProjectProfile projectProfile, ProjectConfig projectConfig)
         {
             _settingsPanel = settingsPanel;
             _joinPanel = joinPanel;
             _networkService = networkService;
+            _moduleService = moduleService;
+            _profileService = profileService;
+            _projectProfile = projectProfile;
+            _projectConfig = projectConfig;
         }
 
         protected override void InitButtons()
         {
-            EnsureServices().Forget();
+            _networkService.EnsureServices().Forget();
             base.InitButtons();
             RegisterButton(_settingsButton);
-        }
-
-        private static async UniTask EnsureServices()
-        {
-            if (Unity.Services.Core.UnityServices.State != Unity.Services.Core.ServicesInitializationState.Initialized)
-            {
-                await Unity.Services.Core.UnityServices.InitializeAsync();
-                if (!Unity.Services.Authentication.AuthenticationService.Instance.IsSignedIn)
-                    await Unity.Services.Authentication.AuthenticationService.Instance.SignInAnonymouslyAsync();
-            }
+            InitContinueButton(!string.IsNullOrEmpty(_projectProfile.ServerId));
         }
 
         protected override void SubscribeButtons()
@@ -55,13 +57,14 @@ namespace Island.Menu.Panels
         protected override async UniTask OnContinueButtonClick()
         {
             await base.OnContinueButtonClick();
-            await _networkService.StartHost();
+            await _networkService.StartHost(false);
         }
 
         protected override async UniTask OnNewGameButtonClick()
         {
-            await base.OnNewGameButtonClick();
-            await _networkService.StartHost();
+            _profileService.SetNewGame(true);
+            await _moduleService.LoadModule(_projectConfig.GameplayScene);
+            await _networkService.StartHost(true);
         }
 
         private async UniTask OnJoinButtonClick()
@@ -73,6 +76,7 @@ namespace Island.Menu.Panels
                 return;
             }
 
+            _profileService.SetNewGame(false);
             await _networkService.TryStartClient(joinCode, base.OnContinueButtonClick);
         }
 

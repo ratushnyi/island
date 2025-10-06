@@ -71,32 +71,25 @@ namespace Island.Gameplay.Services.HUD
         {
             if (!_networkService.IsServer)
             {
-                _networkService.IsServerPaused.Subscribe(HandleServerPause).AddTo(CompositeDisposable);
+                _networkService.IsServerPaused.Subscribe(t => HandleServerPause(t).Forget()).AddTo(CompositeDisposable);
             }
         }
 
-        private void HandleServerPause(bool value)
+        private async UniTaskVoid HandleServerPause(bool value)
         {
             if (value)
             {
-                ShowPause().Forget();
+                var panel = await _pausePanel.Show();
+                var isExit = await panel.WaitForResult();
+                if (isExit)
+                {
+                    _islandGameplayModuleController.LoadMenu().Forget();
+                }
             }
             else if (_pausePanel.Instance != null)
             {
                 _pausePanel.Hide().Forget();
             }
-        }
-
-        private async UniTask<bool> ShowPause()
-        {
-            var panel = await _pausePanel.Show();
-            var isExit = await panel.WaitForResult();
-            if (isExit)
-            {
-                _islandGameplayModuleController.LoadMenu();
-            }
-
-            return isExit;
         }
 
         private async UniTaskVoid HandlePause()
@@ -106,9 +99,14 @@ namespace Island.Gameplay.Services.HUD
                 CompositeDisposable.Remove(_pauseDisposable);
                 _pauseDisposable.Dispose();
                 _networkService.SetPaused(true);
-                var isExit = await ShowPause();
+                var panel = await _pausePanel.Show();
+                var isExit = await panel.WaitForResult();
                 _networkService.SetPaused(false);
-                if(!isExit)
+                if (isExit)
+                {
+                    _islandGameplayModuleController.LoadMenu().Forget();
+                }
+                else
                 {
                     SubscribeOnPause();
                 }

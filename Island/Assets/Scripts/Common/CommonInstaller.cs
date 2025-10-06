@@ -1,7 +1,4 @@
 using Island.Common.Services;
-using Island.Gameplay.Profiles;
-using Island.Gameplay.Profiles.Inventory;
-using Island.Gameplay.Profiles.Stats;
 using Island.Gameplay.Settings;
 using TendedTarsier.Core.Utilities.Extensions;
 using UnityEngine;
@@ -16,7 +13,6 @@ namespace Island.Common
 
         public override void InstallBindings()
         {
-            BindProfiles();
             BindConfigs();
             BindServices();
         }
@@ -25,13 +21,6 @@ namespace Island.Common
         {
             Container.Bind<CameraConfig>().FromInstance(_cameraConfig).AsSingle().NonLazy();
             Container.Bind<NetworkConfig>().FromInstance(_networkConfig).AsSingle().NonLazy();
-        }
-
-        private void BindProfiles()
-        {
-            Container.BindProfile<StatsProfile>();
-            Container.BindProfile<InventoryProfile>();
-            Container.BindProfile<PlayerProfile>();
         }
 
         private void BindServices()

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Island.Common.Services;
 using Island.Gameplay.Configs.Stats;
 using Island.Gameplay.Profiles.Stats;
 using Island.Gameplay.Services.HUD;
@@ -11,7 +12,7 @@ using Zenject;
 namespace Island.Gameplay.Services.Stats
 {
     [UsedImplicitly]
-    public class StatsService : ServiceBase, IInitializable
+    public class StatsService : ServiceBase, INetworkInitialize
     {
         private readonly Dictionary<StatType, IDisposable> _feeDisposables = new();
 
@@ -30,7 +31,7 @@ namespace Island.Gameplay.Services.Stats
             _statsProfile = statsProfile;
         }
 
-        public void Initialize()
+        public void OnNetworkInitialize()
         {
             InitializeProfile();
             InitializeStats();

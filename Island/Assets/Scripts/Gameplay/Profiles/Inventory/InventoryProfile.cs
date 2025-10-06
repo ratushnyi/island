@@ -1,14 +1,13 @@
 using JetBrains.Annotations;
 using MemoryPack;
-using TendedTarsier.Core.Services.Profile;
 using UniRx;
 
 namespace Island.Gameplay.Profiles.Inventory
 {
     [MemoryPackable(GenerateType.VersionTolerant)]
-    public partial class InventoryProfile : ProfileBase
+    public partial class InventoryProfile : NetworkProfileBase
     {
-        public override string Name => "Inventory";
+        protected override string NetworkName => "Inventory";
 
         [MemoryPackOrder(0)]
         public ReactiveDictionary<string, ReactiveProperty<int>> InventoryItems { get; [UsedImplicitly] set; } = new();

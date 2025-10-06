@@ -1,4 +1,5 @@
 using UniRx;
+using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -6,8 +7,10 @@ namespace Island.Common.Services
 {
     public class NetworkServiceFacade : NetworkBehaviour
     {
+        public string ServerId => _serverId.Value.Value;
         public readonly ReactiveProperty<bool> IsPaused = new();
         private readonly NetworkVariable<bool> _isPausedNetwork = new();
+        private readonly NetworkVariable<FixedString32Bytes> _serverId = new();
 
         public override void OnNetworkSpawn()
         {
@@ -22,6 +25,16 @@ namespace Island.Common.Services
             
         }
 
+        public void SetServerId(string serverId)
+        {
+            if (!IsServer)
+            {
+                return;
+            }
+
+            _serverId.Value = new FixedString32Bytes(serverId);;
+        }
+
         public void SetPaused(bool value)
         {
             if (!IsServer)
@@ -31,6 +44,7 @@ namespace Island.Common.Services
 
             _isPausedNetwork.Value = value;
         }
+        
 
         private void OnPauseChanged(bool oldValue, bool newValue)
         {
