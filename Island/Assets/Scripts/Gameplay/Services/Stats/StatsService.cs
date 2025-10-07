@@ -170,12 +170,12 @@ namespace Island.Gameplay.Services.Stats
             return hypotheticalValue == newValue;
         }
 
-        public bool ApplyValue(StatFeeModel feeModel)
+        public bool TryApplyValue(StatFeeModel feeModel, bool onlyFull = false)
         {
-            return ApplyValue(feeModel.Type, feeModel.Value);
+            return TryApplyValue(feeModel.Type, feeModel.Value, onlyFull);
         }
 
-        public bool ApplyValue(StatType statType, int value)
+        public bool TryApplyValue(StatType statType, int value, bool onlyFull = false)
         {
             if (value == 0)
             {
@@ -184,6 +184,17 @@ namespace Island.Gameplay.Services.Stats
 
             var profileElement = _statsProfile.StatsDictionary[statType];
             var levelModel = _statsConfig[statType][profileElement.Level.Value];
+            if (onlyFull)
+            {
+                if (value > 0 && profileElement.Value.Value + value > levelModel.MaxValue)
+                {
+                    return false;
+                }
+                if (value < 0 && profileElement.Value.Value + value < 0)
+                {
+                    return false;
+                }
+            }
             var newValue = Math.Min(levelModel.MaxValue, profileElement.Value.Value + value);
             newValue = Math.Max(0, newValue);
 
@@ -202,7 +213,7 @@ namespace Island.Gameplay.Services.Stats
         private IDisposable StartApplyValueAutoApplyValue(StatType type, int rate, int value)
         {
             return Observable.Timer(TimeSpan.FromSeconds(rate)).Repeat()
-                .Subscribe(_ => ApplyValue(type, value))
+                .Subscribe(_ => TryApplyValue(type, value))
                 .AddTo(CompositeDisposable);
         }
     }

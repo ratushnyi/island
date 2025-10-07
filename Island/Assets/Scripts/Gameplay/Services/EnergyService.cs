@@ -29,7 +29,7 @@ namespace Island.Gameplay.Services
                 _sprintDeposit -= duration;
                 result = true;
             }
-            else if (_statsService.ApplyValue(_playerConfig.SprintFee))
+            else if (_statsService.TryApplyValue(_playerConfig.SprintFee, true))
             {
                 _sprintDeposit = _playerConfig.SprintFee.Rate;
                 result = true;
