@@ -37,8 +37,8 @@ namespace Island.Gameplay.Panels.Pause
                 _closeButton.gameObject.SetActive(!_networkService.IsServerPaused.Value);
                 _joinCode.gameObject.SetActive(false);
             }
-            _settingsButton.OnClickAsObservable().Subscribe(_ => OnSettingsButtonClick()).AddTo(CompositeDisposable);
-            _exitButton.OnClickAsObservable().Subscribe(_ => HideWithResult(true)).AddTo(CompositeDisposable);
+            _settingsButton.OnClickAsObservable().Subscribe(_ => OnSettingsButtonClick()).AddTo(this);
+            _exitButton.OnClickAsObservable().Subscribe(_ => HideWithResult(true)).AddTo(this);
         }
 
         private void OnSettingsButtonClick()

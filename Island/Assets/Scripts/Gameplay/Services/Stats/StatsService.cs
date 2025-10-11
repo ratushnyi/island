@@ -52,7 +52,6 @@ namespace Island.Gameplay.Services.Stats
                     });
                 }
             }
-            _statsProfile.Save();
         }
 
         private void InitializeStats()
@@ -71,8 +70,6 @@ namespace Island.Gameplay.Services.Stats
                     statProfileElement.Value.Value = levelEntity.DefaultValue;
                     statProfileElement.Range.Value = levelEntity.MaxValue;
                 }
-
-                _statsProfile.Save();
             }
 
             void observeStat(StatType statType)

@@ -6,7 +6,7 @@ using Zenject;
 namespace Island.Gameplay.Services.World
 {
     [UsedImplicitly]
-    public class WorldService : ServiceBase, IInitializable
+    public class WorldService : ServiceBase
     {
         private WorldConfig _worldConfig;
 

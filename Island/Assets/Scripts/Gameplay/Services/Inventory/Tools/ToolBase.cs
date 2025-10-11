@@ -6,7 +6,7 @@ using Zenject;
 
 namespace Island.Gameplay.Services.Inventory.Tools
 {
-    [CreateAssetMenu(menuName = "Items/ToolBase", fileName = "ToolBase")]
+    [CreateAssetMenu(menuName = "Tools/ToolBase", fileName = "ToolBase")]
     public class ToolBase : ScriptableObject, IPerformable
     {
         [SerializeField]

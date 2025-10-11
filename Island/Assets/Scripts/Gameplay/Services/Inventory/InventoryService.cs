@@ -1,11 +1,9 @@
 using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
-using Island.Gameplay.Configs;
 using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Panels.HUD;
 using Island.Gameplay.Profiles.Inventory;
-using Island.Gameplay.Settings;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services;
@@ -18,7 +16,6 @@ namespace Island.Gameplay.Services.Inventory
     public class InventoryService : ServiceBase, IInitializable
     {
         private PanelLoader<HUDPanel> _hudPanel;
-        private PlayerConfig _playerConfig;
         private InventoryConfig _inventoryConfig;
         private InventoryProfile _inventoryProfile;
 
@@ -26,12 +23,10 @@ namespace Island.Gameplay.Services.Inventory
         private void Construct(
             InventoryProfile inventoryProfile,
             InventoryConfig inventoryConfig,
-            PlayerConfig playerConfig,
             PanelLoader<HUDPanel> hudPanel)
         {
             _inventoryProfile = inventoryProfile;
             _inventoryConfig = inventoryConfig;
-            _playerConfig = playerConfig;
             _hudPanel = hudPanel;
         }
 
@@ -39,6 +34,21 @@ namespace Island.Gameplay.Services.Inventory
         {
             SubscribeOnItemsChanged();
             SubscribeOnItemDropped();
+            SubscribeOnItemSelected();
+        }
+
+        private void SubscribeOnItemSelected()
+        {
+            _inventoryProfile.SelectedItem.Subscribe(itemId =>
+            {
+                if (string.IsNullOrEmpty(itemId))
+                {
+                    _hudPanel.Instance.SelectedItem.SetEmpty();
+                    return;
+                }
+
+                _hudPanel.Instance.SelectedItem.SetItem(_inventoryConfig[itemId], _inventoryProfile.InventoryItems[itemId]);
+            }).AddTo(CompositeDisposable);
         }
 
         private void SubscribeOnItemDropped()

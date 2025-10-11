@@ -19,8 +19,8 @@ namespace Island.Menu.Panels.Join
         {
             await base.ShowAnimation();
             
-            _closeButton.OnClickAsObservable().Subscribe(t => Decline()).AddTo(CompositeDisposable);
-            _buttonAccept.OnClickAsObservable().Subscribe(t => Accept()).AddTo(CompositeDisposable);
+            _closeButton.OnClickAsObservable().Subscribe(t => Decline()).AddTo(this);
+            _buttonAccept.OnClickAsObservable().Subscribe(t => Accept()).AddTo(this);
             _textField.Select();
         }
         

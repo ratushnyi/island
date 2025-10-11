@@ -1,5 +1,4 @@
 using System.Linq;
-using Island.Gameplay.Configs;
 using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Profiles.Inventory;
 using TendedTarsier.Core.Panels;
@@ -9,7 +8,7 @@ using Zenject;
 
 namespace Island.Gameplay.Panels.Inventory
 {
-    public class InventoryPanel : PanelBase
+    public class InventoryPanel : PopupBase
     {
         [SerializeField]
         private Transform _gridContainer;
@@ -27,7 +26,7 @@ namespace Island.Gameplay.Panels.Inventory
             _inventoryProfile = inventoryProfile;
             _inventoryConfig = inventoryConfig;
 
-            _inventoryProfile.InventoryItems.ObserveAdd().Subscribe(Put).AddTo(CompositeDisposable);
+            _inventoryProfile.InventoryItems.ObserveAdd().Subscribe(Put).AddTo(this);
         }
 
         protected override void Initialize()
@@ -36,7 +35,7 @@ namespace Island.Gameplay.Panels.Inventory
             for (var i = 0; i < _inventoryConfig.InventoryCapacity; i++)
             {
                 _cellsList[i] = Instantiate(_inventoryConfig.InventoryCellView, _gridContainer);
-                _cellsList[i].OnButtonClicked.Subscribe(onCellClicked).AddTo(CompositeDisposable);
+                _cellsList[i].OnButtonClicked.Subscribe(onCellClicked).AddTo(this);
 
                 if (_inventoryProfile.InventoryItems.Count > i)
                 {

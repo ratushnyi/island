@@ -1,5 +1,4 @@
-using System;
-using Island.Common;
+using Cysharp.Threading.Tasks;
 using Island.Common.Services;
 using Island.Gameplay.Services;
 using Island.Gameplay.Services.HUD;
@@ -19,12 +18,17 @@ namespace Island.Gameplay.Player
 {
     public class PlayerController : NetworkBehaviour
     {
-        [SerializeField] private CinemachineCamera _camera;
+        [SerializeField] private Transform _head;
+        [SerializeField] private Camera _camera;
+        [SerializeField] private CinemachineCamera _cinemachineCamera;
         [SerializeField] private CharacterController _characterController;
+        [SerializeField] private LayerMask _aimMask;
+        [SerializeField] private float _aimMaxDistance = 3;
 
         private InputService _inputService;
         private WorldService _worldService;
         private EnergyService _energyService;
+        private AimService _aimService;
         private SettingsService _settingsService;
         private InventoryService _inventoryService;
         private HUDService _hudService;
@@ -35,10 +39,7 @@ namespace Island.Gameplay.Player
         private float _verticalVelocity;
         private float _sprintLerp;
         private bool _sprintButtonToggleState;
-
-        private WorldItemObject _targetObject;
-        private IDisposable _targetObjectDispose;
-
+        private Ray _aimRay;
         private bool IsMoving => _characterController.velocity.magnitude > 0;
         private bool IsRunning => IsMoving && (_inputService.PlayerActions.Sprint.IsPressed() || SprintButtonToggleState);
         private bool SprintButtonToggleState
@@ -49,14 +50,14 @@ namespace Island.Gameplay.Player
 
 
         [Inject]
-        private void Construct(InputService inputService, WorldService worldService, EnergyService energyService, SettingsService settingsService, InventoryService inventoryService, HUDService hudService, PlayerConfig playerConfig, CameraConfig cameraConfig)
+        private void Construct(InputService inputService, WorldService worldService, EnergyService energyService, AimService aimService, SettingsService settingsService, InventoryService inventoryService, PlayerConfig playerConfig, CameraConfig cameraConfig)
         {
             _inputService = inputService;
             _worldService = worldService;
             _energyService = energyService;
+            _aimService = aimService;
             _settingsService = settingsService;
             _inventoryService = inventoryService;
-            _hudService = hudService;
             _playerConfig = playerConfig;
             _cameraConfig = cameraConfig;
         }
@@ -68,44 +69,27 @@ namespace Island.Gameplay.Player
                 return;
             }
 
-            _camera.gameObject.SetActive(true);
-            _camera.Lens.FieldOfView = _settingsService.Fov.Value;
+            _cinemachineCamera.gameObject.SetActive(true);
+            _cinemachineCamera.Lens.FieldOfView = _settingsService.Fov.Value;
 
             Observable.EveryUpdate().Subscribe(OnTick).AddTo(this);
-            _inputService.OnAttackButtonStarted.Subscribe(OnAttackButtonClicked).AddTo(this);
+            _inputService.OnInteractButtonStarted.Subscribe(OnUseButtonClicked).AddTo(this);
             _settingsService.Fov.Subscribe(OnFovChanged).AddTo(this);
         }
 
-        private void OnCurrentWorldObjectChanged(WorldItemObject item)
-        {
-            _targetObjectDispose?.Dispose();
-            _targetObject = item;
-
-            if (_targetObject != null)
-            {
-                _targetObjectDispose = _targetObject.OnObjectDespawn.Subscribe(OnCurrentWorldObjectChanged);
-            }
-
-            var itemName = _targetObject?.Name;
-            _hudService.SetInfoTitle(itemName);
-        }
-
-        private void OnAttackButtonClicked(InputAction.CallbackContext _)
+        private void OnUseButtonClicked(InputAction.CallbackContext _)
         {
             if (!IsOwner)
             {
                 return;
             }
 
-            if (_targetObject != null)
-            {
-                _targetObject.Destroy_ServerRpc();
-            }
+            _inventoryService.Perform().Forget();
         }
 
         private void OnFovChanged(int value)
         {
-            _camera.Lens.FieldOfView = Mathf.Lerp(value, value * _cameraConfig.FovSprintModifier, _sprintLerp);
+            _cinemachineCamera.Lens.FieldOfView = Mathf.Lerp(value, value * _cameraConfig.FovSprintModifier, _sprintLerp);
         }
 
         private void OnTick(long frame)
@@ -114,6 +98,7 @@ namespace Island.Gameplay.Player
             HandleVerticalVelocity(Time.deltaTime);
             HandleMove(Time.deltaTime);
             HandleCamera();
+            HandleAim();
         }
 
         private void HandleVerticalVelocity(float deltaTime)
@@ -166,42 +151,6 @@ namespace Island.Gameplay.Player
             }
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if (!IsOwner)
-            {
-                return;
-            }
-
-            switch (other.tag)
-            {
-                case CommonConstants.ItemTag:
-                    OnCurrentWorldObjectChanged(other.GetComponent<WorldItemObject>());
-                    break;
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (!IsOwner)
-            {
-                return;
-            }
-
-            switch (other.tag)
-            {
-                case CommonConstants.ItemTag:
-                    if (_targetObject == other.GetComponent<WorldItemObject>())
-                    {
-                        OnCurrentWorldObjectChanged(null);
-                    }
-
-                    break;
-            }
-
-            _hudService.SetInfoTitle(string.Empty);
-        }
-
         private void HandleCamera()
         {
             if (EventSystem.current.IsPointerOverGameObject())
@@ -214,9 +163,31 @@ namespace Island.Gameplay.Player
             NetworkObject.transform.Rotate(Vector3.up * lookInput.x);
             _cameraPitch -= lookInput.y;
             _cameraPitch = Mathf.Clamp(_cameraPitch, _cameraConfig.PitchLimits.x, _cameraConfig.PitchLimits.y);
-            _camera.transform.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
+            _head.transform.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
+            _cinemachineCamera.Lens.FieldOfView = Mathf.Lerp(_settingsService.Fov.Value, _settingsService.Fov.Value * _cameraConfig.FovSprintModifier, _sprintLerp);
+        }
+        
+        private void HandleAim()
+        {
+            _aimRay = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
 
-            _camera.Lens.FieldOfView = Mathf.Lerp(_settingsService.Fov.Value, _settingsService.Fov.Value * _cameraConfig.FovSprintModifier, _sprintLerp);
+            if (Physics.Raycast(_aimRay, out var hit, _aimMaxDistance, _aimMask, QueryTriggerInteraction.Collide))
+            {
+                var worldItem = hit.collider.GetComponent<WorldItemObject>();
+                if (worldItem != null)
+                {
+                    _aimService.SetTarget(worldItem);
+                    return;
+                }
+            }
+            
+            _aimService.SetTarget(null);
+        }
+        
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(_aimRay.origin, _aimRay.origin + _aimRay.direction * _aimMaxDistance);
         }
     }
 }

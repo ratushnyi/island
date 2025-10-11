@@ -52,7 +52,7 @@ namespace Island.Gameplay.Module
 
         private void BindPanels()
         {
-            Container.BindPanel<InventoryPanel>(_inventoryPanel, _canvas);
+            Container.BindPanel(_inventoryPanel, _canvas);
             Container.BindPanel<InputPanel>(_inputPanel, _canvas);
             Container.BindPanel<HUDPanel>(_hudPanel, _canvas);
             Container.BindPanel<PausePanel>(_pausePanel, _canvas);
@@ -65,16 +65,17 @@ namespace Island.Gameplay.Module
             Container.BindService<InventoryService>();
             Container.BindService<StatsService>();
             Container.BindService<EnergyService>();
+            Container.BindService<AimService>();
             Container.BindService<WorldService>();
             Container.BindService<NetworkServiceBridge, NetworkServiceFacade>(_networkServiceFacade);
         }
 
         private void BindConfigs()
         {
-            Container.Bind<InventoryConfig>().FromInstance(_inventoryConfig).AsSingle().NonLazy();
-            Container.Bind<StatsConfig>().FromInstance(_statsConfig).AsSingle().NonLazy();
-            Container.Bind<PlayerConfig>().FromInstance(_playerConfig).AsSingle().NonLazy();
-            Container.Bind<WorldConfig>().FromInstance(_worldConfig).AsSingle().NonLazy();
+            Container.BindConfigs(_inventoryConfig);
+            Container.BindConfigs(_statsConfig);
+            Container.BindConfigs(_playerConfig);
+            Container.BindConfigs(_worldConfig);
         }
     }
 }

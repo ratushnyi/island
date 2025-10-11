@@ -1,10 +1,11 @@
 using Island.Gameplay.Configs.Stats;
+using TendedTarsier.Core.Services.Modules;
 using UnityEngine;
 
 namespace Island.Gameplay.Settings
 {
     [CreateAssetMenu(menuName = "Island/PlayerConfig", fileName = "PlayerConfig")]
-    public class PlayerConfig : ScriptableObject
+    public class PlayerConfig : ConfigBase
     {
         [field: SerializeField] public float JumpForce { get; private set; } = 0.5f;
         [field: SerializeField] public float Gravity { get; private set; } = 1;

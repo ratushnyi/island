@@ -9,7 +9,7 @@ using Zenject;
 
 namespace Island.Menu.Panels.Settings
 {
-    public class SettingsPanel : PanelBase
+    public class SettingsPanel : PopupBase
     {
         [SerializeField] private Button _closeButton;
         [SerializeField] private SettingsSlider _fovSlider;
@@ -27,15 +27,15 @@ namespace Island.Menu.Panels.Settings
             _fovSlider.Init("Field of view", _settingsService.Fov.Value, new Vector2Int(50, 100));
             _cameraSensitivitySlider.Init("Camera Sensitivity", _settingsService.CameraSensitivity.Value, new Vector2Int(1, 200));
             
-            _fovSlider.OnValueChangedObservable.Subscribe(value => _settingsService.Fov.Value = value).AddTo(CompositeDisposable);
-            _cameraSensitivitySlider.OnValueChangedObservable.Subscribe(value => _settingsService.CameraSensitivity.Value = value).AddTo(CompositeDisposable);
+            _fovSlider.OnValueChangedObservable.Subscribe(value => _settingsService.Fov.Value = value).AddTo(this);
+            _cameraSensitivitySlider.OnValueChangedObservable.Subscribe(value => _settingsService.CameraSensitivity.Value = value).AddTo(this);
         }
         
         public override async UniTask ShowAnimation()
         {
             await base.ShowAnimation();
             
-            _closeButton.OnClickAsObservable().Subscribe(t => Hide()).AddTo(CompositeDisposable);
+            _closeButton.OnClickAsObservable().Subscribe(t => Hide()).AddTo(this);
         }
     }
 }

@@ -1,12 +1,9 @@
 using System.Collections.Generic;
 using Island.Common.Services;
-using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Configs.Stats;
 using Island.Gameplay.Panels.Inventory;
-using Island.Gameplay.Profiles.Inventory;
 using TendedTarsier.Core.Panels;
 using TMPro;
-using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -20,37 +17,15 @@ namespace Island.Gameplay.Panels.HUD
         [field: SerializeField] public Transform StatsBarContainer { get; set; }
 
         private NetworkService _networkService;
-        private InventoryProfile _inventoryProfile;
-        private InventoryConfig _inventoryConfig;
         private StatsConfig _statsConfig;
 
         private readonly Dictionary<StatType, StatBarView> _statBarViews = new();
 
         [Inject]
-        private void Construct(
-            NetworkService networkService,
-            InventoryProfile inventoryProfile,
-            InventoryConfig inventoryConfig,
-            StatsConfig statsConfig)
+        private void Construct(NetworkService networkService, StatsConfig statsConfig)
         {
             _networkService = networkService;
             _statsConfig = statsConfig;
-            _inventoryConfig = inventoryConfig;
-            _inventoryProfile = inventoryProfile;
-        }
-
-        protected override void Initialize()
-        {
-            _inventoryProfile.SelectedItem.Subscribe(itemId =>
-            {
-                if (string.IsNullOrEmpty(itemId))
-                {
-                    SelectedItem.SetEmpty();
-                    return;
-                }
-
-                SelectedItem.SetItem(_inventoryConfig[itemId], _inventoryProfile.InventoryItems[itemId]);
-            }).AddTo(CompositeDisposable);
         }
 
         public void OnNetworkInitialize()

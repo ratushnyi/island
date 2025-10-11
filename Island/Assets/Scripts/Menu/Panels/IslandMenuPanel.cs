@@ -1,4 +1,3 @@
-using System;
 using Cysharp.Threading.Tasks;
 using Island.Common.Services;
 using Island.Menu.Panels.Join;
@@ -50,8 +49,8 @@ namespace Island.Menu.Panels
         protected override void SubscribeButtons()
         {
             base.SubscribeButtons();
-            _joinButton.OnClickAsObservable().Subscribe(_ => OnJoinButtonClick().Forget()).AddTo(CompositeDisposable);
-            _settingsButton.OnClickAsObservable().Subscribe(_ => OnSettingsButtonClick()).AddTo(CompositeDisposable);
+            _joinButton.OnClickAsObservable().Subscribe(_ => OnJoinButtonClick().Forget()).AddTo(this);
+            _settingsButton.OnClickAsObservable().Subscribe(_ => OnSettingsButtonClick()).AddTo(this);
         }
         
         protected override async UniTask OnContinueButtonClick()
