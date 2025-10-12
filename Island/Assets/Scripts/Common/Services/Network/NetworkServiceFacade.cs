@@ -1,7 +1,11 @@
+using System.Linq;
+using Island.Common.Services.Network;
+using Island.Gameplay.Configs.World;
 using UniRx;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using Zenject;
 
 namespace Island.Common.Services
 {
@@ -12,6 +16,13 @@ namespace Island.Common.Services
 
         public readonly ReactiveProperty<string> ServerId = new();
         private readonly NetworkVariable<FixedString32Bytes> _serverId = new();
+        private WorldConfig _worldConfig;
+
+        [Inject]
+        private void Construct(WorldConfig worldConfig)
+        {
+            _worldConfig = worldConfig;
+        }
 
         public override void OnNetworkSpawn()
         {
@@ -59,6 +70,13 @@ namespace Island.Common.Services
         private void OnServerIdChanged(FixedString32Bytes _, FixedString32Bytes newValue)
         {
             ServerId.Value = newValue.Value;
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void Spawn_ServerRpc(NetworkSpawnRequest request)
+        {
+            var worldObject = Instantiate(_worldConfig.WorldItemObjects[request.Type], request.Position, request.Rotation);
+            worldObject.NetworkObject.Spawn();
         }
     }
 }

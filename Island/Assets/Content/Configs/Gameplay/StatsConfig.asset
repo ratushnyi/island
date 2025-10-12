@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <StatBarView>k__BackingField: {fileID: 938961447773219070, guid: 0e7724fc4e3e8479f9d48c1e87873c25, type: 3}
   <StatsList>k__BackingField:
-  - <StatType>k__BackingField: 1
+  - <StatType>k__BackingField: 2
     <Sprite>k__BackingField: {fileID: 21300000, guid: 427cfa16a8bc9423ebdbd00b3a8777ff, type: 3}
     <StatBar>k__BackingField: 1
     _levels:
@@ -33,7 +33,7 @@ MonoBehaviour:
       <DefaultValue>k__BackingField: 120
       <RecoveryRate>k__BackingField: 5
       <RecoveryValue>k__BackingField: 1
-  - <StatType>k__BackingField: 0
+  - <StatType>k__BackingField: 1
     <Sprite>k__BackingField: {fileID: 21300000, guid: d12298e6fed6b4ff892d6b9877a0e15c, type: 3}
     <StatBar>k__BackingField: 1
     _levels:
@@ -52,7 +52,7 @@ MonoBehaviour:
       <DefaultValue>k__BackingField: 120
       <RecoveryRate>k__BackingField: 1
       <RecoveryValue>k__BackingField: 3
-  - <StatType>k__BackingField: 2
+  - <StatType>k__BackingField: 3
     <Sprite>k__BackingField: {fileID: 21300000, guid: 5b94d485335dc4707968d788f8765c74, type: 3}
     <StatBar>k__BackingField: 1
     _levels:
@@ -72,7 +72,7 @@ MonoBehaviour:
       <RecoveryRate>k__BackingField: 7
       <RecoveryValue>k__BackingField: -1
   <StatsFeeConditionalList>k__BackingField:
-  - <Type>k__BackingField: 2
+  - <Type>k__BackingField: 3
     <Condition>k__BackingField: 0
     <FeeModel>k__BackingField:
       <Type>k__BackingField: 1

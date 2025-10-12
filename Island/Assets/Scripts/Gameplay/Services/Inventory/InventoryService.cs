@@ -1,9 +1,10 @@
 using System;
-using System.Linq;
 using Cysharp.Threading.Tasks;
 using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Panels.HUD;
 using Island.Gameplay.Profiles.Inventory;
+using Island.Gameplay.Services.Inventory.Items;
+using Island.Gameplay.Services.World.Items;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services;
@@ -39,15 +40,15 @@ namespace Island.Gameplay.Services.Inventory
 
         private void SubscribeOnItemSelected()
         {
-            _inventoryProfile.SelectedItem.Subscribe(itemId =>
+            _inventoryProfile.SelectedItem.Subscribe(type =>
             {
-                if (string.IsNullOrEmpty(itemId))
+                if (type == InventoryItemType.None)
                 {
                     _hudPanel.Instance.SelectedItem.SetEmpty();
                     return;
                 }
 
-                _hudPanel.Instance.SelectedItem.SetItem(_inventoryConfig[itemId], _inventoryProfile.InventoryItems[itemId]);
+                _hudPanel.Instance.SelectedItem.SetItem(_inventoryConfig[type], _inventoryProfile.InventoryItems[type]);
             }).AddTo(CompositeDisposable);
         }
 
@@ -65,25 +66,25 @@ namespace Island.Gameplay.Services.Inventory
 
             _inventoryProfile.InventoryItems.ObserveAdd().Subscribe(t => subscribe(t.Key, t.Value)).AddTo(CompositeDisposable);
 
-            void subscribe(string id, ReactiveProperty<int> value)
+            void subscribe(InventoryItemType type, ReactiveProperty<int> value)
             {
-                var disposable = value.SkipLatestValueOnSubscribe().Subscribe(count => onCountChanged(count, id))
+                var disposable = value.SkipLatestValueOnSubscribe().Subscribe(count => onCountChanged(count, type))
                     .AddTo(CompositeDisposable);
 
                 _inventoryProfile.InventoryItems.ObserveRemove()
-                    .Where(t => t.Key == id)
+                    .Where(t => t.Key == type)
                     .First()
                     .Subscribe(_ => onItemRemoved(disposable));
             }
 
-            void onCountChanged(int count, string id)
+            void onCountChanged(int count, InventoryItemType type)
             {
                 if (count == 0)
                 {
-                    _inventoryProfile.InventoryItems.Remove(id);
-                    if (_inventoryProfile.SelectedItem.Value == id)
+                    _inventoryProfile.InventoryItems.Remove(type);
+                    if (_inventoryProfile.SelectedItem.Value == type)
                     {
-                        _inventoryProfile.SelectedItem.Value = null;
+                        _inventoryProfile.SelectedItem.Value = default;
                     }
                 }
 
@@ -96,20 +97,19 @@ namespace Island.Gameplay.Services.Inventory
             }
         }
 
-        private void Drop(string itemId)
+        private void Drop(InventoryItemType type)
         {
-            if (string.IsNullOrEmpty(itemId))
-            {
-                return;
-            }
-
-            _inventoryProfile.InventoryItems[itemId].Value--;
+            _inventoryProfile.InventoryItems[type].Value--;
         }
 
-        public bool TryPut(string id, int count, Func<UniTask> beforeItemAdd = null)
+        public bool TryPut(InventoryItemType type, int count, Func<UniTask> beforeItemAdd = null)
         {
-            var existItem = _inventoryProfile.InventoryItems.FirstOrDefault(t => t.Key == id);
-            if (existItem.Key != null)
+            if (type == InventoryItemType.None)
+            {
+                return false;
+            }
+            
+            if (_inventoryProfile.InventoryItems.TryGetValue(type, out var existItem))
             {
                 addExistItem().Forget();
                 return true;
@@ -129,7 +129,7 @@ namespace Island.Gameplay.Services.Inventory
                 {
                     await beforeItemAdd.Invoke();
                 }
-                existItem.Value.Value += count;
+                existItem.Value += count;
             }
 
             async UniTask addNewItem()
@@ -138,29 +138,29 @@ namespace Island.Gameplay.Services.Inventory
                 {
                     await beforeItemAdd.Invoke();
                 }
-                existItem = _inventoryProfile.InventoryItems.FirstOrDefault(t => t.Key == id);
-                if (existItem.Key != null)
+                
+                if (_inventoryProfile.InventoryItems.TryGetValue(type, out existItem))
                 {
-                    existItem.Value.Value += count;
+                    existItem.Value += count;
                 }
                 else
                 {
                     var property = new ReactiveProperty<int>(count);
-                    _inventoryProfile.InventoryItems.Add(id, property);
+                    _inventoryProfile.InventoryItems.Add(type, property);
                 }
             }
         }
 
         public bool TryPut(WorldItemObject worldItem)
         {
-            return TryPut(worldItem.ItemEntity.Id, worldItem.ItemEntity.Count, () => UniTask.CompletedTask);
+            return TryPut(worldItem.ItemEntity.Type, worldItem.ItemEntity.Count, () => UniTask.CompletedTask);
         }
 
         public async UniTask<bool> Perform()
         {
             var result = false;
             var item = _inventoryProfile.SelectedItem.Value;
-            if (!string.IsNullOrEmpty(item))
+            if (item != InventoryItemType.None)
             {
                 var itemModel = _inventoryConfig[item];
                 result = await itemModel.Perform();

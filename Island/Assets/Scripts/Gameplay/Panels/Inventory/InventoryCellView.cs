@@ -10,7 +10,7 @@ namespace Island.Gameplay.Panels.Inventory
     public class InventoryCellView : MonoBehaviour
     {
         private readonly CompositeDisposable _compositeDisposable = new();
-        private readonly ISubject<string> _onButtonClicked = new Subject<string>();
+        private readonly ISubject<InventoryItemType> _onButtonClicked = new Subject<InventoryItemType>();
 
         [SerializeField]
         private Image _image;
@@ -21,11 +21,11 @@ namespace Island.Gameplay.Panels.Inventory
 
         private ItemModel _model;
 
-        public IObservable<string> OnButtonClicked => _onButtonClicked;
+        public IObservable<InventoryItemType> OnButtonClicked => _onButtonClicked;
 
         private void Start()
         {
-            _button.OnClickAsObservable().Subscribe(_ => _onButtonClicked.OnNext(_model?.Id)).AddTo(_compositeDisposable);
+            _button.OnClickAsObservable().Subscribe(_ => _onButtonClicked.OnNext(_model?.Type ?? InventoryItemType.None)).AddTo(_compositeDisposable);
         }
 
         public void SetItem(ItemModel model, ReactiveProperty<int> count)

@@ -4,6 +4,7 @@ using Island.Gameplay.Services;
 using Island.Gameplay.Services.HUD;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.World;
+using Island.Gameplay.Services.World.Items;
 using Island.Gameplay.Settings;
 using TendedTarsier.Core.Services.Input;
 using UniRx;
@@ -44,10 +45,9 @@ namespace Island.Gameplay.Player
         private bool IsRunning => IsMoving && (_inputService.PlayerActions.Sprint.IsPressed() || SprintButtonToggleState);
         private bool SprintButtonToggleState
         {
-            get => (Application.isMobilePlatform || Application.isConsolePlatform || Application.isEditor) && _sprintButtonToggleState;
+            get => (Application.isMobilePlatform || Application.isConsolePlatform) && _sprintButtonToggleState;
             set => _sprintButtonToggleState = value;
         }
-
 
         [Inject]
         private void Construct(InputService inputService, WorldService worldService, EnergyService energyService, AimService aimService, SettingsService settingsService, InventoryService inventoryService, PlayerConfig playerConfig, CameraConfig cameraConfig)
@@ -173,7 +173,7 @@ namespace Island.Gameplay.Player
 
             if (Physics.Raycast(_aimRay, out var hit, _aimMaxDistance, _aimMask, QueryTriggerInteraction.Collide))
             {
-                var worldItem = hit.collider.GetComponent<WorldItemObject>();
+                var worldItem = hit.collider.GetComponentInParent<WorldItemObject>();
                 if (worldItem != null)
                 {
                     _aimService.SetTarget(worldItem);

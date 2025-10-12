@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Island.Gameplay.Panels.Inventory;
+using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Inventory.Items;
-using Island.Gameplay.Services.Inventory.Tools;
 using TendedTarsier.Core.Services.Modules;
 using UnityEngine;
 
@@ -12,7 +12,7 @@ namespace Island.Gameplay.Configs.Inventory
     [CreateAssetMenu(menuName = "Island/InventoryConfig", fileName = "InventoryConfig")]
     public class InventoryConfig : ConfigBase
     {
-        public ItemModel this[string id] => InventoryItems.FirstOrDefault(t => t.Id == id);
+        public ItemModel this[InventoryItemType id] => InventoryItems.FirstOrDefault(t => t.Type == id);
 
         [field: SerializeField]
         public InventoryCellView InventoryCellView { get; set; }
@@ -28,7 +28,7 @@ namespace Island.Gameplay.Configs.Inventory
 
         public override IEnumerable InjectItems()
         {
-            return InventoryItems.Select(t => t.Tool);
+            return InventoryItems.Select(t => t.ItemEntity);
         }
     }
 }

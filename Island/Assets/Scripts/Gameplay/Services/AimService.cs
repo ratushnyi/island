@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
-using Island.Gameplay.Services.Inventory;
+using Island.Gameplay.Services.World.Items;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Services;
 using UniRx;

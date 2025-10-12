@@ -7,6 +7,7 @@
     "com.neuecc.unirx": "7.1.0",
     "com.svermeulen.extenject": "9.1.0",
     "com.tendedtarsier.core": "file:../../core/Core/Assets",
+    "com.unity.2d.sprite": "1.0.0",
     "com.unity.ai.navigation": "2.0.9",
     "com.unity.cinemachine": "3.1.4",
     "com.unity.collab-proxy": "2.9.3",

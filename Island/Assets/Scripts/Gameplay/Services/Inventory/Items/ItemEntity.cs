@@ -9,14 +9,14 @@ namespace Island.Gameplay.Services.Inventory.Items
     public partial class ItemEntity : IEquatable<ItemEntity>, INetworkSerializable
     {
         [SerializeField]
-        private string _id;
+        private InventoryItemType _type;
         [SerializeField]
         private int _count = 1;
 
-         public string Id
+         public InventoryItemType Type
         {
-            get => _id;
-            set => _id = value;
+            get => _type;
+            set => _type = value;
         }
 
          public int Count
@@ -29,7 +29,7 @@ namespace Island.Gameplay.Services.Inventory.Items
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
-            return Id == other.Id && Count == other.Count;
+            return Type == other.Type && Count == other.Count;
         }
 
         public override bool Equals(object obj)
@@ -45,12 +45,12 @@ namespace Island.Gameplay.Services.Inventory.Items
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id, Count);
+            return HashCode.Combine(Type, Count);
         }
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
-            serializer.SerializeValue(ref _id);
+            serializer.SerializeValue(ref _type);
             serializer.SerializeValue(ref _count);
         }
     }

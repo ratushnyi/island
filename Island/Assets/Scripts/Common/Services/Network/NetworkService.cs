@@ -1,9 +1,10 @@
 using System;
 using Cysharp.Threading.Tasks;
+using Island.Common.Services.Network;
+using Island.Gameplay.Services.Inventory;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Modules.Project;
 using TendedTarsier.Core.Services;
-using TendedTarsier.Core.Services.Profile;
 using UniRx;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -29,8 +30,9 @@ namespace Island.Common.Services
         public bool IsHost => NetworkManager.Singleton.IsHost;
         public IObservable<Unit> OnServerStopped => Observable.FromEvent(t => NetworkManager.Singleton.OnPreShutdown += t, t => NetworkManager.Singleton.OnPreShutdown -= t);
         public IReadOnlyReactiveProperty<bool> IsServerPaused => _networkServiceFacade.IsPaused;
-        public void SetPaused(bool value) => _networkServiceFacade.SetPaused(value);
         public string ServerId => _networkServiceFacade.ServerId.Value;
+        public void SetPaused(bool value) => _networkServiceFacade.SetPaused(value);
+        public void Spawn(NetworkSpawnRequest request) => _networkServiceFacade.Spawn_ServerRpc(request);
 
         [Inject]
         private void Construct(NetworkConfig config, ProjectProfile projectProfile)

@@ -15,22 +15,50 @@ MonoBehaviour:
   <InventoryCellView>k__BackingField: {fileID: 8281480634303324935, guid: 834a674fb393a4c4da566030af850898, type: 3}
   <InventoryCapacity>k__BackingField: 9
   <DefaultItems>k__BackingField:
-  - _id: Hammer
+  - _type: 9
     _count: 1
+  - _type: 7
+    _count: 1
+  - _type: 4
+    _count: 5
+  - _type: 5
+    _count: 5
+  - _type: 6
+    _count: 5
   <InventoryItems>k__BackingField:
-  - <Id>k__BackingField: Potion
-    <Sprite>k__BackingField: {fileID: 21300000, guid: 427cfa16a8bc9423ebdbd00b3a8777ff, type: 3}
-    <Tool>k__BackingField: {fileID: 11400000, guid: 20a712c97988b46a0b34057de4d4d76b, type: 2}
+  - <Type>k__BackingField: 1
+    <Sprite>k__BackingField: {fileID: 496181029, guid: b9e9a361e264741f69b99d030d67b01a, type: 3}
+    <ItemEntity>k__BackingField: {fileID: 11400000, guid: d58e0234d27a44f258198fea9635e064, type: 2}
     <IsCountable>k__BackingField: 1
-  - <Id>k__BackingField: Soda
-    <Sprite>k__BackingField: {fileID: 21300000, guid: d12298e6fed6b4ff892d6b9877a0e15c, type: 3}
-    <Tool>k__BackingField: {fileID: 11400000, guid: 21af956a8b0ab41e290de6646dd33610, type: 2}
+  - <Type>k__BackingField: 2
+    <Sprite>k__BackingField: {fileID: 1762530636, guid: b9e9a361e264741f69b99d030d67b01a, type: 3}
+    <ItemEntity>k__BackingField: {fileID: 11400000, guid: 3e98270b81bd94bd0910a43a73b7afcf, type: 2}
     <IsCountable>k__BackingField: 1
-  - <Id>k__BackingField: Steak
-    <Sprite>k__BackingField: {fileID: 21300000, guid: 5b94d485335dc4707968d788f8765c74, type: 3}
-    <Tool>k__BackingField: {fileID: 11400000, guid: 0db8027521f0b4358ac620337d7b6755, type: 2}
+  - <Type>k__BackingField: 3
+    <Sprite>k__BackingField: {fileID: 1233307717, guid: b9e9a361e264741f69b99d030d67b01a, type: 3}
+    <ItemEntity>k__BackingField: {fileID: 11400000, guid: d740599a60040494695ead4a9181c82e, type: 2}
     <IsCountable>k__BackingField: 1
-  - <Id>k__BackingField: Hammer
-    <Sprite>k__BackingField: {fileID: 21300000, guid: 691b348ea57f84061b26502c5ddd59d7, type: 3}
-    <Tool>k__BackingField: {fileID: 11400000, guid: 325d24a870317428db5b4b61321045b5, type: 2}
+  - <Type>k__BackingField: 4
+    <Sprite>k__BackingField: {fileID: 613986955, guid: b9e9a361e264741f69b99d030d67b01a, type: 3}
+    <ItemEntity>k__BackingField: {fileID: 11400000, guid: 0db8027521f0b4358ac620337d7b6755, type: 2}
+    <IsCountable>k__BackingField: 1
+  - <Type>k__BackingField: 5
+    <Sprite>k__BackingField: {fileID: -1541032623, guid: b9e9a361e264741f69b99d030d67b01a, type: 3}
+    <ItemEntity>k__BackingField: {fileID: 11400000, guid: 20a712c97988b46a0b34057de4d4d76b, type: 2}
+    <IsCountable>k__BackingField: 1
+  - <Type>k__BackingField: 6
+    <Sprite>k__BackingField: {fileID: 1692871483, guid: b9e9a361e264741f69b99d030d67b01a, type: 3}
+    <ItemEntity>k__BackingField: {fileID: 11400000, guid: 21af956a8b0ab41e290de6646dd33610, type: 2}
+    <IsCountable>k__BackingField: 1
+  - <Type>k__BackingField: 7
+    <Sprite>k__BackingField: {fileID: -686785700, guid: b9e9a361e264741f69b99d030d67b01a, type: 3}
+    <ItemEntity>k__BackingField: {fileID: 11400000, guid: 325d24a870317428db5b4b61321045b5, type: 2}
+    <IsCountable>k__BackingField: 0
+  - <Type>k__BackingField: 8
+    <Sprite>k__BackingField: {fileID: -1233069525, guid: b9e9a361e264741f69b99d030d67b01a, type: 3}
+    <ItemEntity>k__BackingField: {fileID: 11400000, guid: 03a1fa907dc2b4eb39033b3081374d56, type: 2}
+    <IsCountable>k__BackingField: 0
+  - <Type>k__BackingField: 9
+    <Sprite>k__BackingField: {fileID: 1301538669, guid: b9e9a361e264741f69b99d030d67b01a, type: 3}
+    <ItemEntity>k__BackingField: {fileID: 11400000, guid: 5c157fb6cd50642c284870cda87bc190, type: 2}
     <IsCountable>k__BackingField: 0

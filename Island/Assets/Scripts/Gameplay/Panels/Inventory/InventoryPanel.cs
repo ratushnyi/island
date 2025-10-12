@@ -1,6 +1,7 @@
 using System.Linq;
 using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Profiles.Inventory;
+using Island.Gameplay.Services.Inventory.Items;
 using TendedTarsier.Core.Panels;
 using UniRx;
 using UnityEngine;
@@ -44,14 +45,14 @@ namespace Island.Gameplay.Panels.Inventory
                 }
             }
 
-            void onCellClicked(string id)
+            void onCellClicked(InventoryItemType type)
             {
-                _inventoryProfile.SelectedItem.Value = id;
+                _inventoryProfile.SelectedItem.Value = type;
                 _inventoryProfile.Save();
             }
         }
 
-        private void Put(DictionaryAddEvent<string, ReactiveProperty<int>> item)
+        private void Put(DictionaryAddEvent<InventoryItemType, ReactiveProperty<int>> item)
         {
             var cell = _cellsList.FirstOrDefault(t => t.IsEmpty());
             if (cell != null)
@@ -60,9 +61,9 @@ namespace Island.Gameplay.Panels.Inventory
             }
         }
 
-        private void SetItem(InventoryCellView cell, string id, ReactiveProperty<int> value)
+        private void SetItem(InventoryCellView cell, InventoryItemType type, ReactiveProperty<int> value)
         {
-            cell.SetItem(_inventoryConfig[id], value);
+            cell.SetItem(_inventoryConfig[type], value);
         }
     }
 }

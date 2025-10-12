@@ -174,6 +174,11 @@ namespace Island.Gameplay.Services.Stats
 
         public bool TryApplyValue(StatType statType, int value, bool onlyFull = false)
         {
+            if (statType == StatType.None)
+            {
+                return false;
+            }
+            
             if (value == 0)
             {
                 return true;

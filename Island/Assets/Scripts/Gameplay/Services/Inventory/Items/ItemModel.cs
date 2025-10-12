@@ -1,6 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 using Island.Gameplay.Services.Inventory.Tools;
+using Island.Gameplay.Services.World;
 using UnityEngine;
 
 namespace Island.Gameplay.Services.Inventory.Items
@@ -9,25 +10,25 @@ namespace Island.Gameplay.Services.Inventory.Items
     public class ItemModel : IPerformable
     {
         [field: SerializeField]
-        public string Id { get; set; }
+        public InventoryItemType Type { get; set; }
 
         [field: SerializeField]
         public Sprite Sprite { get; set; }
 
         [field: SerializeField]
-        public ToolBase Tool { get; set; }
+        public ItemEntityBase ItemEntity { get; set; }
 
         [field: SerializeField]
         public bool IsCountable { get; set; }
 
         public UniTask<bool> Perform()
         {
-            if (Tool == null)
+            if (ItemEntity == null)
             {
                 return UniTask.FromResult(false);
             }
 
-            return Tool.Perform();
+            return ItemEntity.Perform();
         }
     }
 }

@@ -1,6 +1,8 @@
 using Island.Gameplay.Configs.Inventory;
+using Island.Gameplay.Services.Inventory.Items;
 using JetBrains.Annotations;
 using MemoryPack;
+using TendedTarsier.Core.Utilities.MemoryPack.FormatterProviders;
 using UniRx;
 using Zenject;
 
@@ -12,10 +14,10 @@ namespace Island.Gameplay.Profiles.Inventory
         protected override string NetworkName => "Inventory";
 
         [MemoryPackOrder(0)] 
-        public ReactiveDictionary<string, ReactiveProperty<int>> InventoryItems { get; [UsedImplicitly] set; } = new();
+        public ReactiveDictionary<InventoryItemType, ReactiveProperty<int>> InventoryItems { get; [UsedImplicitly] set; } = new();
 
         [MemoryPackOrder(1), MemoryPackAllowSerialize]
-        public ReactiveProperty<string> SelectedItem { get; [UsedImplicitly] set; } = new(string.Empty);
+        public ReactiveProperty<InventoryItemType> SelectedItem { get; [UsedImplicitly] set; } = new(default);
 
         private InventoryConfig _config;
 
@@ -29,8 +31,15 @@ namespace Island.Gameplay.Profiles.Inventory
         {
             foreach (var item in _config.DefaultItems)
             {
-                InventoryItems.Add(item.Id, new ReactiveProperty<int>(item.Count));
+                InventoryItems.Add(item.Type, new ReactiveProperty<int>(item.Count));
             }
+        }
+
+        public override void RegisterFormatters()
+        {
+            base.RegisterFormatters();
+            MemoryPackFormatterProvider.Register(new ReactivePropertyFormatter<InventoryItemType>());
+            MemoryPackFormatterProvider.Register(new ReactiveDictionaryFormatter<InventoryItemType, ReactiveProperty<int>>());
         }
     }
 }

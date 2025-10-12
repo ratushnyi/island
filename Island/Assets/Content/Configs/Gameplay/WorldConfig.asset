@@ -12,3 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 443b1f9c259b43458f20949418afd63c, type: 3}
   m_Name: WorldConfig
   m_EditorClassIdentifier: 
+  WorldItemObjects:
+    _serializedList:
+    - Key: 0
+      Value: {fileID: 1006663758721412829, guid: 1cbe65746ac174fffb4db765e3187b3e, type: 3}
+    - Key: 1
+      Value: {fileID: 5426607065071548453, guid: 7105f1b9afca0412582257be60806ef2, type: 3}
+  WorldItemPlacement:
+  - {fileID: 4718210574724725708, guid: 64acf03529a584db5b678f3b6e537da5, type: 3}
+  - {fileID: 141666129798836062, guid: 84dc4affc18c348cf858db66dda5da0f, type: 3}
+  - {fileID: 7247157063468376024, guid: da65f5b5717694818807b0a7adaf71c8, type: 3}
+  - {fileID: 8432021536860850836, guid: efc57cd34506b418d8a037c8c3be4530, type: 3}
+  - {fileID: 4393028095566774569, guid: 7f2c5a3790db44cb9bd22a1b7b6df75d, type: 3}
+  - {fileID: 3599876914549505008, guid: ff4f07662c1a6496a861f5d11aff879a, type: 3}
+  - {fileID: 7721041795930894696, guid: dfd1c45d0a8564c7e80c8ad08bc43788, type: 3}
+  - {fileID: 3250365199486458217, guid: 2432803f019354442b0377e6ec540b0a, type: 3}
+  - {fileID: 729751506921667227, guid: 54968f7c9ed394e97972f51d204532eb, type: 3}
+  - {fileID: 4017439743857932611, guid: 8bc8eda3c6b604d1f95485b07024f06b, type: 3}
+  - {fileID: 7666544000853172929, guid: 44d4a2a8dfb604914ae813929b3798ae, type: 3}
+  - {fileID: 482096606140213645, guid: ee77705e7cfd748ff833566d254aef21, type: 3}
+  - {fileID: 672476266702019214, guid: 4193d90f5de2a48babb3d43518a61ebb, type: 3}
+  - {fileID: 2224093767396255116, guid: bc78bd97d469144a18197be278cbc2d9, type: 3}
+  - {fileID: 5509665038479444206, guid: 29079fa4c5f1c4c26a78bd6570bfe03a, type: 3}
+  - {fileID: 5528481278228359511, guid: d6eee941795bc449d803ecbe60c36e41, type: 3}
+  - {fileID: 642735164197094349, guid: 95b65b7c062094eb9aad6f85e92e8675, type: 3}
+  - {fileID: 4662311333804440412, guid: 55a3c16bd54b046f09be1017b04b3d00, type: 3}
+  - {fileID: 4403869413399942851, guid: 1d1e5ac2ae2244e988157325ce0222be, type: 3}
+  - {fileID: 8463209490762480631, guid: 3606c2e55b7e0453faa4e734de69e1db, type: 3}
