@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 3841131713821638450}
   - component: {fileID: 5800456957944475585}
   - component: {fileID: 5131322837647147988}
+  - component: {fileID: 4578419179411867861}
   m_Layer: 5
-  m_Name: InventoryPanel
+  m_Name: InventoryPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,11 +35,11 @@ RectTransform:
   - {fileID: 19178132312916439}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -70, y: -100}
-  m_SizeDelta: {x: 1610, y: 170}
-  m_Pivot: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3841131713821638450
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -60,7 +61,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.39215687}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.5882353}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -89,8 +90,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e916fa53e5a6407d99ffa400f7ffeab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShowInstantly: 0
+  _showInstantly: 0
+  <PlayAnimation>k__BackingField: 1
+  <AnimationDuration>k__BackingField: 0.2
+  <AnimationEase>k__BackingField: 4
   _gridContainer: {fileID: 19178132312916439}
+--- !u!225 &4578419179411867861
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2420723046179530770}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4575089972057643807
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,10 +138,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4885103536995600111}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -20, y: -20}
+  m_SizeDelta: {x: 1590, y: 630}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3727376249521374200
 MonoBehaviour:

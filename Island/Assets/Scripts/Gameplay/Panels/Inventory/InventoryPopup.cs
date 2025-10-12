@@ -9,7 +9,7 @@ using Zenject;
 
 namespace Island.Gameplay.Panels.Inventory
 {
-    public class InventoryPanel : PopupBase
+    public class InventoryPopup : PopupBase
     {
         [SerializeField]
         private Transform _gridContainer;

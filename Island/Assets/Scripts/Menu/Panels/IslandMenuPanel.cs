@@ -18,8 +18,8 @@ namespace Island.Menu.Panels
     {
         [SerializeField] private Button _joinButton;
         [SerializeField] private Button _settingsButton;
-        private PanelLoader<SettingsPanel> _settingsPanel;
-        private PanelLoader<JoinPanel> _joinPanel;
+        private PanelLoader<SettingsPopup> _settingsPanel;
+        private PanelLoader<JoinPopup> _joinPanel;
         private ModuleService _moduleService;
         private NetworkService _networkService;
         private ProfileService _profileService;
@@ -27,7 +27,7 @@ namespace Island.Menu.Panels
         private ProjectConfig _projectConfig;
 
         [Inject]
-        private void Construct(PanelLoader<SettingsPanel> settingsPanel, PanelLoader<JoinPanel> joinPanel, NetworkService networkService, ModuleService moduleService, ProfileService profileService, ProjectProfile projectProfile, ProjectConfig projectConfig)
+        private void Construct(PanelLoader<SettingsPopup> settingsPanel, PanelLoader<JoinPopup> joinPanel, NetworkService networkService, ModuleService moduleService, ProfileService profileService, ProjectProfile projectProfile, ProjectConfig projectConfig)
         {
             _settingsPanel = settingsPanel;
             _joinPanel = joinPanel;

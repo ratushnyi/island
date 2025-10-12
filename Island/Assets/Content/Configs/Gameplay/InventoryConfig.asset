@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: InventoryConfig
   m_EditorClassIdentifier: 
   <InventoryCellView>k__BackingField: {fileID: 8281480634303324935, guid: 834a674fb393a4c4da566030af850898, type: 3}
-  <InventoryCapacity>k__BackingField: 9
+  <InventoryCapacity>k__BackingField: 40
   <DefaultItems>k__BackingField:
   - _type: 9
     _count: 1

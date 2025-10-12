@@ -9,7 +9,7 @@ using Zenject;
 
 namespace Island.Menu.Panels.Settings
 {
-    public class SettingsPanel : PopupBase
+    public class SettingsPopup : PopupBase
     {
         [SerializeField] private Button _closeButton;
         [SerializeField] private SettingsSlider _fovSlider;

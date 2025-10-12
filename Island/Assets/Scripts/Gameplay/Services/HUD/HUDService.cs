@@ -26,8 +26,8 @@ namespace Island.Gameplay.Services.HUD
         private NetworkService _networkService;
         private AimService _aimService;
         private PanelLoader<HUDPanel> _hudPanel;
-        private PanelLoader<PausePanel> _pausePanel;
-        private PanelLoader<InventoryPanel> _inventoryPanel;
+        private PanelLoader<PausePopup> _pausePanel;
+        private PanelLoader<InventoryPopup> _inventoryPanel;
         private IslandGameplayModuleController _islandGameplayModuleController;
 
         [Inject]
@@ -38,8 +38,8 @@ namespace Island.Gameplay.Services.HUD
             NetworkService networkService,
             AimService aimService,
             PanelLoader<HUDPanel> hudPanel,
-            PanelLoader<PausePanel> pausePanel,
-            PanelLoader<InventoryPanel> inventoryPanel,
+            PanelLoader<PausePopup> pausePanel,
+            PanelLoader<InventoryPopup> inventoryPanel,
             IslandGameplayModuleController islandGameplayModuleController)
         {
             _islandGameplayModuleController = islandGameplayModuleController;

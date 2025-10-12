@@ -8,8 +8,8 @@ namespace Island.Menu.Module
 {
     public class IslandMenuInstaller : MonoInstaller
     {
-        [SerializeField] private JoinPanel _joinPanel;
-        [SerializeField] private SettingsPanel _settingsPanel;
+        [SerializeField] private JoinPopup _joinPopup;
+        [SerializeField] private SettingsPopup _settingsPopup;
         [SerializeField] private Canvas _canvas;
 
         public override void InstallBindings()
@@ -19,8 +19,8 @@ namespace Island.Menu.Module
 
         private void BindPanels()
         {
-            Container.BindPanel(_joinPanel, _canvas);
-            Container.BindPanel(_settingsPanel, _canvas);
+            Container.BindPanel(_joinPopup, _canvas);
+            Container.BindPanel(_settingsPopup, _canvas);
         }
     }
 }

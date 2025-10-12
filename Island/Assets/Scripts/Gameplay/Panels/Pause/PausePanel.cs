@@ -10,17 +10,17 @@ using Zenject;
 
 namespace Island.Gameplay.Panels.Pause
 {
-    public class PausePanel : ResultPanelBase<bool>
+    public class PausePopup : ResultPopupBase<bool>
     {
         [SerializeField] private TMP_Text _joinCode;
         [SerializeField] private Button _closeButton;
         [SerializeField] private Button _settingsButton;
         [SerializeField] private Button _exitButton;
-        private PanelLoader<SettingsPanel> _settingsPanel;
+        private PanelLoader<SettingsPopup> _settingsPanel;
         private NetworkService _networkService;
 
         [Inject]
-        private void Construct(PanelLoader<SettingsPanel> settingsPanel, NetworkService networkService)
+        private void Construct(PanelLoader<SettingsPopup> settingsPanel, NetworkService networkService)
         {
             _settingsPanel = settingsPanel;
             _networkService = networkService;

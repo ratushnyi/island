@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Island.Menu.Panels.Join
 {
-    public class JoinPanel : ResultPanelBase<string>
+    public class JoinPopup : ResultPopupBase<string>
     {
         [SerializeField] private Button _closeButton;
         [SerializeField] private Button _buttonAccept;

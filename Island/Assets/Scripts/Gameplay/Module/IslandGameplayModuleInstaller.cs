@@ -28,11 +28,11 @@ namespace Island.Gameplay.Module
         [SerializeField] private PlayerConfig _playerConfig;
         [SerializeField] private StatsConfig _statsConfig;
         [SerializeField] private InventoryConfig _inventoryConfig;
-        [SerializeField] private InventoryPanel _inventoryPanel;
+        [SerializeField] private InventoryPopup _inventoryPopup;
         [SerializeField] private InputPanel _inputPanel;
         [SerializeField] private HUDPanel _hudPanel;
-        [SerializeField] private PausePanel _pausePanel;
-        [SerializeField] private SettingsPanel _settingsPanel;
+        [SerializeField] private PausePopup _pausePopup;
+        [SerializeField] private SettingsPopup _settingsPopup;
         [SerializeField] private Canvas _canvas;
 
         protected override void InstallModuleBindings()
@@ -52,11 +52,11 @@ namespace Island.Gameplay.Module
 
         private void BindPanels()
         {
-            Container.BindPanel(_inventoryPanel, _canvas);
+            Container.BindPanel(_inventoryPopup, _canvas);
             Container.BindPanel<InputPanel>(_inputPanel, _canvas);
             Container.BindPanel<HUDPanel>(_hudPanel, _canvas);
-            Container.BindPanel<PausePanel>(_pausePanel, _canvas);
-            Container.BindPanel<SettingsPanel>(_settingsPanel, _canvas);
+            Container.BindPanel<PausePopup>(_pausePopup, _canvas);
+            Container.BindPanel<SettingsPopup>(_settingsPopup, _canvas);
         }
 
         private void BindServices()

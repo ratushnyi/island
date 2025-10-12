@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1593854998236308551}
   - component: {fileID: 6491630989853268623}
   m_Layer: 0
-  m_Name: JoinPanel
+  m_Name: JoinPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
