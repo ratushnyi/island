@@ -2,6 +2,7 @@ using Island.Gameplay.Services.Stats;
 using Island.Gameplay.Settings;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Services;
+using UniRx;
 using Zenject;
 
 namespace Island.Gameplay.Services
@@ -13,6 +14,7 @@ namespace Island.Gameplay.Services
         private StatsService _statsService;
 
         private float _sprintDeposit;
+        public readonly ReactiveProperty<bool> IsSprintPerformed = new();
 
         [Inject]
         private void Construct(PlayerConfig playerConfig, StatsService statsService)

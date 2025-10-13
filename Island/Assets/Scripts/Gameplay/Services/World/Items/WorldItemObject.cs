@@ -43,9 +43,9 @@ namespace Island.Gameplay.Services.World.Items
         {
             if (_tools.TryGetValue(toolType, out var damage))
             {
-                _health.Value -= damage;
-                OnHealthChanged_ServerRpc();
-                if (_health.Value == 0)
+                var newHealth = _health.Value - damage;
+                OnHealthChanged_ServerRpc(newHealth);
+                if (newHealth == 0)
                 {
                     Despawn_ServerRpc();
                     return true;
@@ -56,8 +56,9 @@ namespace Island.Gameplay.Services.World.Items
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void OnHealthChanged_ServerRpc()
+        private void OnHealthChanged_ServerRpc(int value)
         {
+            _health.Value = value;
             _worldService.MarkHealth(this);
         }
 

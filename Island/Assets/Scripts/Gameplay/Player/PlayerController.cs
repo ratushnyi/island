@@ -15,6 +15,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
+using InputExtensions = TendedTarsier.Core.Utilities.Extensions.InputExtensions;
 
 namespace Island.Gameplay.Player
 {
@@ -38,18 +39,17 @@ namespace Island.Gameplay.Player
         [Inject] private CameraConfig _cameraConfig;
         [Inject] private PanelService _panelService;
 
+        private Ray _aimRay;
         private float _cameraPitch;
         private float _verticalVelocity;
         private float _sprintLerp;
-        private bool _sprintButtonToggleState;
-        private Ray _aimRay;
         private bool IsMoving => _characterController.velocity.magnitude > 0;
         private bool IsRunning => IsMoving && (_inputService.PlayerActions.Sprint.IsPressed() || SprintButtonToggleState);
 
         private bool SprintButtonToggleState
         {
-            get => (Application.isMobilePlatform || Application.isConsolePlatform) && _sprintButtonToggleState;
-            set => _sprintButtonToggleState = value;
+            get => !InputExtensions.IsMouseKeyboardInput && _energyService.IsSprintPerformed.Value;
+            set => _energyService.IsSprintPerformed.Value = value;
         }
 
         public override void OnNetworkSpawn()
@@ -177,7 +177,7 @@ namespace Island.Gameplay.Player
 
             if (_inputService.PlayerActions.Look.inProgress)
             {
-                if (!UIExtensions.IsOverUI(_inputService.PlayerActions.Look.activeControl.device.deviceId))
+                if (!InputExtensions.IsOverUI(_inputService.PlayerActions.Look.activeControl.device.deviceId))
                 {
                     return _inputService.PlayerActions.Look.ReadValue<Vector2>();
                 }

@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using Island.Common.Services;
 using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Panels.HUD;
 using Island.Gameplay.Profiles.Inventory;
@@ -14,7 +15,7 @@ using Zenject;
 namespace Island.Gameplay.Services.Inventory
 {
     [UsedImplicitly]
-    public class InventoryService : ServiceBase, IInitializable
+    public class InventoryService : ServiceBase, INetworkInitialize
     {
         private PanelLoader<HUDPanel> _hudPanel;
         private InventoryConfig _inventoryConfig;
@@ -31,10 +32,9 @@ namespace Island.Gameplay.Services.Inventory
             _hudPanel = hudPanel;
         }
 
-        public void Initialize()
+        public void OnNetworkInitialize()
         {
             SubscribeOnItemsChanged();
-            SubscribeOnItemDropped();
             SubscribeOnItemSelected();
         }
 
@@ -50,11 +50,6 @@ namespace Island.Gameplay.Services.Inventory
 
                 _hudPanel.Instance.SelectedItem.SetItem(_inventoryConfig[type], _inventoryProfile.InventoryItems[type]);
             }).AddTo(CompositeDisposable);
-        }
-
-        private void SubscribeOnItemDropped()
-        {
-            _hudPanel.Instance.SelectedItem.OnButtonClicked.Subscribe(Drop).AddTo(CompositeDisposable);
         }
 
         private void SubscribeOnItemsChanged()

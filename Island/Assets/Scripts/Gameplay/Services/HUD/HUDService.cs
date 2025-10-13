@@ -1,4 +1,3 @@
-using System;
 using Cysharp.Threading.Tasks;
 using Island.Common.Services;
 using Island.Gameplay.Configs.Stats;
@@ -11,7 +10,9 @@ using JetBrains.Annotations;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services;
 using TendedTarsier.Core.Services.Input;
+using TendedTarsier.Core.Utilities.Extensions;
 using UniRx;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
@@ -62,12 +63,17 @@ namespace Island.Gameplay.Services.HUD
 
         private void SubscribeOnInput()
         {
-            _inputService.OnOptionsButtonPerformed
-                .Subscribe(_ => SwitchInventory().Forget())
-                .AddTo(CompositeDisposable);
+            if (Application.isMobilePlatform)
+            {
+                _hudPanel.Instance.SelectedItem.OnButtonClicked.Subscribe(_ => SwitchInventory().Forget()).AddTo(CompositeDisposable);
+            }
+            else
+            {
+                _inputService.OnOptionsButtonPerformed.Subscribe(_ => SwitchInventory().Forget()).AddTo(CompositeDisposable);
+            }
 
-            _eventSystem.SetSelectedGameObject(_hudPanel.Instance.SelectedItem.gameObject);
-
+            InputExtensions.EnableCursor(false);
+            
             SubscribeOnServerPause();
             SubscribeOnPause();
         }
@@ -85,28 +91,36 @@ namespace Island.Gameplay.Services.HUD
             if (value)
             {
                 var panel = await _pausePanel.Show();
+                InputExtensions.EnableCursor(true);
                 var isExit = await panel.WaitForResult();
                 if (isExit)
                 {
                     _islandGameplayModuleController.LoadMenu().Forget();
+                    return;
                 }
             }
             else if (_pausePanel.Instance != null)
             {
                 _pausePanel.Hide().Forget();
             }
+            
+            InputExtensions.EnableCursor(false);
         }
 
         private async UniTaskVoid HandlePause()
         {
             _networkService.SetPaused(true);
             var panel = await _pausePanel.Show();
+            InputExtensions.EnableCursor(true);
             var isExit = await panel.WaitForResult();
             _networkService.SetPaused(false);
             if (isExit)
             {
                 _islandGameplayModuleController.LoadMenu().Forget();
+                return;
             }
+
+            InputExtensions.EnableCursor(false);
         }
 
         private void SubscribeOnPause()
@@ -118,12 +132,13 @@ namespace Island.Gameplay.Services.HUD
         {
             if (_inventoryPanel.Instance != null)
             {
+                InputExtensions.EnableCursor(false);
                 await _inventoryPanel.Hide();
-                _eventSystem.SetSelectedGameObject(_hudPanel.Instance.SelectedItem.gameObject);
             }
             else
             {
                 await _inventoryPanel.Show();
+                InputExtensions.EnableCursor(true);
                 _eventSystem.SetSelectedGameObject(_inventoryPanel.Instance.FirstCellView.gameObject);
             }
         }
