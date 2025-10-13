@@ -48,15 +48,16 @@ namespace Island.Gameplay.Module
             Container.BindProfile<StatsProfile>();
             Container.BindProfile<InventoryProfile>();
             Container.BindProfile<PlayerProfile>();
+            Container.BindProfile<WorldProfile>();
         }
 
         private void BindPanels()
         {
             Container.BindPanel(_inventoryPopup, _canvas);
-            Container.BindPanel<InputPanel>(_inputPanel, _canvas);
-            Container.BindPanel<HUDPanel>(_hudPanel, _canvas);
-            Container.BindPanel<PausePopup>(_pausePopup, _canvas);
-            Container.BindPanel<SettingsPopup>(_settingsPopup, _canvas);
+            Container.BindPanel(_inputPanel, _canvas);
+            Container.BindPanel(_hudPanel, _canvas);
+            Container.BindPanel(_pausePopup, _canvas);
+            Container.BindPanel(_settingsPopup, _canvas);
         }
 
         private void BindServices()

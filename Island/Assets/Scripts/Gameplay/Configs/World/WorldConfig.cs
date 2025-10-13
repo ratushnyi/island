@@ -1,7 +1,11 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using AYellowpaper.SerializedCollections;
+using Island.Common.Services.Network;
 using Island.Gameplay.Services.World.Items;
 using TendedTarsier.Core.Services.Modules;
+using UnityEditor;
 using UnityEngine;
 
 namespace Island.Gameplay.Configs.World
@@ -12,6 +16,67 @@ namespace Island.Gameplay.Configs.World
         [field: SerializedDictionary("Type", "Prefab")]
         public SerializedDictionary<WorldItemType, WorldItemObject> WorldItemObjects;
         [field: SerializeField]
-        public List<WorldItemObject> WorldItemPlacement;
+        public List<NetworkSpawnRequest> WorldItemPlacement;
     }
+    
+#if UNITY_EDITOR
+[CustomEditor(typeof(WorldConfig))]
+public class WorldConfigEditor : Editor
+{
+    private WorldConfig _worldConfig;
+    
+    public void OnEnable()
+    {
+        _worldConfig = (WorldConfig)target;
+    }
+
+    public override void OnInspectorGUI()
+    {
+        DrawDropArea();
+        DrawDefaultInspector();
+    }
+
+    private void DrawDropArea()
+    {
+        var rect = GUILayoutUtility.GetRect(0, 80, GUILayout.ExpandWidth(true));
+        GUI.Box(rect, "Drag & Drop scene objects here", EditorStyles.helpBox);
+
+        var e = Event.current;
+        if (!rect.Contains(e.mousePosition)) return;
+
+        if (e.type == EventType.DragUpdated || e.type == EventType.DragPerform)
+        {
+            DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+
+            if (e.type == EventType.DragPerform)
+            {
+                DragAndDrop.AcceptDrag();
+
+                var dragged = DragAndDrop.objectReferences;
+                var fromHierarchy = dragged
+                    .Select(o => (o as GameObject)?.GetComponent<WorldItemObject>())
+                    .Where(t => t != null)
+                    .ToArray();
+
+                AddTransforms(fromHierarchy);
+            }
+            e.Use();
+        }
+    }
+
+    private void AddTransforms(WorldItemObject[] wolrdItems)
+    {
+        if (_worldConfig == null || wolrdItems == null || wolrdItems.Length == 0) return;
+
+        Undo.RecordObject(_worldConfig, "Add WorldItemObject");
+
+        foreach (var item in wolrdItems)
+        {
+            _worldConfig.WorldItemPlacement.Add(new NetworkSpawnRequest(item.Type, item.transform.position, item.transform.rotation, HashCode.Combine(item.Type, item.transform.position, item.transform.rotation)));
+        }
+
+        EditorUtility.SetDirty(_worldConfig);
+    }
+}
+#endif
 }

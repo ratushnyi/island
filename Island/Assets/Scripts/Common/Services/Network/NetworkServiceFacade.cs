@@ -16,12 +16,15 @@ namespace Island.Common.Services
 
         public readonly ReactiveProperty<string> ServerId = new();
         private readonly NetworkVariable<FixedString32Bytes> _serverId = new();
+        
         private WorldConfig _worldConfig;
+        private DiContainer _container;
 
         [Inject]
-        private void Construct(WorldConfig worldConfig)
+        private void Construct(WorldConfig worldConfig, DiContainer container)
         {
             _worldConfig = worldConfig;
+            _container = container;
         }
 
         public override void OnNetworkSpawn()
@@ -76,6 +79,8 @@ namespace Island.Common.Services
         public void Spawn_ServerRpc(NetworkSpawnRequest request)
         {
             var worldObject = Instantiate(_worldConfig.WorldItemObjects[request.Type], request.Position, request.Rotation);
+            _container.Inject(worldObject);
+            worldObject.Init(request.Hash);
             worldObject.NetworkObject.Spawn();
         }
     }

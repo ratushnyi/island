@@ -1,6 +1,7 @@
 using Island.Common.Services;
-using Island.Common.Services.Network;
 using Island.Gameplay.Configs.World;
+using Island.Gameplay.Profiles;
+using Island.Gameplay.Services.World.Items;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Services;
 using Zenject;
@@ -12,10 +13,12 @@ namespace Island.Gameplay.Services.World
     {
         private NetworkService _networkService;
         private WorldConfig _worldConfig;
+        private WorldProfile _worldProfile;
 
         [Inject]
-        private void Construct(NetworkService networkService, WorldConfig worldConfig)
+        private void Construct(NetworkService networkService, WorldConfig worldConfig, WorldProfile worldProfile)
         {
+            _worldProfile = worldProfile;
             _worldConfig = worldConfig;
             _networkService = networkService;
         }
@@ -29,8 +32,17 @@ namespace Island.Gameplay.Services.World
             
             foreach (var item in _worldConfig.WorldItemPlacement)
             {
-                _networkService.Spawn(new NetworkSpawnRequest(item.Type, item.transform.position, item.transform.rotation));
+                if (_worldProfile.WorldItemRemoved.Contains(item.Hash))
+                {
+                    continue;
+                }
+                _networkService.Spawn(item);
             }
+        }
+
+        public void MarkDestroyed(WorldItemObject worldItemObject)
+        {
+            _worldProfile.WorldItemRemoved.Add(worldItemObject.Hash);
         }
     }
 }
