@@ -72,7 +72,7 @@ public class WorldConfigEditor : Editor
 
         foreach (var item in wolrdItems)
         {
-            _worldConfig.WorldItemPlacement.Add(new NetworkSpawnRequest(item.Type, item.transform.position, item.transform.rotation, HashCode.Combine(item.Type, item.transform.position, item.transform.rotation)));
+            _worldConfig.WorldItemPlacement.Add(new NetworkSpawnRequest(item.Type, item.transform.position, item.transform.rotation, item.Health.Value, HashCode.Combine(item.Type, item.transform.position, item.transform.rotation)));
         }
 
         EditorUtility.SetDirty(_worldConfig);

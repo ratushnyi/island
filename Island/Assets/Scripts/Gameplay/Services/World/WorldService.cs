@@ -22,27 +22,47 @@ namespace Island.Gameplay.Services.World
             _worldConfig = worldConfig;
             _networkService = networkService;
         }
-        
+
         public void OnNetworkInitialize()
         {
             if (!_networkService.IsServer)
             {
                 return;
             }
-            
-            foreach (var item in _worldConfig.WorldItemPlacement)
+
+            for (var index = 0; index < _worldConfig.WorldItemPlacement.Count; index++)
             {
-                if (_worldProfile.WorldItemRemoved.Contains(item.Hash))
+                var item = _worldConfig.WorldItemPlacement[index];
+                if (_worldProfile.WorldItemDestroyed.Contains(item.Hash))
                 {
                     continue;
                 }
+
+                if (_worldProfile.WorldItemHealth.TryGetValue(item.Hash, out var health))
+                {
+                    item.Health = health;
+                }
+
                 _networkService.Spawn(item);
             }
         }
 
         public void MarkDestroyed(WorldItemObject worldItemObject)
         {
-            _worldProfile.WorldItemRemoved.Add(worldItemObject.Hash);
+            _worldProfile.WorldItemDestroyed.Add(worldItemObject.Hash);
+        }
+
+        public void MarkHealth(WorldItemObject worldItemObject)
+        {
+            if (worldItemObject.Health.Value == 0)
+            {
+                _worldProfile.WorldItemHealth.Remove(worldItemObject.Hash);
+            }
+
+            if (!_worldProfile.WorldItemHealth.TryAdd(worldItemObject.Hash, worldItemObject.Health.Value))
+            {
+                _worldProfile.WorldItemHealth[worldItemObject.Hash] = worldItemObject.Health.Value;
+            }
         }
     }
 }

@@ -11,13 +11,15 @@ namespace Island.Common.Services.Network
         public WorldItemType Type;
         public Vector3 Position;
         public Quaternion Rotation;
+        public int Health;
         public int Hash;
 
-        public NetworkSpawnRequest(WorldItemType type, Vector3 position, Quaternion rotation, int hash)
+        public NetworkSpawnRequest(WorldItemType type, Vector3 position, Quaternion rotation, int health, int hash)
         {
             Type = type;
             Position = position;
             Rotation = rotation;
+            Health = health;
             Hash = hash;
         }
 
@@ -26,6 +28,7 @@ namespace Island.Common.Services.Network
             serializer.SerializeValue(ref Type);
             serializer.SerializeValue(ref Position);
             serializer.SerializeValue(ref Rotation);
+            serializer.SerializeValue(ref Health);
             serializer.SerializeValue(ref Hash);
         }
     }

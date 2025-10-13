@@ -22,80 +22,100 @@ MonoBehaviour:
   - Type: 1
     Position: {x: 0, y: 0, z: 6}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: 244239709
   - Type: 1
     Position: {x: 0, y: 0, z: 8}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: 1266300576
   - Type: 1
     Position: {x: 0, y: 0, z: 10}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: 145662124
   - Type: 1
     Position: {x: 2, y: 0, z: 4}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: -2036207545
   - Type: 1
     Position: {x: 2, y: 0, z: 6}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: 888212503
   - Type: 1
     Position: {x: 2, y: 0, z: 8}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: 265625850
   - Type: 1
     Position: {x: 2, y: 0, z: 10}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: 1614741480
   - Type: 1
     Position: {x: 4, y: 0, z: 4}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: -1662456601
   - Type: 1
     Position: {x: 4, y: 0, z: 6}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: 2116038877
   - Type: 1
     Position: {x: 4, y: 0, z: 8}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: 536885990
   - Type: 1
     Position: {x: 4, y: 0, z: 10}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: 252930823
   - Type: 1
     Position: {x: 0, y: 0, z: 4}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: -952004911
   - Type: 0
     Position: {x: 0, y: 0, z: -4}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: -1450035471
   - Type: 0
     Position: {x: 0, y: 0, z: -6}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: 406375706
   - Type: 0
     Position: {x: 0, y: 0, z: -8}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: 1058572533
   - Type: 0
     Position: {x: -2, y: 0, z: -2}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: -1608306735
   - Type: 0
     Position: {x: -2, y: 0, z: -4}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: -1871146932
   - Type: 0
     Position: {x: -2, y: 0, z: -6}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: -965568440
   - Type: 0
     Position: {x: -2, y: 0, z: -8}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: 1519520492
   - Type: 0
     Position: {x: 0, y: 0, z: -2}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
     Hash: -246756755

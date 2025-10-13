@@ -180,9 +180,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  _tools:
+    _serializedList:
+    - Key: 3
+      Value: 50
   _collider: {fileID: 2699666170804571005}
   _itemEntity:
     _type: 1
     _count: 10
   _type: 0
-  _toolType: 3
+  Health:
+    value: 0

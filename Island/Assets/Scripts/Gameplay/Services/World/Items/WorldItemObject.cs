@@ -1,5 +1,7 @@
+using AYellowpaper.SerializedCollections;
 using Island.Gameplay.Services.Inventory.Items;
 using Island.Gameplay.Services.Inventory.Tools;
+using UniRx;
 using Unity.Netcode;
 using UnityEngine;
 using Zenject;
@@ -8,45 +10,67 @@ namespace Island.Gameplay.Services.World.Items
 {
     public class WorldItemObject : NetworkBehaviour
     {
+        [SerializeField, SerializedDictionary("Tool", "Damage")]
+        private SerializedDictionary<ToolItemType, int> _tools;
         [SerializeField] private Collider _collider;
         [SerializeField] private ItemEntity _itemEntity;
         [SerializeField] private WorldItemType _type;
-        [SerializeField] private ToolItemType _toolType;
+        [Inject] private WorldService _worldService;
+
+        public ReactiveProperty<int> Health = new();
+        private readonly NetworkVariable<int> _health = new();
         private int _hash;
-        private WorldService _worldService;
 
         public WorldItemType Type => _type;
         public string Name => _type.ToString();
         public ItemEntity ItemEntity => _itemEntity;
         public int Hash => _hash;
 
-        [Inject]
-        private void Construct(WorldService worldService)
+        public void Init(int health, int hash)
         {
-            _worldService = worldService;
-        }
-
-        public void Init(int hash)
-        {
+            _health.Value = health;
             _hash = hash;
+            Health.Value = _health.Value;
+            _health.OnValueChanged += OnHealthChanged;
         }
 
-        public bool TryPerform(ToolItemType toolType)
+        private void OnHealthChanged(int _, int newValue)
         {
-            if (_toolType == ToolItemType.None || _toolType != toolType)
+            Health.Value = newValue;
+        }
+
+        public bool TryDestroy(ToolItemType toolType)
+        {
+            if (_tools.TryGetValue(toolType, out var damage))
             {
-                return false;
+                _health.Value -= damage;
+                OnHealthChanged_ServerRpc();
+                if (_health.Value == 0)
+                {
+                    Despawn_ServerRpc();
+                    return true;
+                }
             }
             
-            return true;
-
+            return false;
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void Despawn_ServerRpc()
+        private void OnHealthChanged_ServerRpc()
+        {
+            _worldService.MarkHealth(this);
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void Despawn_ServerRpc()
         {
             _worldService.MarkDestroyed(this);
             NetworkObject.Despawn();
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            _health.OnValueChanged -= OnHealthChanged;
         }
     }
 }

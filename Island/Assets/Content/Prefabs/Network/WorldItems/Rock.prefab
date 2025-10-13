@@ -72,12 +72,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  _tools:
+    _serializedList:
+    - Key: 1
+      Value: 50
   _collider: {fileID: 5971670755518214542}
   _itemEntity:
     _type: 2
     _count: 10
   _type: 1
-  _toolType: 1
+  Health:
+    value: 0
 --- !u!1 &7900436362925682423
 GameObject:
   m_ObjectHideFlags: 0

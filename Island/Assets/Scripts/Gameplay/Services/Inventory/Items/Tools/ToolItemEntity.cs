@@ -31,10 +31,9 @@ namespace Island.Gameplay.Services.Inventory.Tools
                 return new UniTask<bool>(false);
             }
 
-            var result = _aimService.TargetObject.Value.TryPerform(_type);
+            var result = _aimService.TargetObject.Value.TryDestroy(_type);
             if (result)
             {
-                _aimService.TargetObject.Value.Despawn_ServerRpc();
                 _inventoryService.TryPut(_aimService.TargetObject.Value);
             }
             
