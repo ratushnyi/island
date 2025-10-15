@@ -20,102 +20,1327 @@ MonoBehaviour:
       Value: {fileID: 5426607065071548453, guid: 7105f1b9afca0412582257be60806ef2, type: 3}
   WorldItemPlacement:
   - Type: 1
-    Position: {x: 0, y: 0, z: 6}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: -11.87, y: 0, z: -3.4}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: 244239709
+    Hash: -1680459752
   - Type: 1
-    Position: {x: 0, y: 0, z: 8}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: 18.8, y: 0, z: -18.6}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: 1266300576
+    Hash: -1595922566
   - Type: 1
-    Position: {x: 0, y: 0, z: 10}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: -12.15, y: 0, z: 10}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: 145662124
+    Hash: -497089271
   - Type: 1
-    Position: {x: 2, y: 0, z: 4}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: -8.69, y: 0, z: 16.06}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: -2036207545
+    Hash: -598832072
   - Type: 1
-    Position: {x: 2, y: 0, z: 6}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: 1.4, y: 0, z: -22.56}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: 888212503
+    Hash: 1094698404
   - Type: 1
-    Position: {x: 2, y: 0, z: 8}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: 50.5, y: 0, z: 13}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: 265625850
+    Hash: 1386976355
   - Type: 1
-    Position: {x: 2, y: 0, z: 10}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: 13.23, y: 0, z: 29.77}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: 1614741480
+    Hash: -1638716753
   - Type: 1
-    Position: {x: 4, y: 0, z: 4}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: 20.9, y: 0, z: -6.7}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: -1662456601
+    Hash: -2015493220
   - Type: 1
-    Position: {x: 4, y: 0, z: 6}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: 18.57, y: 0, z: -44.77}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: 2116038877
+    Hash: 399030126
   - Type: 1
-    Position: {x: 4, y: 0, z: 8}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: -12.379999, y: 0, z: -16.17}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: 536885990
+    Hash: -1917338451
   - Type: 1
-    Position: {x: 4, y: 0, z: 10}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: -8.919999, y: 0, z: -10.110001}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: 252930823
+    Hash: 1286426832
+  - Type: 1
+    Position: {x: 1.1700004, y: 0, z: -48.73}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 884957677
+  - Type: 1
+    Position: {x: 50.27, y: 0, z: -13.17}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 799218874
+  - Type: 1
+    Position: {x: 13, y: 0, z: 3.6}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1865181386
+  - Type: 1
+    Position: {x: 20.67, y: 0, z: -32.87}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -86766121
+  - Type: 1
+    Position: {x: -10.42, y: 0, z: 0.52}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1044426697
+  - Type: 1
+    Position: {x: 1.4, y: 0, z: 18.24}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1324917554
+  - Type: 1
+    Position: {x: 20.8, y: 0, z: 11.1}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -649313570
   - Type: 1
     Position: {x: 0, y: 0, z: 4}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: -952004911
+    Hash: 2024993590
   - Type: 0
-    Position: {x: 0, y: 0, z: -4}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: 8.09, y: 0, z: 20.23}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: -1450035471
+    Hash: -351452950
   - Type: 0
-    Position: {x: 0, y: 0, z: -6}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: 13.4, y: 0, z: 14.3}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: 406375706
+    Hash: -1224071093
   - Type: 0
-    Position: {x: 0, y: 0, z: -8}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: 19.370003, y: 0, z: -29.659998}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: 1058572533
+    Hash: -1133223808
   - Type: 0
-    Position: {x: -2, y: 0, z: -2}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: 4.880003, y: 0, z: 4.2300014}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: -1608306735
+    Hash: 1821230956
   - Type: 0
-    Position: {x: -2, y: 0, z: -4}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: 18.5, y: 0, z: 4.8}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: -1871146932
+    Hash: 795462503
   - Type: 0
-    Position: {x: -2, y: 0, z: -6}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: 24.470001, y: 0, z: -39.159996}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: -965568440
+    Hash: -1180008805
   - Type: 0
-    Position: {x: -2, y: 0, z: -8}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: 9.980001, y: 0, z: -5.2699966}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: 1519520492
+    Hash: 1247155492
   - Type: 0
-    Position: {x: 0, y: 0, z: -2}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Position: {x: -11.2, y: 0, z: 13.34}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
     Health: 100
-    Hash: -246756755
+    Hash: 2000363079
+  - Type: 0
+    Position: {x: -5.2299995, y: 0, z: -30.619999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1161085492
+  - Type: 0
+    Position: {x: -19.72, y: 0, z: 3.2700005}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -2066754540
+  - Type: 0
+    Position: {x: -12.08, y: 0, z: 4.31}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1066512626
+  - Type: 0
+    Position: {x: -6.1099987, y: 0, z: -39.649998}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1472679806
+  - Type: 0
+    Position: {x: -20.599998, y: 0, z: -5.7599983}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 352820365
+  - Type: 0
+    Position: {x: -6.24, y: 0, z: -14.09}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 422127677
+  - Type: 0
+    Position: {x: -0.26999855, y: 0, z: -58.049995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1095114096
+  - Type: 0
+    Position: {x: -14.759998, y: 0, z: -24.159996}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -2006414663
+  - Type: 0
+    Position: {x: 17.7, y: 0, z: -13.6}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -937411061
+  - Type: 0
+    Position: {x: 23.670002, y: 0, z: -57.559998}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1168505891
+  - Type: 0
+    Position: {x: 9.180002, y: 0, z: -23.669998}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -514142414
+  - Type: 0
+    Position: {x: 3.33, y: 0, z: -12.64}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1351359391
+  - Type: 0
+    Position: {x: 9.3, y: 0, z: -56.6}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1409114982
+  - Type: 0
+    Position: {x: -5.1899996, y: 0, z: -22.71}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1557380467
+  - Type: 0
+    Position: {x: -6.87, y: 0, z: -7.37}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1071597146
+  - Type: 0
+    Position: {x: -0.8999996, y: 0, z: -51.329998}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 491610186
+  - Type: 0
+    Position: {x: -15.389999, y: 0, z: -17.439999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -735239409
+  - Type: 0
+    Position: {x: 2.06, y: 0, z: 11.9}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 170210882
+  - Type: 0
+    Position: {x: 8.030001, y: 0, z: -32.059998}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 951315827
+  - Type: 0
+    Position: {x: -6.459999, y: 0, z: 1.8300018}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -727733220
+  - Type: 0
+    Position: {x: -4.88, y: 0, z: 22.77}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1198050019
+  - Type: 0
+    Position: {x: 1.0900002, y: 0, z: -21.189999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1482052224
+  - Type: 0
+    Position: {x: -13.4, y: 0, z: 12.7}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1751812380
+  - Type: 0
+    Position: {x: -15.91, y: 0, z: 19.64}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1548985575
+  - Type: 0
+    Position: {x: -9.939999, y: 0, z: -24.32}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -717058644
+  - Type: 0
+    Position: {x: -24.429998, y: 0, z: 9.57}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 331313349
+  - Type: 1
+    Position: {x: -45.039997, y: 0, z: 5.07}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -229393135
+  - Type: 1
+    Position: {x: -23.969997, y: 0, z: 80.799995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1239165294
+  - Type: 1
+    Position: {x: -37.35, y: 0, z: -82.46999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 669024277
+  - Type: 1
+    Position: {x: 9.030003, y: 0, z: -93.5}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 145498905
+  - Type: 1
+    Position: {x: -14.369999, y: 0, z: -10.13}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 599191429
+  - Type: 1
+    Position: {x: 6.700001, y: 0, z: 65.6}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 319886916
+  - Type: 1
+    Position: {x: -6.6800003, y: 0, z: -97.66999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -109440971
+  - Type: 1
+    Position: {x: 39.7, y: 0, z: -108.7}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -939930385
+  - Type: 1
+    Position: {x: -45.32, y: 0, z: 18.470001}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1292286568
+  - Type: 1
+    Position: {x: -24.25, y: 0, z: 94.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -37114364
+  - Type: 1
+    Position: {x: -37.63, y: 0, z: -69.06999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1784721420
+  - Type: 1
+    Position: {x: 8.75, y: 0, z: -80.1}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1754936127
+  - Type: 1
+    Position: {x: -41.859997, y: 0, z: 24.529999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1399793208
+  - Type: 1
+    Position: {x: -20.789997, y: 0, z: 100.259995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -959251392
+  - Type: 1
+    Position: {x: -34.17, y: 0, z: -63.009995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -444751124
+  - Type: 1
+    Position: {x: 12.210003, y: 0, z: -74.04}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -679960773
+  - Type: 1
+    Position: {x: -31.769999, y: 0, z: -14.089999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 347449134
+  - Type: 1
+    Position: {x: -10.699999, y: 0, z: 61.639996}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1478900877
+  - Type: 1
+    Position: {x: -24.08, y: 0, z: -101.62999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -2034844350
+  - Type: 1
+    Position: {x: 22.300001, y: 0, z: -112.659996}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -958900870
+  - Type: 1
+    Position: {x: 17.330002, y: 0, z: 21.470001}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -479374359
+  - Type: 1
+    Position: {x: 38.4, y: 0, z: 97.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 564642683
+  - Type: 1
+    Position: {x: 25.02, y: 0, z: -66.06999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1380763166
+  - Type: 1
+    Position: {x: 71.4, y: 0, z: -77.1}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1872563406
+  - Type: 1
+    Position: {x: -19.939999, y: 0, z: 38.24}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1627512208
+  - Type: 1
+    Position: {x: 1.1300011, y: 0, z: 113.97}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 859265066
+  - Type: 1
+    Position: {x: -12.25, y: 0, z: -49.299988}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1967549028
+  - Type: 1
+    Position: {x: 34.13, y: 0, z: -60.329994}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -63665570
+  - Type: 1
+    Position: {x: -12.269999, y: 0, z: 1.7700005}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1842914352
+  - Type: 1
+    Position: {x: 8.800001, y: 0, z: 77.5}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 592445922
+  - Type: 1
+    Position: {x: -4.58, y: 0, z: -85.76999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -706882441
+  - Type: 1
+    Position: {x: 41.800003, y: 0, z: -96.799995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 2030785717
+  - Type: 1
+    Position: {x: -14.599998, y: 0, z: -36.3}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1595504612
+  - Type: 1
+    Position: {x: 6.470001, y: 0, z: 39.429996}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 728117472
+  - Type: 1
+    Position: {x: -6.91, y: 0, z: -123.84}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -675002540
+  - Type: 1
+    Position: {x: 39.47, y: 0, z: -134.87}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 994590244
+  - Type: 1
+    Position: {x: -45.549995, y: 0, z: -7.7}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1949369143
+  - Type: 1
+    Position: {x: -24.479996, y: 0, z: 68.03}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1245904582
+  - Type: 1
+    Position: {x: -37.859997, y: 0, z: -95.23999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -483844977
+  - Type: 1
+    Position: {x: 8.520004, y: 0, z: -106.27}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -610180090
+  - Type: 1
+    Position: {x: -42.089996, y: 0, z: -1.6400003}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1034764227
+  - Type: 1
+    Position: {x: -21.019997, y: 0, z: 74.09}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1079712733
+  - Type: 1
+    Position: {x: -34.399998, y: 0, z: -89.17999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1689237095
+  - Type: 1
+    Position: {x: 11.980003, y: 0, z: -100.21}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 605174939
+  - Type: 1
+    Position: {x: -31.999998, y: 0, z: -40.26}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1702634443
+  - Type: 1
+    Position: {x: -10.929998, y: 0, z: 35.469997}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1911610141
+  - Type: 1
+    Position: {x: -24.31, y: 0, z: -127.79999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -452640516
+  - Type: 1
+    Position: {x: 22.070002, y: 0, z: -138.82999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1555035593
+  - Type: 1
+    Position: {x: 17.1, y: 0, z: -4.7}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1836556142
+  - Type: 1
+    Position: {x: 38.17, y: 0, z: 71.03}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1800506148
+  - Type: 1
+    Position: {x: 24.789997, y: 0, z: -92.23999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1506033329
+  - Type: 1
+    Position: {x: 71.17, y: 0, z: -103.27}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1901917041
+  - Type: 1
+    Position: {x: -20.169998, y: 0, z: 12.07}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -842701603
+  - Type: 1
+    Position: {x: 0.9000015, y: 0, z: 87.799995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 251457840
+  - Type: 1
+    Position: {x: -12.48, y: 0, z: -75.46999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1882407640
+  - Type: 1
+    Position: {x: 33.9, y: 0, z: -86.5}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1568231529
+  - Type: 1
+    Position: {x: -12.499998, y: 0, z: -24.399998}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1813809179
+  - Type: 1
+    Position: {x: 8.570002, y: 0, z: 51.329998}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1071139067
+  - Type: 1
+    Position: {x: -4.8099995, y: 0, z: -111.93999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 294533090
+  - Type: 1
+    Position: {x: 41.57, y: 0, z: -122.96999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 582285729
+  - Type: 1
+    Position: {x: -43.589996, y: 0, z: 8.99}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1269606083
+  - Type: 1
+    Position: {x: -22.519997, y: 0, z: 84.71999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -47502858
+  - Type: 1
+    Position: {x: -35.899998, y: 0, z: -78.549995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -706594179
+  - Type: 1
+    Position: {x: 10.480003, y: 0, z: -89.58}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1412856770
+  - Type: 1
+    Position: {x: -31.769999, y: 0, z: 26.71}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1209628497
+  - Type: 1
+    Position: {x: -10.699999, y: 0, z: 102.439995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1232273828
+  - Type: 1
+    Position: {x: -24.08, y: 0, z: -60.829994}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -880544721
+  - Type: 1
+    Position: {x: 22.300001, y: 0, z: -71.86}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1307414766
+  - Type: 1
+    Position: {x: -12.369999, y: 0, z: 19.57}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 251775151
+  - Type: 1
+    Position: {x: 8.700001, y: 0, z: 95.299995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1207770064
+  - Type: 1
+    Position: {x: -4.6800003, y: 0, z: -67.96999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 417350482
+  - Type: 1
+    Position: {x: 41.7, y: 0, z: -79}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1106390880
+  - Type: 1
+    Position: {x: -33.17, y: 0, z: 12.47}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 230512626
+  - Type: 1
+    Position: {x: -12.099998, y: 0, z: 88.2}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1598096133
+  - Type: 1
+    Position: {x: -25.48, y: 0, z: -75.06999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 467615433
+  - Type: 1
+    Position: {x: 20.900002, y: 0, z: -86.1}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -2056461926
+  - Type: 0
+    Position: {x: -25.079998, y: 0, z: 28.7}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 544182411
+  - Type: 0
+    Position: {x: -4.0099983, y: 0, z: 104.42999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1525583988
+  - Type: 0
+    Position: {x: -17.39, y: 0, z: -58.839996}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -579862544
+  - Type: 0
+    Position: {x: 28.990002, y: 0, z: -69.87}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 2080577017
+  - Type: 0
+    Position: {x: -19.769999, y: 0, z: 22.77}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -441602778
+  - Type: 0
+    Position: {x: 1.3000011, y: 0, z: 98.5}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -853471173
+  - Type: 0
+    Position: {x: -12.08, y: 0, z: -64.76999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -109909367
+  - Type: 0
+    Position: {x: 34.300003, y: 0, z: -75.799995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1179873202
+  - Type: 0
+    Position: {x: -13.799995, y: 0, z: -21.189999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1943832483
+  - Type: 0
+    Position: {x: 7.2700043, y: 0, z: 54.539997}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1637595036
+  - Type: 0
+    Position: {x: -6.109997, y: 0, z: -108.729996}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1313051073
+  - Type: 0
+    Position: {x: 40.270004, y: 0, z: -119.76}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1321669482
+  - Type: 0
+    Position: {x: -28.289995, y: 0, z: 12.700002}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -201176139
+  - Type: 0
+    Position: {x: -7.2199955, y: 0, z: 88.43}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -2021411332
+  - Type: 0
+    Position: {x: -20.599997, y: 0, z: -74.83999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1175053927
+  - Type: 0
+    Position: {x: 25.780005, y: 0, z: -85.869995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1082162591
+  - Type: 0
+    Position: {x: -14.669998, y: 0, z: 13.27}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 2147163763
+  - Type: 0
+    Position: {x: 6.4000015, y: 0, z: 89}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 985507386
+  - Type: 0
+    Position: {x: -6.9799995, y: 0, z: -74.26999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -506469661
+  - Type: 0
+    Position: {x: 39.4, y: 0, z: -85.299995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1361360143
+  - Type: 0
+    Position: {x: -8.699997, y: 0, z: -30.689995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -509256917
+  - Type: 0
+    Position: {x: 12.370003, y: 0, z: 45.04}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1998100448
+  - Type: 0
+    Position: {x: -1.0099983, y: 0, z: -118.22999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1728066405
+  - Type: 0
+    Position: {x: 45.370003, y: 0, z: -129.26}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1355719320
+  - Type: 0
+    Position: {x: -23.189997, y: 0, z: 3.2000036}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1836490281
+  - Type: 0
+    Position: {x: -2.119997, y: 0, z: 78.93}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 317025734
+  - Type: 0
+    Position: {x: -15.499998, y: 0, z: -84.33999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -477432331
+  - Type: 0
+    Position: {x: 30.880003, y: 0, z: -95.369995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -886694452
+  - Type: 0
+    Position: {x: -44.37, y: 0, z: 21.810001}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -813653024
+  - Type: 0
+    Position: {x: -23.3, y: 0, z: 97.53999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 431930743
+  - Type: 0
+    Position: {x: -36.68, y: 0, z: -65.729996}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1621892474
+  - Type: 0
+    Position: {x: 9.700001, y: 0, z: -76.76}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1087462615
+  - Type: 0
+    Position: {x: -38.399998, y: 0, z: -22.149998}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1104872182
+  - Type: 0
+    Position: {x: -17.329998, y: 0, z: 53.579998}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -439213850
+  - Type: 0
+    Position: {x: -30.71, y: 0, z: -109.68999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1112005726
+  - Type: 0
+    Position: {x: 15.670002, y: 0, z: -120.71999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 555049275
+  - Type: 0
+    Position: {x: -52.89, y: 0, z: 11.740001}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 388820543
+  - Type: 0
+    Position: {x: -31.82, y: 0, z: 87.46999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1909842220
+  - Type: 0
+    Position: {x: -45.2, y: 0, z: -75.8}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 2132436410
+  - Type: 0
+    Position: {x: 1.1800003, y: 0, z: -86.83001}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -884396514
+  - Type: 0
+    Position: {x: -45.25, y: 0, z: 12.780001}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -626043023
+  - Type: 0
+    Position: {x: -24.18, y: 0, z: 88.509995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -236349795
+  - Type: 0
+    Position: {x: -37.56, y: 0, z: -74.759995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1262917563
+  - Type: 0
+    Position: {x: 8.82, y: 0, z: -85.79}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1276779683
+  - Type: 0
+    Position: {x: -39.28, y: 0, z: -31.179996}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -968868710
+  - Type: 0
+    Position: {x: -18.21, y: 0, z: 44.55}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 2060042549
+  - Type: 0
+    Position: {x: -31.59, y: 0, z: -118.719986}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -620063641
+  - Type: 0
+    Position: {x: 14.790001, y: 0, z: -129.75}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1731126799
+  - Type: 0
+    Position: {x: -53.769997, y: 0, z: 2.710002}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1459150088
+  - Type: 0
+    Position: {x: -32.699997, y: 0, z: 78.439995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -702319275
+  - Type: 0
+    Position: {x: -46.079998, y: 0, z: -84.829994}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1452777404
+  - Type: 0
+    Position: {x: 0.30000305, y: 0, z: -95.86}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -15905606
+  - Type: 0
+    Position: {x: -39.409996, y: 0, z: -5.62}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1301229620
+  - Type: 0
+    Position: {x: -18.339996, y: 0, z: 70.10999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -676126900
+  - Type: 0
+    Position: {x: -31.719997, y: 0, z: -93.159996}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -44668017
+  - Type: 0
+    Position: {x: 14.660004, y: 0, z: -104.19}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -876175728
+  - Type: 0
+    Position: {x: -33.439995, y: 0, z: -49.579994}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 903294607
+  - Type: 0
+    Position: {x: -12.369995, y: 0, z: 26.150002}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -701617470
+  - Type: 0
+    Position: {x: -25.749996, y: 0, z: -137.12}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1711447161
+  - Type: 0
+    Position: {x: 20.630005, y: 0, z: -148.15}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -2010721241
+  - Type: 0
+    Position: {x: -47.929996, y: 0, z: -15.689996}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -311718915
+  - Type: 0
+    Position: {x: -26.859997, y: 0, z: 60.04}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1224473718
+  - Type: 0
+    Position: {x: -40.239998, y: 0, z: -103.22999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -951484922
+  - Type: 0
+    Position: {x: 6.140003, y: 0, z: -114.259995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 871636202
+  - Type: 0
+    Position: {x: -15.469997, y: 0, z: -5.13}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 53578299
+  - Type: 0
+    Position: {x: 5.6000023, y: 0, z: 70.6}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -464961202
+  - Type: 0
+    Position: {x: -7.779999, y: 0, z: -92.66999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 252431249
+  - Type: 0
+    Position: {x: 38.600002, y: 0, z: -103.7}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1632752522
+  - Type: 0
+    Position: {x: -9.499996, y: 0, z: -49.089996}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1952491249
+  - Type: 0
+    Position: {x: 11.5700035, y: 0, z: 26.64}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 2081596352
+  - Type: 0
+    Position: {x: -1.8099976, y: 0, z: -136.62999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1612399814
+  - Type: 0
+    Position: {x: 44.570004, y: 0, z: -147.66}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -778994319
+  - Type: 0
+    Position: {x: -23.989996, y: 0, z: -15.199998}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1030385048
+  - Type: 0
+    Position: {x: -2.9199963, y: 0, z: 60.53}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1853208986
+  - Type: 0
+    Position: {x: -16.299997, y: 0, z: -102.73999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1145203338
+  - Type: 0
+    Position: {x: 30.080004, y: 0, z: -113.77}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1609300116
+  - Type: 0
+    Position: {x: -29.839998, y: 0, z: -4.17}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 566649767
+  - Type: 0
+    Position: {x: -8.769999, y: 0, z: 71.56}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1071061573
+  - Type: 0
+    Position: {x: -22.15, y: 0, z: -91.70999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -929118125
+  - Type: 0
+    Position: {x: 24.230001, y: 0, z: -102.74}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1754330289
+  - Type: 0
+    Position: {x: -23.869999, y: 0, z: -48.129997}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 107064843
+  - Type: 0
+    Position: {x: -2.7999992, y: 0, z: 27.599998}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -611650223
+  - Type: 0
+    Position: {x: -16.18, y: 0, z: -135.66998}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1389748273
+  - Type: 0
+    Position: {x: 30.2, y: 0, z: -146.69998}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1941249468
+  - Type: 0
+    Position: {x: -38.359997, y: 0, z: -14.239999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 481946685
+  - Type: 0
+    Position: {x: -17.289997, y: 0, z: 61.489998}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -407128067
+  - Type: 0
+    Position: {x: -30.669998, y: 0, z: -101.77999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 874034828
+  - Type: 0
+    Position: {x: 15.710003, y: 0, z: -112.81}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1739003122
+  - Type: 0
+    Position: {x: -40.039997, y: 0, z: 1.1000004}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 929289250
+  - Type: 0
+    Position: {x: -18.969997, y: 0, z: 76.829994}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1575086661
+  - Type: 0
+    Position: {x: -32.35, y: 0, z: -86.439995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -641656723
+  - Type: 0
+    Position: {x: 14.030003, y: 0, z: -97.47}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -2099767923
+  - Type: 0
+    Position: {x: -34.07, y: 0, z: -42.859997}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -420599503
+  - Type: 0
+    Position: {x: -13, y: 0, z: 32.87}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1604663793
+  - Type: 0
+    Position: {x: -26.380001, y: 0, z: -130.4}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1217078680
+  - Type: 0
+    Position: {x: 20, y: 0, z: -141.43}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 2086724611
+  - Type: 0
+    Position: {x: -48.559998, y: 0, z: -8.969998}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 855891081
+  - Type: 0
+    Position: {x: -27.489998, y: 0, z: 66.759995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1744834402
+  - Type: 0
+    Position: {x: -40.87, y: 0, z: -96.509995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1715496570
+  - Type: 0
+    Position: {x: 5.510002, y: 0, z: -107.54}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -876684800
+  - Type: 0
+    Position: {x: -31.109999, y: 0, z: 20.369999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -431946888
+  - Type: 0
+    Position: {x: -10.039999, y: 0, z: 96.09999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 508024755
+  - Type: 0
+    Position: {x: -23.42, y: 0, z: -67.17}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -357841386
+  - Type: 0
+    Position: {x: 22.960001, y: 0, z: -78.200005}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 694068489
+  - Type: 0
+    Position: {x: -25.139997, y: 0, z: -23.589996}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1615831564
+  - Type: 0
+    Position: {x: -4.069998, y: 0, z: 52.14}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 45276065
+  - Type: 0
+    Position: {x: -17.449999, y: 0, z: -111.12999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1004768897
+  - Type: 0
+    Position: {x: 28.930002, y: 0, z: -122.159996}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -598130252
+  - Type: 0
+    Position: {x: -39.629997, y: 0, z: 10.300002}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 403008295
+  - Type: 0
+    Position: {x: -18.559998, y: 0, z: 86.03}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1673501387
+  - Type: 0
+    Position: {x: -31.939999, y: 0, z: -77.23999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1162258448
+  - Type: 0
+    Position: {x: 14.440002, y: 0, z: -88.27}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1697398674
+  - Type: 0
+    Position: {x: -38.05, y: 0, z: 31.240002}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -699349834
+  - Type: 0
+    Position: {x: -16.98, y: 0, z: 106.97}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -176144413
+  - Type: 0
+    Position: {x: -30.36, y: 0, z: -56.299988}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1707303072
+  - Type: 0
+    Position: {x: 16.02, y: 0, z: -67.329994}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -321177856
+  - Type: 0
+    Position: {x: -32.079998, y: 0, z: -12.719998}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -396314275
+  - Type: 0
+    Position: {x: -11.009998, y: 0, z: 63.01}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1813276762
+  - Type: 0
+    Position: {x: -24.39, y: 0, z: -100.259995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1611529887
+  - Type: 0
+    Position: {x: 21.990002, y: 0, z: -111.29}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -318328858
+  - Type: 0
+    Position: {x: -46.57, y: 0, z: 21.17}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1054958335
+  - Type: 0
+    Position: {x: -25.5, y: 0, z: 96.899994}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 2007610796
+  - Type: 0
+    Position: {x: -38.88, y: 0, z: -66.369995}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 287999388
+  - Type: 0
+    Position: {x: 7.5, y: 0, z: -77.4}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1225127777
+  - Type: 0
+    Position: {x: -49.079998, y: 0, z: 28.11}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 367524182
+  - Type: 0
+    Position: {x: -28.009998, y: 0, z: 103.84}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1022569634
+  - Type: 0
+    Position: {x: -41.39, y: 0, z: -59.429993}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 295921992
+  - Type: 0
+    Position: {x: 4.9900017, y: 0, z: -70.46}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1414782667
+  - Type: 0
+    Position: {x: -43.109997, y: 0, z: -15.849999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -683287347
+  - Type: 0
+    Position: {x: -22.039997, y: 0, z: 59.879997}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -967989710
+  - Type: 0
+    Position: {x: -35.42, y: 0, z: -103.38999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -2014007992
+  - Type: 0
+    Position: {x: 10.960003, y: 0, z: -114.42}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -457975839
+  - Type: 0
+    Position: {x: -57.6, y: 0, z: 18.04}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -573916621
+  - Type: 0
+    Position: {x: -36.53, y: 0, z: 93.77}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: -1897508644
+  - Type: 0
+    Position: {x: -49.91, y: 0, z: -69.49999}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1096319662
+  - Type: 0
+    Position: {x: -3.5299988, y: 0, z: -80.53}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Health: 100
+    Hash: 1063470580

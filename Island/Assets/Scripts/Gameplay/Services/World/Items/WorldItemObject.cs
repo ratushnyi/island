@@ -1,6 +1,8 @@
 using AYellowpaper.SerializedCollections;
 using Island.Gameplay.Services.Inventory.Items;
 using Island.Gameplay.Services.Inventory.Tools;
+using NaughtyAttributes;
+using TendedTarsier.Core.Utilities.Extensions;
 using UniRx;
 using Unity.Netcode;
 using UnityEngine;
@@ -10,8 +12,11 @@ namespace Island.Gameplay.Services.World.Items
 {
     public class WorldItemObject : NetworkBehaviour
     {
+        [ShowNonSerializedField] private int _hash;
         [SerializeField, SerializedDictionary("Tool", "Damage")]
         private SerializedDictionary<ToolItemType, int> _tools;
+        [SerializeField, SerializedDictionary("Health", "ViewObject")]
+        private SerializedDictionary<int, GameObject> _healthView;
         [SerializeField] private Collider _collider;
         [SerializeField] private ItemEntity _itemEntity;
         [SerializeField] private WorldItemType _type;
@@ -19,7 +24,6 @@ namespace Island.Gameplay.Services.World.Items
 
         public ReactiveProperty<int> Health = new();
         private readonly NetworkVariable<int> _health = new();
-        private int _hash;
 
         public WorldItemType Type => _type;
         public string Name => _type.ToString();
@@ -30,13 +34,31 @@ namespace Island.Gameplay.Services.World.Items
         {
             _health.Value = health;
             _hash = hash;
-            Health.Value = _health.Value;
-            _health.OnValueChanged += OnHealthChanged;
         }
 
-        private void OnHealthChanged(int _, int newValue)
+        public override void OnNetworkSpawn()
         {
-            Health.Value = newValue;
+            Health.Subscribe(UpdateView).AddTo(this);
+            _health.AsObservable().Subscribe(Health.SetValue).AddTo(this);
+            if (IsClient)
+            {
+                UpdateView(_health.Value);
+            }
+        }
+
+        private void UpdateView(int health)
+        {
+            bool selected = false;
+            foreach (var view in _healthView)
+            {
+                if (!selected && health >= view.Key)
+                {
+                    selected = true;
+                    view.Value.SetActive(true);
+                    continue;
+                }
+                view.Value.SetActive(false);
+            }
         }
 
         public bool TryDestroy(ToolItemType toolType)
@@ -45,7 +67,7 @@ namespace Island.Gameplay.Services.World.Items
             {
                 var newHealth = _health.Value - damage;
                 OnHealthChanged_ServerRpc(newHealth);
-                if (newHealth == 0)
+                if (newHealth <= 0)
                 {
                     Despawn_ServerRpc();
                     return true;
@@ -67,11 +89,6 @@ namespace Island.Gameplay.Services.World.Items
         {
             _worldService.MarkDestroyed(this);
             NetworkObject.Despawn();
-        }
-
-        public override void OnNetworkDespawn()
-        {
-            _health.OnValueChanged -= OnHealthChanged;
         }
     }
 }

@@ -80,8 +80,8 @@ namespace Island.Common.Services
         {
             var worldObject = Instantiate(_worldConfig.WorldItemObjects[request.Type], request.Position, request.Rotation);
             _container.Inject(worldObject);
-            worldObject.Init(request.Health, request.Hash);
             worldObject.NetworkObject.Spawn();
+            worldObject.Init(request.Health, request.Hash);
         }
     }
 }
