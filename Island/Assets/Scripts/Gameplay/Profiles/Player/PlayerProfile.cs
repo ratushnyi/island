@@ -1,4 +1,7 @@
+using Island.Gameplay.Settings;
 using MemoryPack;
+using UnityEngine;
+using Zenject;
 
 namespace Island.Gameplay.Profiles
 {
@@ -8,6 +11,16 @@ namespace Island.Gameplay.Profiles
         protected override string NetworkName => "PlayerProfile";
         
         [MemoryPackOrder(0)]
-        public int Level { get; set; }
+        public Vector3 Position { get; set; }
+        
+        [MemoryPackOrder(1)]
+        public Quaternion Rotation { get; set; }
+
+        [Inject] private PlayerConfig _playerConfig;
+
+        public override void OnSectionCreated()
+        {
+            Position = _playerConfig.SpawnPosition;
+        }
     }
 }

@@ -31,6 +31,7 @@ namespace Island.Common.Services
         public IObservable<Unit> OnServerStopped => Observable.FromEvent(t => NetworkManager.Singleton.OnPreShutdown += t, t => NetworkManager.Singleton.OnPreShutdown -= t);
         public IReadOnlyReactiveProperty<bool> IsServerPaused => _networkServiceFacade.IsPaused;
         public string ServerId => _networkServiceFacade.ServerId.Value;
+
         public void SetPaused(bool value) => _networkServiceFacade.SetPaused(value);
         public void Spawn(NetworkSpawnRequest request) => _networkServiceFacade.Spawn_ServerRpc(request);
 

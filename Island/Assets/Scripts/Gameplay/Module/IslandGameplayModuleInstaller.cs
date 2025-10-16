@@ -5,6 +5,7 @@ using Island.Gameplay.Configs.World;
 using Island.Gameplay.Panels.HUD;
 using Island.Gameplay.Panels.Inventory;
 using Island.Gameplay.Panels.Pause;
+using Island.Gameplay.Player;
 using Island.Gameplay.Profiles;
 using Island.Gameplay.Profiles.Inventory;
 using Island.Gameplay.Profiles.Stats;
@@ -68,6 +69,7 @@ namespace Island.Gameplay.Module
             Container.BindService<EnergyService>();
             Container.BindService<AimService>();
             Container.BindService<WorldService>();
+            Container.BindService<PlayerService>();
             Container.BindService<NetworkServiceBridge, NetworkServiceFacade>(_networkServiceFacade);
         }
 

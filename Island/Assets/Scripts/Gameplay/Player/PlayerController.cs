@@ -35,9 +35,10 @@ namespace Island.Gameplay.Player
         [Inject] private SettingsService _settingsService;
         [Inject] private InventoryService _inventoryService;
         [Inject] private HUDService _hudService;
-        [Inject] private PlayerConfig _playerConfig;
         [Inject] private CameraConfig _cameraConfig;
         [Inject] private PanelService _panelService;
+        [Inject] private PlayerConfig _playerConfig;
+        [Inject] private PlayerService _playerService;
 
         private Ray _aimRay;
         private float _cameraPitch;
@@ -58,6 +59,8 @@ namespace Island.Gameplay.Player
             {
                 return;
             }
+
+            _playerService.Register(this);
 
             _cinemachineCamera.gameObject.SetActive(true);
             _cinemachineCamera.Lens.FieldOfView = _settingsService.Fov.Value;

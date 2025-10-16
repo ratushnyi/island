@@ -1,4 +1,3 @@
-using System.Linq;
 using Island.Common.Services.Network;
 using Island.Gameplay.Configs.World;
 using UniRx;
@@ -16,7 +15,7 @@ namespace Island.Common.Services
 
         public readonly ReactiveProperty<string> ServerId = new();
         private readonly NetworkVariable<FixedString32Bytes> _serverId = new();
-        
+
         private WorldConfig _worldConfig;
         private DiContainer _container;
 
@@ -50,7 +49,7 @@ namespace Island.Common.Services
             }
 
             _serverId.Value = new FixedString32Bytes(serverId);
-            
+
             ServerId.Value = _serverId.Value.Value;
         }
 
@@ -80,8 +79,9 @@ namespace Island.Common.Services
         {
             var worldObject = Instantiate(_worldConfig.WorldItemObjects[request.Type], request.Position, request.Rotation);
             _container.Inject(worldObject);
-            worldObject.NetworkObject.Spawn();
             worldObject.Init(request.Health, request.Hash);
+            worldObject.NetworkObject.Spawn();
+            worldObject.NetworkObject.TrySetParent(NetworkObject);
         }
     }
 }

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fab1f2858405e41688a0d7f7ba6c02df, type: 3}
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
+  <SpawnPosition>k__BackingField: {x: -110, y: 12, z: -95}
   <JumpForce>k__BackingField: 5
   <Gravity>k__BackingField: 10
   <WalkSpeed>k__BackingField: 5
