@@ -5,6 +5,7 @@ using Island.Gameplay.Services.HUD;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.World;
 using Island.Gameplay.Services.World.Items;
+using Island.Gameplay.Services.World.Producers;
 using Island.Gameplay.Settings;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services.Input;
@@ -76,8 +77,19 @@ namespace Island.Gameplay.Player
             {
                 return;
             }
+            
+            
+            if (_aimService.TargetObject.Value != null )
+            {
+                if (_aimService.TargetObject.Value is WorldProducerObject producer)
+                {
+                    producer.Entity.Perform();
+                    return;
+                } 
+            }
 
-            _inventoryService.Perform().Forget();
+
+            _inventoryService.PerformSelectedObject().Forget();
         }
 
         private void OnFovChanged(int value)
@@ -195,7 +207,7 @@ namespace Island.Gameplay.Player
 
             if (Physics.Raycast(_aimRay, out var hit, _aimMaxDistance, _aimMask, QueryTriggerInteraction.Collide))
             {
-                var worldItem = hit.collider.GetComponentInParent<WorldItemObject>();
+                var worldItem = hit.collider.GetComponentInParent<WorldObjectBase>();
                 if (worldItem != null)
                 {
                     _aimService.SetTarget(worldItem);

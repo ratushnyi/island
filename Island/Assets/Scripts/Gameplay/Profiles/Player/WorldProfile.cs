@@ -11,7 +11,7 @@ namespace Island.Gameplay.Profiles
         public override string Name => "World";
 
         [MemoryPackOrder(0)] public List<NetworkSpawnRequest> WorldItemPlaced { get; set; } = new();
-        [MemoryPackOrder(1)] public HashSet<int> WorldItemDestroyed { get; set; } = new();
-        [MemoryPackOrder(2)] public Dictionary<int, int> WorldItemHealth { get; set; } = new();
+        [MemoryPackOrder(1)] public HashSet<int> WorldObjectDestroyed { get; set; } = new();
+        [MemoryPackOrder(2)] public Dictionary<int, int> ObjectHealth { get; set; } = new();
     }
 }

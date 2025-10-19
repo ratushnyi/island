@@ -1,7 +1,6 @@
 using Island.Common.Services;
 using Island.Gameplay.Configs.World;
 using Island.Gameplay.Profiles;
-using Island.Gameplay.Services.World.Items;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Services;
 using Zenject;
@@ -33,12 +32,12 @@ namespace Island.Gameplay.Services.World
             for (var index = 0; index < _worldConfig.WorldItemPlacement.Count; index++)
             {
                 var item = _worldConfig.WorldItemPlacement[index];
-                if (_worldProfile.WorldItemDestroyed.Contains(item.Hash))
+                if (_worldProfile.WorldObjectDestroyed.Contains(item.Hash))
                 {
                     continue;
                 }
 
-                if (_worldProfile.WorldItemHealth.TryGetValue(item.Hash, out var health))
+                if (_worldProfile.ObjectHealth.TryGetValue(item.Hash, out var health))
                 {
                     item.Health = health;
                 }
@@ -47,21 +46,21 @@ namespace Island.Gameplay.Services.World
             }
         }
 
-        public void MarkDestroyed(WorldItemObject worldItemObject)
+        public void MarkDestroyed(WorldObjectBase worldItemObject)
         {
-            _worldProfile.WorldItemDestroyed.Add(worldItemObject.Hash);
+            _worldProfile.WorldObjectDestroyed.Add(worldItemObject.Hash);
         }
 
-        public void MarkHealth(WorldItemObject worldItemObject)
+        public void MarkHealth(WorldObjectBase worldItemObject)
         {
             if (worldItemObject.Health.Value == 0)
             {
-                _worldProfile.WorldItemHealth.Remove(worldItemObject.Hash);
+                _worldProfile.ObjectHealth.Remove(worldItemObject.Hash);
             }
 
-            if (!_worldProfile.WorldItemHealth.TryAdd(worldItemObject.Hash, worldItemObject.Health.Value))
+            if (!_worldProfile.ObjectHealth.TryAdd(worldItemObject.Hash, worldItemObject.Health.Value))
             {
-                _worldProfile.WorldItemHealth[worldItemObject.Hash] = worldItemObject.Health.Value;
+                _worldProfile.ObjectHealth[worldItemObject.Hash] = worldItemObject.Health.Value;
             }
         }
     }

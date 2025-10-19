@@ -92,18 +92,56 @@ namespace Island.Gameplay.Services.Inventory
             }
         }
 
-        private void Drop(InventoryItemType type)
+        public bool IsSuitable(WorldItemObject worldItem) => IsSuitable(worldItem.ItemEntity.Type, worldItem.ItemEntity.Count);
+
+        public bool IsSuitable(InventoryItemType type, int count)
         {
-            _inventoryProfile.InventoryItems[type].Value--;
+            if (_inventoryProfile.InventoryItems.TryGetValue(type, out var item))
+            {
+                if (item.Value >= count)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
-        public bool TryPut(InventoryItemType type, int count, Func<UniTask> beforeItemAdd = null)
+        public bool TryRemove(WorldItemObject worldItem, Func<UniTask> beforeItemRemove = null) => TryRemove(worldItem.ItemEntity.Type, worldItem.ItemEntity.Count, beforeItemRemove);
+
+        public bool TryRemove(InventoryItemType type, int count, Func<UniTask> beforeItemRemove = null)
+        {
+            if (_inventoryProfile.InventoryItems.TryGetValue(type, out var item))
+            {
+                if (item.Value >= count)
+                {
+                    removeExistItem().Forget();
+                    return true;
+                }
+            }
+
+            return false;
+
+            async UniTask removeExistItem()
+            {
+                if (beforeItemRemove != null)
+                {
+                    await beforeItemRemove.Invoke();
+                }
+
+                item.Value -= count;
+            }
+        }
+
+        public bool TryCollect(WorldItemObject worldItem, Func<UniTask> beforeItemAdd = null) => TryCollect(worldItem.ItemEntity.Type, worldItem.ItemEntity.Count, beforeItemAdd);
+
+        public bool TryCollect(InventoryItemType type, int count, Func<UniTask> beforeItemAdd = null)
         {
             if (type == InventoryItemType.None)
             {
                 return false;
             }
-            
+
             if (_inventoryProfile.InventoryItems.TryGetValue(type, out var existItem))
             {
                 addExistItem().Forget();
@@ -124,6 +162,7 @@ namespace Island.Gameplay.Services.Inventory
                 {
                     await beforeItemAdd.Invoke();
                 }
+
                 existItem.Value += count;
             }
 
@@ -133,7 +172,7 @@ namespace Island.Gameplay.Services.Inventory
                 {
                     await beforeItemAdd.Invoke();
                 }
-                
+
                 if (_inventoryProfile.InventoryItems.TryGetValue(type, out existItem))
                 {
                     existItem.Value += count;
@@ -146,12 +185,7 @@ namespace Island.Gameplay.Services.Inventory
             }
         }
 
-        public bool TryPut(WorldItemObject worldItem)
-        {
-            return TryPut(worldItem.ItemEntity.Type, worldItem.ItemEntity.Count, () => UniTask.CompletedTask);
-        }
-
-        public async UniTask<bool> Perform()
+        public async UniTask<bool> PerformSelectedObject()
         {
             var result = false;
             var item = _inventoryProfile.SelectedItem.Value;
@@ -162,7 +196,7 @@ namespace Island.Gameplay.Services.Inventory
 
                 if (itemModel.IsCountable && result)
                 {
-                    _inventoryProfile.InventoryItems[item].Value--;
+                    TryRemove(item, 1);
                 }
             }
 

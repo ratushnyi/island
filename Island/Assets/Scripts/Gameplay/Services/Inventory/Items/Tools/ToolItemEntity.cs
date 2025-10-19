@@ -1,10 +1,11 @@
 using Cysharp.Threading.Tasks;
+using Island.Gameplay.Services.World.Items;
 using UnityEngine;
 using Zenject;
 
 namespace Island.Gameplay.Services.Inventory.Tools
 {
-    [CreateAssetMenu(menuName = "Tools/HammerTool", fileName = "HammerTool")]
+    [CreateAssetMenu(menuName = "Item/Tool", fileName = "Tool")]
     public class ToolItemEntity : ItemEntityBase
     {
         [SerializeField] private ToolItemType _type;
@@ -26,15 +27,20 @@ namespace Island.Gameplay.Services.Inventory.Tools
                 return new UniTask<bool>(false);
             }
 
+            if (!(_aimService.TargetObject.Value is WorldItemObject itemObject))
+            {
+                return new UniTask<bool>(false);
+            }
+
             if (!UseResources())
             {
                 return new UniTask<bool>(false);
             }
 
-            var result = _aimService.TargetObject.Value.TryDestroy(_type);
+            var result = itemObject.TryDestroy(_type);
             if (result)
             {
-                _inventoryService.TryPut(_aimService.TargetObject.Value);
+                _inventoryService.TryCollect(itemObject);
             }
             
             return new UniTask<bool>(result);

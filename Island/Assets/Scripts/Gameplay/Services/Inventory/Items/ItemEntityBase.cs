@@ -17,6 +17,7 @@ namespace Island.Gameplay.Services.Inventory.Tools
         protected StatsService StatsService;
 
         protected bool UseResources() => StatsService.TryApplyValue(_statType, _value, true);
+        protected bool IsSuitable() => StatsService.IsSuitable(_statType, _value);
 
         [Inject]
         public void Construct(StatsService statsService)

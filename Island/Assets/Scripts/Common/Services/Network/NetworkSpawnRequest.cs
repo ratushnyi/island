@@ -8,13 +8,13 @@ namespace Island.Common.Services.Network
     [Serializable]
     public struct NetworkSpawnRequest : INetworkSerializable
     {
-        public WorldItemType Type;
+        public WorldObjectType Type;
         public Vector3 Position;
         public Quaternion Rotation;
         public int Health;
         public int Hash;
 
-        public NetworkSpawnRequest(WorldItemType type, Vector3 position, Quaternion rotation, int health, int hash)
+        public NetworkSpawnRequest(WorldObjectType type, Vector3 position, Quaternion rotation, int hash, int health = 100)
         {
             Type = type;
             Position = position;

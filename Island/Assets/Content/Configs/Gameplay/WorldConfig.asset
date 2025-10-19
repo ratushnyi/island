@@ -18,6 +18,10 @@ MonoBehaviour:
       Value: {fileID: 1006663758721412829, guid: 1cbe65746ac174fffb4db765e3187b3e, type: 3}
     - Key: 1
       Value: {fileID: 5426607065071548453, guid: 7105f1b9afca0412582257be60806ef2, type: 3}
+    - Key: 2
+      Value: {fileID: 7992178449895667954, guid: 90a36986f6147497eae5ccc3386f11c1, type: 3}
+    - Key: 3
+      Value: {fileID: 7992178449895667954, guid: 30f63c17f5b6a4397b0140efc62928eb, type: 3}
   WorldItemPlacement:
   - Type: 0
     Position: {x: 34.83, y: 15.95, z: 0}
@@ -299,3 +303,13 @@ MonoBehaviour:
     Rotation: {x: 0.040759705, y: 0.3865365, z: -0.09662174, w: 0.9162928}
     Health: 100
     Hash: -2022307867
+  - Type: 2
+    Position: {x: -103.21213, y: 11.11, z: -87.22216}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 0
+    Hash: 0
+  - Type: 3
+    Position: {x: -102.355255, y: 11.08, z: -80.589294}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 0
+    Hash: 0

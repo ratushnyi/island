@@ -1,9 +1,11 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AYellowpaper.SerializedCollections;
 using Island.Common.Services.Network;
+using Island.Gameplay.Services.World;
 using Island.Gameplay.Services.World.Items;
+using Island.Gameplay.Services.World.Producers;
 using TendedTarsier.Core.Services.Modules;
 using UnityEditor;
 using UnityEngine;
@@ -14,69 +16,75 @@ namespace Island.Gameplay.Configs.World
     public class WorldConfig : ConfigBase
     {
         [field: SerializedDictionary("Type", "Prefab")]
-        public SerializedDictionary<WorldItemType, WorldItemObject> WorldItemObjects;
-        [field: SerializeField]
-        public List<NetworkSpawnRequest> WorldItemPlacement;
+        public SerializedDictionary<WorldObjectType, WorldObjectBase> WorldItemObjects;
+
+        [field: SerializeField] public List<NetworkSpawnRequest> WorldItemPlacement;
+
+        public override IEnumerable InjectItems()
+        {
+            return WorldItemObjects.Select(t => t.Value as WorldProducerObject).Where(t => t != null).Select(t => t.Entity);
+        }
     }
-    
+
 #if UNITY_EDITOR
-[CustomEditor(typeof(WorldConfig))]
-public class WorldConfigEditor : Editor
-{
-    private WorldConfig _worldConfig;
-    
-    public void OnEnable()
+    [CustomEditor(typeof(WorldConfig))]
+    public class WorldConfigEditor : Editor
     {
-        _worldConfig = (WorldConfig)target;
-    }
+        private WorldConfig _worldConfig;
 
-    public override void OnInspectorGUI()
-    {
-        DrawDropArea();
-        DrawDefaultInspector();
-    }
-
-    private void DrawDropArea()
-    {
-        var rect = GUILayoutUtility.GetRect(0, 80, GUILayout.ExpandWidth(true));
-        GUI.Box(rect, "Drag & Drop scene objects here", EditorStyles.helpBox);
-
-        var e = Event.current;
-        if (!rect.Contains(e.mousePosition)) return;
-
-        if (e.type == EventType.DragUpdated || e.type == EventType.DragPerform)
+        public void OnEnable()
         {
-            DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+            _worldConfig = (WorldConfig)target;
+        }
 
-            if (e.type == EventType.DragPerform)
+        public override void OnInspectorGUI()
+        {
+            DrawDropArea();
+            DrawDefaultInspector();
+        }
+
+        private void DrawDropArea()
+        {
+            var rect = GUILayoutUtility.GetRect(0, 80, GUILayout.ExpandWidth(true));
+            GUI.Box(rect, "Drag & Drop scene objects here", EditorStyles.helpBox);
+
+            var e = Event.current;
+            if (!rect.Contains(e.mousePosition)) return;
+
+            if (e.type == EventType.DragUpdated || e.type == EventType.DragPerform)
             {
-                DragAndDrop.AcceptDrag();
+                DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
 
-                var dragged = DragAndDrop.objectReferences;
-                var fromHierarchy = dragged
-                    .Select(o => (o as GameObject)?.GetComponent<WorldItemObject>())
-                    .Where(t => t != null)
-                    .ToArray();
+                if (e.type == EventType.DragPerform)
+                {
+                    DragAndDrop.AcceptDrag();
 
-                AddTransforms(fromHierarchy);
+                    var dragged = DragAndDrop.objectReferences;
+                    var fromHierarchy = dragged
+                        .Select(o => (o as GameObject)?.GetComponent<WorldObjectBase>())
+                        .Where(t => t != null)
+                        .ToArray();
+
+                    AddTransforms(fromHierarchy);
+                }
+
+                e.Use();
             }
-            e.Use();
         }
-    }
 
-    private void AddTransforms(WorldItemObject[] wolrdItems)
-    {
-        if (_worldConfig == null || wolrdItems == null || wolrdItems.Length == 0) return;
-
-        Undo.RecordObject(_worldConfig, "Add WorldItemObject");
-
-        foreach (var item in wolrdItems)
+        private void AddTransforms(WorldObjectBase[] worldItems)
         {
-            _worldConfig.WorldItemPlacement.Add(new NetworkSpawnRequest(item.Type, item.transform.position, item.transform.rotation, item.Health.Value, HashCode.Combine(item.Type, item.transform.position, item.transform.rotation)));
-        }
+            if (_worldConfig == null || worldItems == null || worldItems.Length == 0) return;
 
-        EditorUtility.SetDirty(_worldConfig);
+            Undo.RecordObject(_worldConfig, "Add WorldItemObject");
+
+            foreach (var item in worldItems)
+            {
+                _worldConfig.WorldItemPlacement.Add(new NetworkSpawnRequest(item.Type, item.transform.position, item.transform.rotation, item.Hash, item.Health.Value));
+            }
+
+            EditorUtility.SetDirty(_worldConfig);
+        }
     }
-}
 #endif
 }
