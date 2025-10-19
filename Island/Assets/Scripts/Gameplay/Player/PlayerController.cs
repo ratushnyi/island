@@ -78,16 +78,11 @@ namespace Island.Gameplay.Player
                 return;
             }
             
-            
-            if (_aimService.TargetObject.Value != null )
+            if (_aimService.TargetObject.Value is WorldProducerObject producer)
             {
-                if (_aimService.TargetObject.Value is WorldProducerObject producer)
-                {
-                    producer.Entity.Perform();
-                    return;
-                } 
+                producer.Perform();
+                return;
             }
-
 
             _inventoryService.PerformSelectedObject().Forget();
         }

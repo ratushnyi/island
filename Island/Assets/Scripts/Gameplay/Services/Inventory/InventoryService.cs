@@ -133,6 +133,21 @@ namespace Island.Gameplay.Services.Inventory
             }
         }
 
+        public bool IsEnoughSpace(WorldItemObject worldItem) => IsSuitable(worldItem.ItemEntity.Type, worldItem.ItemEntity.Count);
+
+        public bool IsEnoughSpace(InventoryItemType type, int count)
+        {
+            if (!_inventoryProfile.InventoryItems.TryGetValue(type, out var item))
+            {
+                if (_inventoryProfile.InventoryItems.Count >= _inventoryConfig.InventoryCapacity)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public bool TryCollect(WorldItemObject worldItem, Func<UniTask> beforeItemAdd = null) => TryCollect(worldItem.ItemEntity.Type, worldItem.ItemEntity.Count, beforeItemAdd);
 
         public bool TryCollect(InventoryItemType type, int count, Func<UniTask> beforeItemAdd = null)
