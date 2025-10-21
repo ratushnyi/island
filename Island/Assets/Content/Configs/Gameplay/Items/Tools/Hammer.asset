@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <StatFeeModel>k__BackingField:
   - <Type>k__BackingField: 1
-    <Rate>k__BackingField: 0
-    <Value>k__BackingField: -20
+    <Rate>k__BackingField: 1
+    <Value>k__BackingField: -10
   <IsUsable>k__BackingField: 1
   _type: 1

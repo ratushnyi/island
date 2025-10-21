@@ -22,20 +22,7 @@ namespace Island.Gameplay.Services.Inventory.Tools
             }
         }
 
-        public virtual bool IsEnoughResources()
-        {
-            foreach (var fee in StatFeeModel)
-            {
-                if (!StatsService.IsSuitable(fee.Type, fee.Value))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        public virtual UniTask<bool> Perform()
+        public virtual UniTask<bool> Perform(float deltaTime)
         {
             if (IsUsable)
             {

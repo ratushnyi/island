@@ -3,13 +3,11 @@ using Island.Common.Services;
 using Island.Gameplay.Services;
 using Island.Gameplay.Services.HUD;
 using Island.Gameplay.Services.Inventory;
+using Island.Gameplay.Services.Stats;
 using Island.Gameplay.Services.World;
-using Island.Gameplay.Services.World.Items;
-using Island.Gameplay.Services.World.Producers;
 using Island.Gameplay.Settings;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services.Input;
-using TendedTarsier.Core.Utilities.Extensions;
 using UniRx;
 using Unity.Cinemachine;
 using Unity.Netcode;
@@ -31,8 +29,8 @@ namespace Island.Gameplay.Player
 
         [Inject] private InputService _inputService;
         [Inject] private WorldService _worldService;
-        [Inject] private EnergyService _energyService;
         [Inject] private AimService _aimService;
+        [Inject] private StatsService _statService;
         [Inject] private SettingsService _settingsService;
         [Inject] private InventoryService _inventoryService;
         [Inject] private HUDService _hudService;
@@ -50,8 +48,8 @@ namespace Island.Gameplay.Player
 
         private bool SprintButtonToggleState
         {
-            get => !InputExtensions.IsMouseKeyboardInput && _energyService.IsSprintPerformed.Value;
-            set => _energyService.IsSprintPerformed.Value = value;
+            get => !InputExtensions.IsMouseKeyboardInput && _statService.IsSprintPerformed.Value;
+            set => _statService.IsSprintPerformed.Value = value;
         }
 
         public override void OnNetworkSpawn()
@@ -67,24 +65,15 @@ namespace Island.Gameplay.Player
             _cinemachineCamera.Lens.FieldOfView = _settingsService.Fov.Value;
 
             Observable.EveryUpdate().Subscribe(OnTick).AddTo(this);
-            _inputService.OnInteractButtonStarted.Subscribe(OnUseButtonClicked).AddTo(this);
             _settingsService.Fov.Subscribe(OnFovChanged).AddTo(this);
         }
 
-        private void OnUseButtonClicked(InputAction.CallbackContext _)
+        private void OnUseButtonClicked(float deltaTime)
         {
-            if (!IsOwner)
+            if (_inputService.PlayerActions.Interact.inProgress)
             {
-                return;
+                _inventoryService.PerformSelectedObject(deltaTime).Forget();
             }
-            
-            if (_aimService.TargetObject.Value is WorldProducerObject producer)
-            {
-                producer.Perform().Forget();
-                return;
-            }
-
-            _inventoryService.PerformSelectedObject().Forget();
         }
 
         private void OnFovChanged(int value)
@@ -94,6 +83,7 @@ namespace Island.Gameplay.Player
 
         private void OnTick(long frame)
         {
+            OnUseButtonClicked(Time.deltaTime);
             HandleSprint(Time.deltaTime);
             HandleVerticalVelocity(Time.deltaTime);
             HandleMove(Time.deltaTime);
@@ -150,7 +140,7 @@ namespace Island.Gameplay.Player
                 SprintButtonToggleState = true;
             }
 
-            if (IsRunning && _energyService.TrackSprint(deltaTime))
+            if (IsRunning && _statService.TrackFee(_playerConfig.SprintFee, deltaTime))
             {
                 _sprintLerp = Mathf.Lerp(_sprintLerp, 1, deltaTime * _playerConfig.SprintGetSpeed);
             }

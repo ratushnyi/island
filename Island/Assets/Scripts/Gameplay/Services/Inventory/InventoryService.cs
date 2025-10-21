@@ -92,7 +92,7 @@ namespace Island.Gameplay.Services.Inventory
             }
         }
 
-        public bool IsSuitable(WorldItemObject worldItem) => IsSuitable(worldItem.ItemEntity.Type, worldItem.ItemEntity.Count);
+        public bool IsSuitable(ItemEntity itemEntity) => IsSuitable(itemEntity.Type, itemEntity.Count);
 
         public bool IsSuitable(InventoryItemType type, int count)
         {
@@ -107,7 +107,7 @@ namespace Island.Gameplay.Services.Inventory
             return false;
         }
 
-        public bool TryRemove(WorldItemObject worldItem, Func<UniTask> beforeItemRemove = null) => TryRemove(worldItem.ItemEntity.Type, worldItem.ItemEntity.Count, beforeItemRemove);
+        public bool TryRemove(ItemEntity itemEntity, Func<UniTask> beforeItemRemove = null) => TryRemove(itemEntity.Type, itemEntity.Count, beforeItemRemove);
 
         public bool TryRemove(InventoryItemType type, int count, Func<UniTask> beforeItemRemove = null)
         {
@@ -133,9 +133,9 @@ namespace Island.Gameplay.Services.Inventory
             }
         }
 
-        public bool IsEnoughSpace(WorldItemObject worldItem) => IsSuitable(worldItem.ItemEntity.Type, worldItem.ItemEntity.Count);
+        public bool IsEnoughSpace(ItemEntity itemEntity) => IsEnoughSpace(itemEntity.Type);
 
-        public bool IsEnoughSpace(InventoryItemType type, int count)
+        public bool IsEnoughSpace(InventoryItemType type)
         {
             if (!_inventoryProfile.InventoryItems.TryGetValue(type, out var item))
             {
@@ -148,7 +148,7 @@ namespace Island.Gameplay.Services.Inventory
             return true;
         }
 
-        public bool TryCollect(WorldItemObject worldItem, Func<UniTask> beforeItemAdd = null) => TryCollect(worldItem.ItemEntity.Type, worldItem.ItemEntity.Count, beforeItemAdd);
+        public bool TryCollect(ItemEntity itemEntity, Func<UniTask> beforeItemAdd = null) => TryCollect(itemEntity.Type, itemEntity.Count, beforeItemAdd);
 
         public bool TryCollect(InventoryItemType type, int count, Func<UniTask> beforeItemAdd = null)
         {
@@ -200,19 +200,15 @@ namespace Island.Gameplay.Services.Inventory
             }
         }
 
-        public async UniTask<bool> PerformSelectedObject()
+        public async UniTask<bool> PerformSelectedObject(float deltaTime)
         {
-            var result = false;
             var item = _inventoryProfile.SelectedItem.Value;
-            if (item != InventoryItemType.None)
-            {
-                var itemModel = _inventoryConfig[item];
-                result = await itemModel.Perform();
+            var itemModel = _inventoryConfig[item];
+            var result = await itemModel.Perform(deltaTime);
 
-                if (itemModel.IsDisposable && result)
-                {
-                    TryRemove(item, 1);
-                }
+            if (itemModel.IsDisposable && result)
+            {
+                TryRemove(item, 1);
             }
 
             return result;

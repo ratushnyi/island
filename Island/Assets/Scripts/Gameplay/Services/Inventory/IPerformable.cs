@@ -4,6 +4,6 @@ namespace Island.Gameplay.Services.Inventory
 {
     public interface IPerformable
     {
-        UniTask<bool> Perform();
+        UniTask<bool> Perform(float deltaTime);
     }
 }

@@ -20,6 +20,8 @@ namespace Island.Gameplay.Services.Stats
         private StatsConfig _statsConfig;
         private StatsProfile _statsProfile;
 
+        public ReactiveProperty<bool> IsSprintPerformed { get; set; } = new();
+
         [Inject]
         private void Construct(
             HUDService hudService,
@@ -217,6 +219,23 @@ namespace Island.Gameplay.Services.Stats
             return Observable.Timer(TimeSpan.FromSeconds(rate)).Repeat()
                 .Subscribe(_ => TryApplyValue(type, value))
                 .AddTo(CompositeDisposable);
+        }
+        
+        public bool TrackFee(StatFeeModel feeModel, float duration)
+        {
+            var result = false;
+            if (feeModel.Deposit > duration)
+            {
+                feeModel.Deposit -= duration;
+                result = true;
+            }
+            else if (TryApplyValue(feeModel, true))
+            {
+                feeModel.Deposit = feeModel.Rate;
+                result = true;
+            }
+
+            return result;
         }
     }
 }

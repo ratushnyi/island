@@ -14,5 +14,7 @@ namespace Island.Gameplay.Configs.Stats
 
         [field: SerializeField]
         public int Value { get; set; }
+
+        public float Deposit { get; set; }
     }
 }

@@ -75,6 +75,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  Health:
+    value: 100
   _tools:
     _serializedList:
     - Key: 3
@@ -87,13 +89,13 @@ MonoBehaviour:
       Value: {fileID: 8011305468403660441}
     - Key: 32
       Value: {fileID: 4181247542034827241}
-  _collider: {fileID: 5117536019207458916}
-  _itemEntity:
+  _materialsItems: []
+  _resultItem:
     _type: 1
     _count: 10
   _type: 0
-  Health:
-    value: 100
+  _interactType: 2
+  _duration: 5
 --- !u!65 &5117536019207458916
 BoxCollider:
   m_ObjectHideFlags: 0

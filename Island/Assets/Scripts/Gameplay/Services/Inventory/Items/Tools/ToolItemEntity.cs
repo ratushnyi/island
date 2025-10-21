@@ -9,43 +9,31 @@ namespace Island.Gameplay.Services.Inventory.Tools
     public class ToolItemEntity : ItemEntityBase
     {
         [SerializeField] private ToolItemType _type;
-        
-        private AimService _aimService;
-        private InventoryService _inventoryService;
+        [Inject] private AimService _aimService;
 
-        [Inject]
-        public void Construct(AimService aimService, InventoryService inventoryService)
-        {
-            _aimService = aimService;
-            _inventoryService = inventoryService;
-        }
-
-        public override UniTask<bool> Perform()
+        public override async UniTask<bool> Perform(float deltaTime)
         {
             if (_aimService.TargetObject.Value == null)
             {
-                return new UniTask<bool>(false);
+                return false;
             }
 
-            if (!(_aimService.TargetObject.Value is WorldItemObject itemObject))
+            if (_aimService.TargetObject.Value is not WorldItemObject itemObject)
             {
-                return new UniTask<bool>(false);
+                return false;
             }
 
-            if (!IsEnoughResources())
+            foreach (var fee in StatFeeModel)
             {
-                return new UniTask<bool>(false);
+                if (!StatsService.TrackFee(fee, deltaTime))
+                {
+                    return false;
+                }
             }
 
-            Pay();
+            var result = await itemObject.Perform(_type);
 
-            var result = itemObject.TryDestroy(_type);
-            if (result)
-            {
-                _inventoryService.TryCollect(itemObject);
-            }
-            
-            return new UniTask<bool>(result);
+            return result;
         }
     }
 }

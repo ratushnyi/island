@@ -66,7 +66,6 @@ namespace Island.Gameplay.Module
             Container.BindService<HUDService>();
             Container.BindService<InventoryService>();
             Container.BindService<StatsService>();
-            Container.BindService<EnergyService>();
             Container.BindService<AimService>();
             Container.BindService<WorldService>();
             Container.BindService<PlayerService>();

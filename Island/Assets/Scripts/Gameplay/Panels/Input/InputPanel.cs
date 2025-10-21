@@ -1,5 +1,6 @@
 using Island.Gameplay.Player;
 using Island.Gameplay.Services;
+using Island.Gameplay.Services.Stats;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Utilities.Extensions;
 using UniRx;
@@ -15,15 +16,15 @@ namespace Island.Gameplay.Panels.HUD
 
         [SerializeField] private Image _runImage;
         [SerializeField] private Color _runImageEnabledColor;
+        [Inject] private StatsService _statService;
         private Color _runImageDefaultColor;
-        [Inject] private EnergyService _energyService;
 
         protected override void Initialize()
         {
             if (!InputExtensions.IsMouseKeyboardInput)
             {
                 _runImageDefaultColor = _runImage.color;
-                _energyService.IsSprintPerformed.Subscribe(OnSprintButtonToggleChanged).AddTo(this);
+                _statService.IsSprintPerformed.Subscribe(OnSprintButtonToggleChanged).AddTo(this);
             }
         }
 

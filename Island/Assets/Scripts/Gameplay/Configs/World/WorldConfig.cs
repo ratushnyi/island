@@ -5,7 +5,6 @@ using AYellowpaper.SerializedCollections;
 using Island.Common.Services.Network;
 using Island.Gameplay.Services.World;
 using Island.Gameplay.Services.World.Items;
-using Island.Gameplay.Services.World.Producers;
 using TendedTarsier.Core.Services.Modules;
 using UnityEditor;
 using UnityEngine;
@@ -19,11 +18,6 @@ namespace Island.Gameplay.Configs.World
         public SerializedDictionary<WorldObjectType, WorldObjectBase> WorldItemObjects;
 
         [field: SerializeField] public List<NetworkSpawnRequest> WorldItemPlacement;
-
-        public override IEnumerable InjectItems()
-        {
-            return WorldItemObjects.Select(t => t.Value as WorldProducerObject).Where(t => t != null).Select(t => t.Entity);
-        }
     }
 
 #if UNITY_EDITOR

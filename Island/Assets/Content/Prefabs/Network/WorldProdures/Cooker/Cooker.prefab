@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3451616297354679487}
   - component: {fileID: 8653814253975207317}
   - component: {fileID: 3821721149766240113}
-  - component: {fileID: 7992178449895667954}
+  - component: {fileID: 36907340526176770}
   m_Layer: 7
   m_Name: Cooker
   m_TagString: Item
@@ -81,7 +81,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &7992178449895667954
+--- !u!114 &36907340526176770
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -90,16 +90,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 5782650272371915651}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce4159657b4b42eda43dd601c3c1d9b3, type: 3}
+  m_Script: {fileID: 11500000, guid: b149e6860f9f45468a2310edbdf6478e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   Health:
-    value: 0
-  _entity: {fileID: 11400000, guid: bbc84fd7702fb423cb08bf1cfcea4b25, type: 2}
-  _name: Coocker
-  _type: 3
+    value: 100
+  _tools:
+    _serializedList: []
+  _healthView:
+    _serializedList:
+    - Key: 0
+      Value: {fileID: 1556371855879098979}
+  _materialsItems:
+  - _type: 1
+    _count: 1
+  - _type: 3
+    _count: 1
+  _resultItem:
+    _type: 4
+    _count: 1
   _interactType: 1
+  _type: 3
+  _duration: 5
 --- !u!1001 &1826277978005040946
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -163,8 +176,42 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 668e4e5c4ba4441abad7c7030e193973, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8846155259623042598}
   m_SourcePrefab: {fileID: 100100000, guid: 668e4e5c4ba4441abad7c7030e193973, type: 3}
+--- !u!1 &1556371855879098979 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 668e4e5c4ba4441abad7c7030e193973, type: 3}
+  m_PrefabInstance: {fileID: 1826277978005040946}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8846155259623042598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1556371855879098979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b149e6860f9f45468a2310edbdf6478e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  Health:
+    value: 0
+  _tools:
+    _serializedList: []
+  _healthView:
+    _serializedList: []
+  _materialsItems: []
+  _resultItem:
+    _type: 0
+    _count: 1
+  _interactType: 0
+  _type: 0
+  _duration: 0
 --- !u!4 &2220986379929028825 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 668e4e5c4ba4441abad7c7030e193973, type: 3}
