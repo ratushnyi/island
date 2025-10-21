@@ -32,10 +32,12 @@ namespace Island.Gameplay.Services.Inventory.Tools
                 return new UniTask<bool>(false);
             }
 
-            if (!UseResources())
+            if (!IsEnoughResources())
             {
                 return new UniTask<bool>(false);
             }
+
+            Pay();
 
             var result = itemObject.TryDestroy(_type);
             if (result)

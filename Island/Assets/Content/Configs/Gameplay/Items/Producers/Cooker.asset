@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edb03c1427544b44902f362796ef7db5, type: 3}
   m_Name: Cooker
   m_EditorClassIdentifier: 
-  _statType: 1
-  _value: 5
+  <StatFeeModel>k__BackingField:
+  - <Type>k__BackingField: 0
+    <Rate>k__BackingField: 0
+    <Value>k__BackingField: 0
+  <IsUsable>k__BackingField: 1
   _receipt:
     Materials:
       _serializedList:
@@ -23,3 +26,4 @@ MonoBehaviour:
         Value: 1
     ResultItemType: 4
     ResultItemCount: 1
+  _duration: 10

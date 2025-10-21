@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebad7176f5914e3f86654b69697458fc, type: 3}
   m_Name: CookedFish
   m_EditorClassIdentifier: 
-  _statType: 3
-  _value: 10
+  <StatFeeModel>k__BackingField:
+  - <Type>k__BackingField: 3
+    <Rate>k__BackingField: 0
+    <Value>k__BackingField: 10
+  <IsUsable>k__BackingField: 1

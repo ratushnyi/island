@@ -9,8 +9,9 @@ namespace Island.Gameplay.Services.Inventory.Producer
     public class ProducerItemEntity : ItemEntityBase
     {
         [SerializeField] private ProducerReceiptEntity _receipt;
-
+        [SerializeField] private float _duration;
         private InventoryService _inventoryService;
+        public float Duration => _duration;
 
         [Inject]
         public void Construct(InventoryService inventoryService)
@@ -20,22 +21,30 @@ namespace Island.Gameplay.Services.Inventory.Producer
 
         public override UniTask<bool> Perform()
         {
-            if (!IsSuitable())
+            _inventoryService.TryCollect(_receipt.ResultItemType, _receipt.ResultItemCount);
+            
+            return new UniTask<bool>(true);
+        }
+
+        public override void Pay()
+        {
+            base.Pay();
+            _receipt.UseResources(_inventoryService);
+        }
+
+        public override bool IsEnoughResources()
+        {
+            if (!base.IsEnoughResources())
             {
-                return new UniTask<bool>(false);
+                return false;
             }
 
             if (!_receipt.IsSuitable(_inventoryService))
             {
-                return new UniTask<bool>(false);
+                return false;
             }
 
-            UseResources();
-            _receipt.UseResources(_inventoryService);
-
-            _inventoryService.TryCollect(_receipt.ResultItemType, _receipt.ResultItemCount);
-
-            return new UniTask<bool>(true);
+            return true;
         }
     }
 }

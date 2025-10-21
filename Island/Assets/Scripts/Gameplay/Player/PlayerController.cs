@@ -80,7 +80,7 @@ namespace Island.Gameplay.Player
             
             if (_aimService.TargetObject.Value is WorldProducerObject producer)
             {
-                producer.Perform();
+                producer.Perform().Forget();
                 return;
             }
 

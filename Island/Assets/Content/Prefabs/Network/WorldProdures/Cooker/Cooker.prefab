@@ -94,9 +94,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  Health:
+    value: 0
   _entity: {fileID: 11400000, guid: bbc84fd7702fb423cb08bf1cfcea4b25, type: 2}
   _name: Coocker
   _type: 3
+  _interactType: 1
 --- !u!1001 &1826277978005040946
 PrefabInstance:
   m_ObjectHideFlags: 0

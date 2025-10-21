@@ -94,9 +94,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  Health:
+    value: 0
   _entity: {fileID: 11400000, guid: 8ffdba35089ec482783ad1f940a37047, type: 2}
   _name: Fisher
   _type: 3
+  _interactType: 2
 --- !u!1001 &1826277978005040946
 PrefabInstance:
   m_ObjectHideFlags: 0

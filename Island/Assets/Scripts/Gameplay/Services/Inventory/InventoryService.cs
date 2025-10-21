@@ -209,7 +209,7 @@ namespace Island.Gameplay.Services.Inventory
                 var itemModel = _inventoryConfig[item];
                 result = await itemModel.Perform();
 
-                if (itemModel.IsCountable && result)
+                if (itemModel.IsDisposable && result)
                 {
                     TryRemove(item, 1);
                 }

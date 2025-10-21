@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Island.Gameplay.Configs.Stats;
 using Island.Gameplay.Services.Stats;
@@ -9,25 +10,39 @@ namespace Island.Gameplay.Services.Inventory.Tools
     [CreateAssetMenu(menuName = "Item/Base", fileName = "Base")]
     public class ItemEntityBase : ScriptableObject, IPerformable
     {
-        [SerializeField]
-        private StatType _statType;
-        [SerializeField]
-        private int _value;
+        [field: SerializeField] public List<StatFeeModel> StatFeeModel { private set; get; }
+        [field: SerializeField] public bool IsUsable { private set; get; }
+        [Inject] protected StatsService StatsService;
 
-        protected StatsService StatsService;
-
-        protected bool UseResources() => StatsService.TryApplyValue(_statType, _value, true);
-        protected bool IsSuitable() => StatsService.IsSuitable(_statType, _value);
-
-        [Inject]
-        public void Construct(StatsService statsService)
+        public virtual void Pay()
         {
-            StatsService = statsService;
+            foreach (var fee in StatFeeModel)
+            {
+                StatsService.TryApplyValue(fee.Type, fee.Value, true);
+            }
+        }
+
+        public virtual bool IsEnoughResources()
+        {
+            foreach (var fee in StatFeeModel)
+            {
+                if (!StatsService.IsSuitable(fee.Type, fee.Value))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public virtual UniTask<bool> Perform()
         {
-            return new UniTask<bool>(UseResources());
+            if (IsUsable)
+            {
+                Pay();
+            }
+
+            return new UniTask<bool>(IsUsable);
         }
     }
 }
