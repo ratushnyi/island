@@ -79,7 +79,7 @@ namespace Island.Gameplay.Services.Inventory
                     _inventoryProfile.InventoryItems.Remove(type);
                     if (_inventoryProfile.SelectedItem.Value == type)
                     {
-                        _inventoryProfile.SelectedItem.Value = default;
+                        _inventoryProfile.SelectedItem.Value = InventoryItemType.Hand;
                     }
                 }
 
@@ -200,11 +200,11 @@ namespace Island.Gameplay.Services.Inventory
             }
         }
 
-        public async UniTask<bool> PerformSelectedObject(float deltaTime)
+        public async UniTask<bool> PerformSelectedObject(bool isJustStarted, float deltaTime)
         {
             var item = _inventoryProfile.SelectedItem.Value;
             var itemModel = _inventoryConfig[item];
-            var result = await itemModel.Perform(deltaTime);
+            var result = await itemModel.Perform(isJustStarted, deltaTime);
 
             if (itemModel.IsDisposable && result)
             {

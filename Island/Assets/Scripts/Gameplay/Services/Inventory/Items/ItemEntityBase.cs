@@ -14,22 +14,40 @@ namespace Island.Gameplay.Services.Inventory.Tools
         [field: SerializeField] public bool IsUsable { private set; get; }
         [Inject] protected StatsService StatsService;
 
+        public virtual bool Check()
+        {
+            foreach (var fee in StatFeeModel)
+            {
+                if (!StatsService.IsSuitable(fee.Type, fee.Value))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         public virtual void Pay()
         {
             foreach (var fee in StatFeeModel)
             {
-                StatsService.TryApplyValue(fee.Type, fee.Value, true);
+                StatsService.TryApplyValue(fee.Type, fee.Value);
             }
         }
 
-        public virtual UniTask<bool> Perform(float deltaTime)
+        public virtual UniTask<bool> Perform(bool isJustStarted, float deltaTime)
         {
-            if (IsUsable)
+            var result = false;
+            if (isJustStarted)
             {
-                Pay();
+                result = IsUsable;
+                if (IsUsable)
+                {
+                    Pay();
+                }
             }
 
-            return new UniTask<bool>(IsUsable);
+            return new UniTask<bool>(result);
         }
     }
 }

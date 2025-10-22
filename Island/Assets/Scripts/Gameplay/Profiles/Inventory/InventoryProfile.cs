@@ -17,7 +17,7 @@ namespace Island.Gameplay.Profiles.Inventory
         public ReactiveDictionary<InventoryItemType, ReactiveProperty<int>> InventoryItems { get; [UsedImplicitly] set; } = new();
 
         [MemoryPackOrder(1), MemoryPackAllowSerialize]
-        public ReactiveProperty<InventoryItemType> SelectedItem { get; [UsedImplicitly] set; } = new(default);
+        public ReactiveProperty<InventoryItemType> SelectedItem { get; [UsedImplicitly] set; } = new(InventoryItemType.Hand);
 
         private InventoryConfig _config;
 

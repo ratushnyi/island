@@ -72,7 +72,7 @@ namespace Island.Gameplay.Player
         {
             if (_inputService.PlayerActions.Interact.inProgress)
             {
-                _inventoryService.PerformSelectedObject(deltaTime).Forget();
+                _inventoryService.PerformSelectedObject(_inputService.PlayerActions.Interact.WasPressedThisFrame(), deltaTime).Forget();
             }
         }
 
@@ -137,6 +137,7 @@ namespace Island.Gameplay.Player
                     return;
                 }
 
+                _playerConfig.SprintFee.Deposit = 0;
                 SprintButtonToggleState = true;
             }
 

@@ -102,14 +102,15 @@ MonoBehaviour:
     _serializedList:
     - Key: 0
       Value: {fileID: 1556371855879098979}
+  _progressBar: {fileID: 0}
   _materialsItems:
-  - _type: 2
+  - _type: 3
     _count: 5
   _resultItem:
-    _type: 3
+    _type: 4
     _count: 1
-  _interactType: 2
   _type: 2
+  _interactType: 2
   _duration: 5
 --- !u!1001 &1826277978005040946
 PrefabInstance:
@@ -203,12 +204,13 @@ MonoBehaviour:
     _serializedList: []
   _healthView:
     _serializedList: []
+  _progressBar: {fileID: 0}
   _materialsItems: []
   _resultItem:
     _type: 0
     _count: 1
-  _interactType: 0
   _type: 0
+  _interactType: 0
   _duration: 0
 --- !u!4 &2220986379929028825 stripped
 Transform:

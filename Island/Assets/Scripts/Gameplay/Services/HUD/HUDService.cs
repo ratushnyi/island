@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using Island.Common.Services;
 using Island.Gameplay.Configs.Stats;
@@ -6,6 +7,7 @@ using Island.Gameplay.Panels.HUD;
 using Island.Gameplay.Panels.Inventory;
 using Island.Gameplay.Panels.Pause;
 using Island.Gameplay.Profiles.Stats;
+using Island.Gameplay.Services.World.Items;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services;
@@ -156,6 +158,11 @@ namespace Island.Gameplay.Services.HUD
             statBar.SetSprite(statModel.Sprite);
             statProfile.Value.SkipLatestValueOnSubscribe().Subscribe(t => statBar.UpdateValue(t)).AddTo(CompositeDisposable);
             statProfile.Range.SkipLatestValueOnSubscribe().Subscribe(t => statBar.UpdateRange(t)).AddTo(CompositeDisposable);
+        }
+
+        public (UniTask Task, IDisposable Disposable) ShowProgressBar(float duration)
+        {
+            return (_hudPanel.Instance.ProgressBar.Show(duration), _hudPanel.Instance.ProgressBar);
         }
     }
 }

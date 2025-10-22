@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Island.Common.Services;
 using Island.Gameplay.Configs.Stats;
 using Island.Gameplay.Panels.Inventory;
+using Island.Gameplay.Services.HUD;
 using TendedTarsier.Core.Panels;
 using TMPro;
 using UnityEngine;
@@ -15,6 +16,7 @@ namespace Island.Gameplay.Panels.HUD
         [field: SerializeField] public InfoTitleView InfoTitle { get; set; }
         [field: SerializeField] public InventoryCellView SelectedItem { get; set; }
         [field: SerializeField] public Transform StatsBarContainer { get; set; }
+        [field: SerializeField] public ProgressBar ProgressBar { get; set; }
 
         private NetworkService _networkService;
         private StatsConfig _statsConfig;

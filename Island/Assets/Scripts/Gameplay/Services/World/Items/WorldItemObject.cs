@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using AYellowpaper.SerializedCollections;
 using Cysharp.Threading.Tasks;
+using Island.Gameplay.Services.HUD;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Inventory.Items;
 using Island.Gameplay.Services.Inventory.Tools;
@@ -21,6 +23,7 @@ namespace Island.Gameplay.Services.World.Items
         [SerializeField, SerializedDictionary("Health", "ViewObject")]
         private SerializedDictionary<int, GameObject> _healthView;
 
+        [SerializeField] private ProgressBar _progressBar;
         [SerializeField] private List<ItemEntity> _materialsItems;
         [SerializeField] private ItemEntity _resultItem;
         [SerializeField] private WorldObjectType _type;
@@ -31,9 +34,9 @@ namespace Island.Gameplay.Services.World.Items
         [Inject] private InputService _inputService;
         [Inject] private AimService _aimService;
         [Inject] private StatsService _statsService;
+        [Inject] private HUDService _hudService;
+        private UniTaskCompletionSource _completionSource;
 
-        private UniTask<int> HoldAwaiter;
-        private UniTask DelayAwaiter;
         public override WorldObjectType Type => _type;
         public override string Name => _type.ToString();
 
@@ -53,12 +56,12 @@ namespace Island.Gameplay.Services.World.Items
             }
         }
 
-        public async UniTask<bool> Perform(ToolItemType toolType)
+        public async UniTask<bool> Perform(ToolItemType toolType, bool isSuccess)
         {
-            _tools.TryGetValue(ToolItemType.None, out var damage);
+            _tools.TryGetValue(ToolItemType.Hand, out var damage);
             _tools.TryGetValue(toolType, out damage);
 
-            if (await Perform())
+            if (await Perform(isSuccess))
             {
                 var newHealth = Health.Value - damage;
                 OnHealthChanged_ServerRpc(newHealth);
@@ -72,9 +75,18 @@ namespace Island.Gameplay.Services.World.Items
             return false;
         }
 
-        private async UniTask<bool> Perform()
+        private async UniTask<bool> Perform(bool isSuccess)
         {
-            if (HoldAwaiter.Status == UniTaskStatus.Pending || DelayAwaiter.Status == UniTaskStatus.Pending)
+            if (_completionSource?.Task.Status == UniTaskStatus.Pending)
+            {
+                if (!isSuccess)
+                {
+                    _completionSource.TrySetResult();
+                }
+                return false;
+            }
+
+            if (!isSuccess)
             {
                 return false;
             }
@@ -83,12 +95,12 @@ namespace Island.Gameplay.Services.World.Items
             {
                 return false;
             }
-            
+
             if (!Check())
             {
                 return false;
             }
-            
+
             if (!await Pay())
             {
                 return false;
@@ -113,7 +125,7 @@ namespace Island.Gameplay.Services.World.Items
             {
                 return false;
             }
-            
+
             return true;
         }
 
@@ -123,7 +135,7 @@ namespace Island.Gameplay.Services.World.Items
             {
                 _inventoryService.TryRemove(material.Type, material.Count);
             }
-            
+
             var result = true;
             if (_interactType == WorldObjectInteractType.Hold)
             {
@@ -134,13 +146,17 @@ namespace Island.Gameplay.Services.World.Items
 
             async UniTask<bool> performHold()
             {
+                _completionSource =  new UniTaskCompletionSource();
                 var onPlayerExit = _aimService.TargetObject.SkipLatestValueOnSubscribe().First().ToUniTask();
                 var onStopInteract = _inputService.OnInteractButtonCanceled.First().ToUniTask();
-                var progressBar = UniTask.Delay(TimeSpan.FromSeconds(_duration));
+                var progressBar = _hudService.ShowProgressBar(_duration);
+                var holdTask = UniTask.WhenAny(progressBar.Task, onStopInteract, onPlayerExit, _completionSource.Task);
+                var holdResult = await holdTask == 0;
 
-                HoldAwaiter = UniTask.WhenAny(progressBar, onStopInteract, onPlayerExit);
+                progressBar.Disposable.Dispose();
+                _completionSource.TrySetResult();
 
-                return await HoldAwaiter == 0;
+                return holdResult;
             }
         }
 
@@ -150,13 +166,15 @@ namespace Island.Gameplay.Services.World.Items
             {
                 await performAwait();
             }
-            
+
             _inventoryService.TryCollect(_resultItem);
 
             async UniTask performAwait()
             {
-                DelayAwaiter = UniTask.Delay(TimeSpan.FromSeconds(_duration));
-                await DelayAwaiter;
+                _completionSource =  new UniTaskCompletionSource();
+                await UniTask.WhenAny(_progressBar.Show(_duration), _completionSource.Task);
+                _progressBar.Dispose();
+                _completionSource.TrySetResult();
             }
         }
     }

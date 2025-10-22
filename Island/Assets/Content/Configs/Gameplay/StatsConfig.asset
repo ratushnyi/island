@@ -40,17 +40,17 @@ MonoBehaviour:
     - <NextLevelExperience>k__BackingField: 200
       <MaxValue>k__BackingField: 100
       <DefaultValue>k__BackingField: 100
-      <RecoveryRate>k__BackingField: 1
+      <RecoveryRate>k__BackingField: 10
       <RecoveryValue>k__BackingField: 1
     - <NextLevelExperience>k__BackingField: 400
       <MaxValue>k__BackingField: 110
       <DefaultValue>k__BackingField: 110
-      <RecoveryRate>k__BackingField: 1
+      <RecoveryRate>k__BackingField: 10
       <RecoveryValue>k__BackingField: 2
     - <NextLevelExperience>k__BackingField: 800
       <MaxValue>k__BackingField: 120
       <DefaultValue>k__BackingField: 120
-      <RecoveryRate>k__BackingField: 1
+      <RecoveryRate>k__BackingField: 10
       <RecoveryValue>k__BackingField: 3
   - <StatType>k__BackingField: 3
     <Sprite>k__BackingField: {fileID: 21300000, guid: 5b94d485335dc4707968d788f8765c74, type: 3}

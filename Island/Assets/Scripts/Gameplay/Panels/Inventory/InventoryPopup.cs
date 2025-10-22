@@ -11,8 +11,8 @@ namespace Island.Gameplay.Panels.Inventory
 {
     public class InventoryPopup : PopupBase
     {
-        [SerializeField]
-        private Transform _gridContainer;
+        [SerializeField] private Transform _gridContainer;
+        [SerializeField] private InventoryCellView _freehandCell;
         private InventoryProfile _inventoryProfile;
         private InventoryConfig _inventoryConfig;
         private InventoryCellView[] _cellsList;
@@ -32,8 +32,12 @@ namespace Island.Gameplay.Panels.Inventory
 
         protected override void Initialize()
         {
-            _cellsList = new InventoryCellView[_inventoryConfig.InventoryCapacity];
-            for (var i = 0; i < _inventoryConfig.InventoryCapacity; i++)
+            _cellsList = new InventoryCellView[_inventoryConfig.InventoryCapacity + 1];
+            _cellsList[0] = _freehandCell;
+            _cellsList[0].SetItem(_inventoryConfig[InventoryItemType.Hand], _inventoryProfile.InventoryItems[InventoryItemType.Hand]);
+            _cellsList[0].OnButtonClicked.Subscribe(onCellClicked).AddTo(this);
+            
+            for (var i = 1; i < _cellsList.Length; i++)
             {
                 _cellsList[i] = Instantiate(_inventoryConfig.InventoryCellView, _gridContainer);
                 _cellsList[i].OnButtonClicked.Subscribe(onCellClicked).AddTo(this);
@@ -47,6 +51,10 @@ namespace Island.Gameplay.Panels.Inventory
 
             void onCellClicked(InventoryItemType type)
             {
+                if (type == InventoryItemType.None)
+                {
+                    return;
+                }
                 _inventoryProfile.SelectedItem.Value = type;
                 _inventoryProfile.Save();
             }

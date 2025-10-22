@@ -3,6 +3,7 @@ namespace Island.Gameplay.Services.Inventory.Items
     public enum InventoryItemType
     {
         None,
+        Hand,
         //resources
         Wood,
         Stone,

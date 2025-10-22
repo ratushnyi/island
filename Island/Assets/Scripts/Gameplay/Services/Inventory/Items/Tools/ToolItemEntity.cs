@@ -11,27 +11,36 @@ namespace Island.Gameplay.Services.Inventory.Tools
         [SerializeField] private ToolItemType _type;
         [Inject] private AimService _aimService;
 
-        public override async UniTask<bool> Perform(float deltaTime)
+        public override async UniTask<bool> Perform(bool isJustStarted, float deltaTime)
         {
-            if (_aimService.TargetObject.Value == null)
-            {
-                return false;
-            }
-
-            if (_aimService.TargetObject.Value is not WorldItemObject itemObject)
-            {
-                return false;
-            }
-
+            var result = true;
             foreach (var fee in StatFeeModel)
             {
+                if (isJustStarted)
+                {
+                    fee.Deposit = 0;
+                }
+
                 if (!StatsService.TrackFee(fee, deltaTime))
                 {
-                    return false;
+                    result = false;
                 }
             }
 
-            var result = await itemObject.Perform(_type);
+            if (_aimService.TargetObject.Value == null)
+            {
+                result = false;
+            }
+
+            if (_aimService.TargetObject.Value is WorldItemObject itemObject)
+            {
+                result = await itemObject.Perform(_type, result);
+            }
+            else
+            {
+                result = false;
+            }
+
 
             return result;
         }

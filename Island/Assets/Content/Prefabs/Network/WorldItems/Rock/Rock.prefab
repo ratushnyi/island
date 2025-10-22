@@ -89,9 +89,10 @@ MonoBehaviour:
       Value: {fileID: 5203972793515242877}
     - Key: 32
       Value: {fileID: 2519764021739342861}
+  _progressBar: {fileID: 0}
   _materialsItems: []
   _resultItem:
-    _type: 2
+    _type: 3
     _count: 10
   _type: 1
   _interactType: 2
