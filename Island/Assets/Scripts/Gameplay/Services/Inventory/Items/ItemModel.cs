@@ -14,14 +14,14 @@ namespace Island.Gameplay.Services.Inventory.Items
         [field: SerializeField] public bool IsCountable { get; set; }
         [field: SerializeField] public bool IsDisposable { private set; get; }
 
-        public UniTask<bool> Perform(bool isJustStarted, float deltaTime)
+        public UniTask<bool> Perform(bool isJustUsed, float deltaTime)
         {
             if (ItemEntity == null)
             {
                 return UniTask.FromResult(false);
             }
 
-            return ItemEntity.Perform(isJustStarted, deltaTime);
+            return ItemEntity.Perform(isJustUsed, deltaTime);
         }
     }
 }

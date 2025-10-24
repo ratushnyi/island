@@ -74,7 +74,7 @@ namespace Island.Gameplay.Configs.World
 
             foreach (var item in worldItems)
             {
-                _worldConfig.WorldItemPlacement.Add(new NetworkSpawnRequest(item.Type, item.transform.position, item.transform.rotation, item.Hash, item.Health.Value));
+                _worldConfig.WorldItemPlacement.Add(new NetworkSpawnRequest(item.Type, item.transform.position, item.transform.rotation, item.CombineHash, item.Health.Value));
             }
 
             EditorUtility.SetDirty(_worldConfig);

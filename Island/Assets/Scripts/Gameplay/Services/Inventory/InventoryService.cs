@@ -20,6 +20,7 @@ namespace Island.Gameplay.Services.Inventory
         private PanelLoader<HUDPanel> _hudPanel;
         private InventoryConfig _inventoryConfig;
         private InventoryProfile _inventoryProfile;
+        public InventoryItemType SelectedItem => _inventoryProfile.SelectedItem.Value;
 
         [Inject]
         private void Construct(
@@ -200,11 +201,11 @@ namespace Island.Gameplay.Services.Inventory
             }
         }
 
-        public async UniTask<bool> PerformSelectedObject(bool isJustStarted, float deltaTime)
+        public async UniTask<bool> PerformSelectedItem(bool isJustUsed, float deltaTime)
         {
             var item = _inventoryProfile.SelectedItem.Value;
             var itemModel = _inventoryConfig[item];
-            var result = await itemModel.Perform(isJustStarted, deltaTime);
+            var result = await itemModel.Perform(isJustUsed, deltaTime);
 
             if (itemModel.IsDisposable && result)
             {

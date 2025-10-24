@@ -35,10 +35,10 @@ namespace Island.Gameplay.Services.Inventory.Tools
             }
         }
 
-        public virtual UniTask<bool> Perform(bool isJustStarted, float deltaTime)
+        public virtual UniTask<bool> Perform(bool isJustUsed, float deltaTime)
         {
             var result = false;
-            if (isJustStarted)
+            if (isJustUsed)
             {
                 result = IsUsable;
                 if (IsUsable)

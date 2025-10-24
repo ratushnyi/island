@@ -8,15 +8,14 @@ namespace Island.Gameplay.Services.Inventory.Tools
     [CreateAssetMenu(menuName = "Item/Tool", fileName = "Tool")]
     public class ToolItemEntity : ItemEntityBase
     {
-        [SerializeField] private ToolItemType _type;
         [Inject] private AimService _aimService;
 
-        public override async UniTask<bool> Perform(bool isJustStarted, float deltaTime)
+        public override async UniTask<bool> Perform(bool isJustUsed, float deltaTime)
         {
             var result = true;
             foreach (var fee in StatFeeModel)
             {
-                if (isJustStarted)
+                if (isJustUsed)
                 {
                     fee.Deposit = 0;
                 }
@@ -27,14 +26,16 @@ namespace Island.Gameplay.Services.Inventory.Tools
                 }
             }
 
-            if (_aimService.TargetObject.Value == null)
+            if (_aimService.TargetObject.Value is WorldMiningObject itemObject)
             {
-                result = false;
-            }
-
-            if (_aimService.TargetObject.Value is WorldItemObject itemObject)
-            {
-                result = await itemObject.Perform(_type, result);
+                if (result)
+                {
+                    result = await itemObject.Perform(isJustUsed);
+                }
+                else
+                {
+                    itemObject.Reset();
+                }
             }
             else
             {

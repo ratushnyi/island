@@ -7,11 +7,4 @@ namespace Island.Gameplay.Services.World.Items
         Fisher,
         Cooker
     }
-    
-    public enum WorldObjectInteractType
-    {
-        Click,
-        Await,
-        Hold
-    }
 }

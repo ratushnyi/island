@@ -1,17 +1,19 @@
 using System;
+using Cysharp.Threading.Tasks;
 using Island.Gameplay.Services.World.Items;
 using TendedTarsier.Core.Utilities.Extensions;
 using UniRx;
 using Unity.Netcode;
+using UnityEngine;
 using Zenject;
 
 namespace Island.Gameplay.Services.World
 {
     public abstract class WorldObjectBase : NetworkBehaviour
     {
+        [field: SerializeField] public WorldObjectType Type { get; set; }
         public int CombineHash => HashCode.Combine(Type, transform.position, transform.rotation);
         public abstract string Name { get; }
-        public abstract WorldObjectType Type { get; }
 
         public ReactiveProperty<int> Health = new();
         private readonly NetworkVariable<int> _health = new();
@@ -25,8 +27,12 @@ namespace Island.Gameplay.Services.World
             _hash = hash;
         }
 
-        protected virtual void UpdateView(int health){}
-        
+        public abstract UniTask<bool> Perform(bool isJustUsed);
+
+        protected virtual void UpdateView(int health)
+        {
+        }
+
         public override void OnNetworkSpawn()
         {
             Health.Subscribe(UpdateView).AddTo(this);

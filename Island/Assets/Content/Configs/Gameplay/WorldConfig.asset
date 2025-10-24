@@ -15,9 +15,9 @@ MonoBehaviour:
   WorldItemObjects:
     _serializedList:
     - Key: 0
-      Value: {fileID: 1006663758721412829, guid: 1cbe65746ac174fffb4db765e3187b3e, type: 3}
+      Value: {fileID: 355192675800495256, guid: 1cbe65746ac174fffb4db765e3187b3e, type: 3}
     - Key: 1
-      Value: {fileID: 5426607065071548453, guid: 7105f1b9afca0412582257be60806ef2, type: 3}
+      Value: {fileID: 8958506983823277755, guid: 7105f1b9afca0412582257be60806ef2, type: 3}
     - Key: 2
       Value: {fileID: 36907340526176770, guid: f20ac2211066e4257a94041791944292, type: 3}
     - Key: 3

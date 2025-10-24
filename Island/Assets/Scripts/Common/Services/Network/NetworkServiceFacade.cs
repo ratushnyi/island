@@ -78,7 +78,6 @@ namespace Island.Common.Services
         public void Spawn_ServerRpc(NetworkSpawnRequest request)
         {
             var worldObject = Instantiate(_worldConfig.WorldItemObjects[request.Type], request.Position, request.Rotation);
-            _container.Inject(worldObject);
             worldObject.Init(request.Health, request.Hash);
             worldObject.NetworkObject.Spawn();
             worldObject.NetworkObject.TrySetParent(NetworkObject);

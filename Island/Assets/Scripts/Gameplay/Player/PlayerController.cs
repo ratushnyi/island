@@ -5,6 +5,7 @@ using Island.Gameplay.Services.HUD;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Stats;
 using Island.Gameplay.Services.World;
+using Island.Gameplay.Services.World.Items;
 using Island.Gameplay.Settings;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services.Input;
@@ -34,10 +35,10 @@ namespace Island.Gameplay.Player
         [Inject] private SettingsService _settingsService;
         [Inject] private InventoryService _inventoryService;
         [Inject] private HUDService _hudService;
-        [Inject] private CameraConfig _cameraConfig;
         [Inject] private PanelService _panelService;
-        [Inject] private PlayerConfig _playerConfig;
         [Inject] private PlayerService _playerService;
+        [Inject] private PlayerConfig _playerConfig;
+        [Inject] private CameraConfig _cameraConfig;
 
         private Ray _aimRay;
         private float _cameraPitch;
@@ -72,7 +73,13 @@ namespace Island.Gameplay.Player
         {
             if (_inputService.PlayerActions.Interact.inProgress)
             {
-                _inventoryService.PerformSelectedObject(_inputService.PlayerActions.Interact.WasPressedThisFrame(), deltaTime).Forget();
+                if (_aimService.TargetObject.Value is WorldTransformerObject itemObject)
+                {
+                    itemObject.Perform(_inputService.PlayerActions.Interact.WasPressedThisFrame()).Forget();
+                    return;
+                }
+                
+                _inventoryService.PerformSelectedItem(_inputService.PlayerActions.Interact.WasPressedThisFrame(), deltaTime).Forget();
             }
         }
 
