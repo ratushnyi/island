@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AYellowpaper.SerializedCollections;
@@ -74,7 +73,7 @@ namespace Island.Gameplay.Configs.World
 
             foreach (var item in worldItems)
             {
-                _worldConfig.WorldItemPlacement.Add(new NetworkSpawnRequest(item.Type, item.transform.position, item.transform.rotation, item.CombineHash, item.Health.Value));
+                _worldConfig.WorldItemPlacement.Add(new NetworkSpawnRequest(item.CombineHash, item.Type, item.transform.position, item.transform.rotation));
             }
 
             EditorUtility.SetDirty(_worldConfig);

@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Inventory.Items;
 using TendedTarsier.Core.Utilities.Extensions;
@@ -14,109 +14,110 @@ namespace Island.Gameplay.Services.World.Items
     public class WorldTransformerObject : WorldObjectBase
     {
         [SerializeField, SerializedDictionary("Item", "Count")]
-        private SerializedDictionary<InventoryItemType, int> _material;
+        private SerializedDictionary<InventoryItemType, int> _materials;
 
         [SerializeField] private float _duration;
         [SerializeField] private WorldProgressBar _progressBar;
         [SerializeField] private ItemEntity _resultItem;
 
         [Inject] private InventoryService _inventoryService;
+        [Inject] private WorldService _worldService;
 
         private UniTaskCompletionSource _completionSource;
         private readonly NetworkVariable<float> _progressValue = new();
-        private readonly Dictionary<InventoryItemType, int> _loadedItems = new();
 
         public override string Name => Type.ToString();
 
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-            
+
             _progressValue.AsObservable().Subscribe(_progressBar.SetValue).AddTo(this);
+
+            if (IsServer)
+            {
+                Container.AsObservable().Subscribe(ContainerNetworkOnOnListChanged).AddTo(this);
+            }
         }
 
-        public override async UniTask<bool> Perform(bool isJustUsed)
+        private void ContainerNetworkOnOnListChanged(NetworkListEvent<ItemEntity> changeEvent)
+        {
+            TryStartTransform_ServerRpc();
+        }
+
+        public override UniTask<bool> Perform(bool isJustUsed)
+        {
+            if (!isJustUsed)
+            {
+                return UniTask.FromResult(false);
+            }
+
+            foreach (var item in _materials)
+            {
+                if (_inventoryService.SelectedItem == item.Key && _inventoryService.IsSuitable(item.Key, 1))
+                {
+                    //todo: should be remover only after server validation on container capacity
+                    _inventoryService.TryRemove(item.Key, 1);
+                    TryChangeContainer(item.Key, 1);
+
+                    return UniTask.FromResult(true);
+                }
+            }
+
+            return UniTask.FromResult(false);
+        }
+
+        private bool CheckMaterial()
+        {
+            foreach (var item in _materials)
+            {
+                if (GetCount(item.Key) < item.Value)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void UseMaterials()
+        {
+            foreach (var item in _materials)
+            {
+                TryChangeContainer(item.Key, -item.Value);
+            }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void TryStartTransform_ServerRpc()
         {
             if (_completionSource?.Task.Status == UniTaskStatus.Pending)
             {
-                return false;
+                return;
             }
-
-            if (Health.Value <= 0)
+            
+            if (!CheckMaterial())
             {
-                return false;
+                return;
             }
 
-            if (!TryLoad(isJustUsed))
-            {
-                return false;
-            }
+            _completionSource = new UniTaskCompletionSource();
+            UseMaterials();
 
-            if (!Check())
-            {
-                return false;
-            }
+            _progressValue.Value = 0;
+            _progressValue.DOValue(1, _duration).OnComplete(FinishTransform_ServerRpc).SetEase(Ease.Linear);
+        }
 
-            await Await();
-
-            _loadedItems.Clear();
+        [ServerRpc(RequireOwnership = false)]
+        private void FinishTransform_ServerRpc()
+        {
+            _progressValue.Value = -1;
+            //todo: should be changed on spawn worldItem 
             _inventoryService.TryCollect(_resultItem);
 
-            return true;
-        }
-
-        private bool TryLoad(bool isJustPressed)
-        {
-            var result = true;
-            foreach (var item in _material)
-            {
-                if (_loadedItems.TryGetValue(item.Key, out var count))
-                {
-                    if (count == item.Value)
-                    {
-                        continue;
-                    }
-                }
-
-                if (isJustPressed)
-                {
-                    if (_inventoryService.SelectedItem == item.Key && _inventoryService.TryRemove(item.Key, 1))
-                    {
-                        if (!_loadedItems.TryAdd(item.Key, 1))
-                        {
-                            _loadedItems[item.Key]++;
-                        }
-
-                        if (count == item.Value)
-                        {
-                            continue;
-                        }
-                    }
-                }
-
-                result = false;
-            }
-
-            return result;
-        }
-
-        private bool Check()
-        {
-            if (!_inventoryService.IsEnoughSpace(_resultItem))
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private async UniTask Await()
-        {
-            _completionSource = new UniTaskCompletionSource();
-            _progressValue.Value = 0;
-            await _progressValue.DOValue(1, _duration);
-            _progressValue.Value = -1;
             _completionSource.TrySetResult();
+
+            TryStartTransform_ServerRpc();
         }
     }
 }

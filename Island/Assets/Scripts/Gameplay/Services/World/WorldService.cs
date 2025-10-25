@@ -43,6 +43,11 @@ namespace Island.Gameplay.Services.World
                     item.Health = health;
                 }
 
+                if (_worldProfile.ObjectContainerDictionary.TryGetValue(item.Hash, out var container))
+                {
+                    item.Container = container.ToItemsList();
+                }
+
                 _networkService.Spawn(item);
             }
         }
@@ -52,7 +57,7 @@ namespace Island.Gameplay.Services.World
             _worldProfile.WorldObjectDestroyed.Add(worldItemObject.Hash);
         }
 
-        public void MarkHealth(WorldObjectBase worldItemObject)
+        public void UpdateHealth(WorldObjectBase worldItemObject)
         {
             if (worldItemObject.Health.Value == 0)
             {
@@ -65,15 +70,31 @@ namespace Island.Gameplay.Services.World
             }
         }
 
-        public void ObjectAdded(WorldObjectBase worldItemObject, InventoryItemType type, int count)
+        public void UpdateContainer(WorldObjectBase worldItemObject, InventoryItemType type, int count)
         {
-            if(!_worldProfile.ObjectContainerDictionary.TryGetValue(worldItemObject.Hash, out var container))
+            if (!_worldProfile.ObjectContainerDictionary.TryGetValue(worldItemObject.Hash, out var container))
             {
+                if (count == 0)
+                {
+                    return;
+                }
                 container = new ObjectContainer();
                 _worldProfile.ObjectContainerDictionary.Add(worldItemObject.Hash, container);
             }
             
-            container.Items[type] += count;
+            if (count == 0)
+            {
+                container.Items.Remove(type);
+            }
+            else
+            {
+                container.Items[type] = count;
+            }
+
+            if (container.Items.Count == 0)
+            {
+                _worldProfile.ObjectContainerDictionary.Remove(worldItemObject.Hash);
+            }
         }
     }
 }

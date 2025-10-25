@@ -3,10 +3,7 @@ using Island.Common.Services;
 using Island.Menu.Panels.Join;
 using Island.Menu.Panels.Settings;
 using TendedTarsier.Core.Modules.Menu;
-using TendedTarsier.Core.Modules.Project;
 using TendedTarsier.Core.Panels;
-using TendedTarsier.Core.Services.Modules;
-using TendedTarsier.Core.Services.Profile;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,32 +15,16 @@ namespace Island.Menu.Panels
     {
         [SerializeField] private Button _joinButton;
         [SerializeField] private Button _settingsButton;
-        private PanelLoader<SettingsPopup> _settingsPanel;
-        private PanelLoader<JoinPopup> _joinPanel;
-        private ModuleService _moduleService;
-        private NetworkService _networkService;
-        private ProfileService _profileService;
-        private ProjectProfile _projectProfile;
-        private ProjectConfig _projectConfig;
-
-        [Inject]
-        private void Construct(PanelLoader<SettingsPopup> settingsPanel, PanelLoader<JoinPopup> joinPanel, NetworkService networkService, ModuleService moduleService, ProfileService profileService, ProjectProfile projectProfile, ProjectConfig projectConfig)
-        {
-            _settingsPanel = settingsPanel;
-            _joinPanel = joinPanel;
-            _networkService = networkService;
-            _moduleService = moduleService;
-            _profileService = profileService;
-            _projectProfile = projectProfile;
-            _projectConfig = projectConfig;
-        }
+        [Inject] private PanelLoader<SettingsPopup> _settingsPanel;
+        [Inject] private PanelLoader<JoinPopup> _joinPanel;
+        [Inject] private NetworkService _networkService;
 
         protected override void InitButtons()
         {
             _networkService.EnsureServices().Forget();
             base.InitButtons();
             RegisterButton(_settingsButton);
-            InitContinueButton(!string.IsNullOrEmpty(_projectProfile.ServerId));
+            InitContinueButton(!string.IsNullOrEmpty(ProjectProfile.ServerId));
         }
 
         protected override void SubscribeButtons()
@@ -61,8 +42,8 @@ namespace Island.Menu.Panels
 
         protected override async UniTask OnNewGameButtonClick()
         {
-            _profileService.SetNewGame(true);
-            await _moduleService.LoadModule(_projectConfig.GameplayScene);
+            ProfileService.SetNewGame(true);
+            await ModuleService.LoadModule(ProjectConfig.GameplayScene);
             await _networkService.StartHost(true);
         }
 
@@ -75,7 +56,7 @@ namespace Island.Menu.Panels
                 return;
             }
 
-            _profileService.SetNewGame(false);
+            ProfileService.SetNewGame(false);
             await _networkService.TryStartClient(joinCode, base.OnContinueButtonClick);
         }
 

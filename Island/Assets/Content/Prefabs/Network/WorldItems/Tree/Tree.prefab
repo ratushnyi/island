@@ -130,6 +130,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3821721149766240113, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
+      propertyPath: m_Size.y
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3821721149766240113, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
+      propertyPath: m_Center.y
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5782650272371915651, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
       propertyPath: m_Name
       value: Tree
@@ -168,8 +176,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   <Type>k__BackingField: 0
-  Health:
-    value: 100
   _healthView:
     _serializedList:
     - Key: 75
@@ -188,8 +194,8 @@ MonoBehaviour:
       Value: 25
   _duration: 5
   _resultItem:
-    _type: 0
-    _count: 1
+    _type: 2
+    _count: 10
 --- !u!4 &5874106457217019660 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3451616297354679487, guid: a95574217014743ec8cbaffe14b89f03, type: 3}

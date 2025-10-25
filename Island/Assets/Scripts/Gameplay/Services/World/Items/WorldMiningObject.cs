@@ -33,7 +33,7 @@ namespace Island.Gameplay.Services.World.Items
             bool selected = false;
             foreach (var view in _healthView)
             {
-                if (!selected && health >= view.Key)
+                if (!selected && health > view.Key)
                 {
                     selected = true;
                     view.Value.SetActive(true);
@@ -93,8 +93,7 @@ namespace Island.Gameplay.Services.World.Items
                 return false;
             }
 
-            var newHealth = Health.Value - damage;
-            OnHealthChanged_ServerRpc(newHealth);
+            OnHealthChanged_ServerRpc(Health.Value - damage);
 
             if (Health.Value <= 0)
             {
