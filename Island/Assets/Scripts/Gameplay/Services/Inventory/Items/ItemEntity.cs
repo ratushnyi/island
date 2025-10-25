@@ -6,20 +6,24 @@ using UnityEngine;
 namespace Island.Gameplay.Services.Inventory.Items
 {
     [Serializable, MemoryPackable]
-    public partial class ItemEntity : IEquatable<ItemEntity>, INetworkSerializable
+    public partial struct ItemEntity : IEquatable<ItemEntity>, INetworkSerializable
     {
-        [SerializeField]
-        private InventoryItemType _type;
-        [SerializeField]
-        private int _count = 1;
+        [SerializeField] private InventoryItemType _type;
+        [SerializeField] private int _count;
 
-         public InventoryItemType Type
+        public ItemEntity(InventoryItemType type, int count)
+        {
+            _type = type;
+            _count = count;
+        }
+
+        public InventoryItemType Type
         {
             get => _type;
             set => _type = value;
         }
 
-         public int Count
+        public int Count
         {
             get => _count;
             set => _count = value;
@@ -27,20 +31,7 @@ namespace Island.Gameplay.Services.Inventory.Items
 
         public bool Equals(ItemEntity other)
         {
-            if (other is null) return false;
-            if (ReferenceEquals(this, other)) return true;
             return Type == other.Type && Count == other.Count;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is null)
-            {
-                return false;
-            }
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((ItemEntity)obj);
         }
 
         public override int GetHashCode()

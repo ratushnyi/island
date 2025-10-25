@@ -59,7 +59,7 @@ namespace Island.Gameplay.Services.World.Items
                 return false;
             }
 
-            if (Health.Value <= 0)
+            if (Health <= 0)
             {
                 return false;
             }
@@ -93,10 +93,9 @@ namespace Island.Gameplay.Services.World.Items
                 return false;
             }
 
-            var newHealth = Health.Value - damage;
-            OnHealthChanged_ServerRpc(newHealth);
+            OnHealthChanged_ServerRpc(Health - damage);
 
-            if (Health.Value <= 0)
+            if (Health <= 0)
             {
                 Despawn_ServerRpc();
             }

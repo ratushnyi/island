@@ -523,7 +523,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5782650272371915651, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
       propertyPath: m_Name
-      value: Fisher
+      value: Cooker
       objectReference: {fileID: 0}
     - target: {fileID: 8653814253975207317, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
       propertyPath: GlobalObjectIdHash
@@ -562,9 +562,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   <Type>k__BackingField: 3
-  Health:
-    value: 100
-  _material:
+  _materials:
     _serializedList:
     - Key: 4
       Value: 1

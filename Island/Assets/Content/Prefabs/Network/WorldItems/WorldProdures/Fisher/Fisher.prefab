@@ -562,9 +562,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   <Type>k__BackingField: 2
-  Health:
-    value: 100
-  _material:
+  _materials:
     _serializedList:
     - Key: 3
       Value: 2
