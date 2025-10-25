@@ -1,7 +1,5 @@
-using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,10 +9,8 @@ namespace Island.Gameplay.Services.HUD
     {
         private Tween _tween;
 
-        [SerializeField]
-        private Slider _slider;
-        [SerializeField]
-        private Canvas _canvas;
+        [SerializeField] private Slider _slider;
+        [SerializeField] private Canvas _canvas;
 
         private void Start()
         {
@@ -22,33 +18,17 @@ namespace Island.Gameplay.Services.HUD
             _canvas.worldCamera = Camera.main;
         }
 
-        [ServerRpc]
-        public UniTask Show_ServerRpc(float duration)
-        {
-            return ShowInternal(duration, Hide_ServerRpc);
-        }
-
-        public UniTask Show(float duration)
-        {
-            return ShowInternal(duration, Hide);
-        }
-
-        private async UniTask ShowInternal(float duration, Action onComplete)
+        public async UniTask Show(float duration)
         {
             _slider.value = 0;
             _canvas.enabled = true;
-            _tween = _slider.DOValue(1, duration).SetEase(Ease.Linear).OnUpdate(onUpdate).OnComplete(onComplete.Invoke);
+            _tween = _slider.DOValue(1, duration).SetEase(Ease.Linear).OnUpdate(onUpdate).OnComplete(Hide);
             await _tween.AwaitForComplete();
+
             void onUpdate()
             {
                 transform.LookAt(transform.position + _canvas.worldCamera.transform.rotation * Vector3.forward, _canvas.worldCamera.transform.rotation * Vector3.up);
             }
-        }
-
-        [ServerRpc]
-        public void Hide_ServerRpc()
-        {
-            Hide();
         }
 
         public void Hide()

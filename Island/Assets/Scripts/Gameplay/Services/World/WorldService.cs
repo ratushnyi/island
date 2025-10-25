@@ -1,6 +1,7 @@
 using Island.Common.Services;
 using Island.Gameplay.Configs.World;
 using Island.Gameplay.Profiles;
+using Island.Gameplay.Services.Inventory.Items;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Services;
 using Zenject;
@@ -37,7 +38,7 @@ namespace Island.Gameplay.Services.World
                     continue;
                 }
 
-                if (_worldProfile.ObjectHealth.TryGetValue(item.Hash, out var health))
+                if (_worldProfile.ObjectHealthDictionary.TryGetValue(item.Hash, out var health))
                 {
                     item.Health = health;
                 }
@@ -55,13 +56,24 @@ namespace Island.Gameplay.Services.World
         {
             if (worldItemObject.Health.Value == 0)
             {
-                _worldProfile.ObjectHealth.Remove(worldItemObject.Hash);
+                _worldProfile.ObjectHealthDictionary.Remove(worldItemObject.Hash);
             }
 
-            if (!_worldProfile.ObjectHealth.TryAdd(worldItemObject.Hash, worldItemObject.Health.Value))
+            if (!_worldProfile.ObjectHealthDictionary.TryAdd(worldItemObject.Hash, worldItemObject.Health.Value))
             {
-                _worldProfile.ObjectHealth[worldItemObject.Hash] = worldItemObject.Health.Value;
+                _worldProfile.ObjectHealthDictionary[worldItemObject.Hash] = worldItemObject.Health.Value;
             }
+        }
+
+        public void ObjectAdded(WorldObjectBase worldItemObject, InventoryItemType type, int count)
+        {
+            if(!_worldProfile.ObjectContainerDictionary.TryGetValue(worldItemObject.Hash, out var container))
+            {
+                container = new ObjectContainer();
+                _worldProfile.ObjectContainerDictionary.Add(worldItemObject.Hash, container);
+            }
+            
+            container.Items[type] += count;
         }
     }
 }

@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using Island.Common.Services.Network;
+using Island.Gameplay.Services.Inventory.Items;
 using MemoryPack;
 using TendedTarsier.Core.Services.Profile;
+using Unity.Netcode;
 
 namespace Island.Gameplay.Profiles
 {
@@ -12,6 +14,19 @@ namespace Island.Gameplay.Profiles
 
         [MemoryPackOrder(0)] public List<NetworkSpawnRequest> WorldItemPlaced { get; set; } = new();
         [MemoryPackOrder(1)] public HashSet<int> WorldObjectDestroyed { get; set; } = new();
-        [MemoryPackOrder(2)] public Dictionary<int, int> ObjectHealth { get; set; } = new();
+        [MemoryPackOrder(2)] public Dictionary<int, int> ObjectHealthDictionary { get; set; } = new();
+        [MemoryPackOrder(2)] public Dictionary<int, ObjectContainer> ObjectContainerDictionary { get; set; } = new();
+    }
+    
+    [MemoryPackable]
+    public partial class ObjectContainer : INetworkSerializable
+    {
+        [MemoryPackAllowSerialize]
+        public Dictionary<InventoryItemType, int> Items = new();
+
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

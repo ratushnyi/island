@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using AYellowpaper.SerializedCollections;
 using Cysharp.Threading.Tasks;
-using Island.Gameplay.Services.HUD;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Inventory.Items;
+using TendedTarsier.Core.Utilities.Extensions;
+using UniRx;
+using Unity.Netcode;
 using UnityEngine;
 using Zenject;
 
@@ -15,15 +17,23 @@ namespace Island.Gameplay.Services.World.Items
         private SerializedDictionary<InventoryItemType, int> _material;
 
         [SerializeField] private float _duration;
-        [SerializeField] private ProgressBar _progressBar;
+        [SerializeField] private WorldProgressBar _progressBar;
         [SerializeField] private ItemEntity _resultItem;
 
         [Inject] private InventoryService _inventoryService;
 
-        private readonly Dictionary<InventoryItemType, int> _loadedItems = new();
         private UniTaskCompletionSource _completionSource;
+        private readonly NetworkVariable<float> _progressValue = new();
+        private readonly Dictionary<InventoryItemType, int> _loadedItems = new();
 
         public override string Name => Type.ToString();
+
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+            
+            _progressValue.AsObservable().Subscribe(_progressBar.SetValue).AddTo(this);
+        }
 
         public override async UniTask<bool> Perform(bool isJustUsed)
         {
@@ -103,7 +113,9 @@ namespace Island.Gameplay.Services.World.Items
         private async UniTask Await()
         {
             _completionSource = new UniTaskCompletionSource();
-            await _progressBar.Show_ServerRpc(_duration);
+            _progressValue.Value = 0;
+            await _progressValue.DOValue(1, _duration);
+            _progressValue.Value = -1;
             _completionSource.TrySetResult();
         }
     }
