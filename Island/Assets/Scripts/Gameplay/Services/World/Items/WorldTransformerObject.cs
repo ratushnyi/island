@@ -18,7 +18,6 @@ namespace Island.Gameplay.Services.World.Items
 
         [SerializeField] private float _duration;
         [SerializeField] private WorldProgressBar _progressBar;
-        [SerializeField] private ItemEntity _resultItem;
 
         [Inject] private InventoryService _inventoryService;
         [Inject] private WorldService _worldService;
@@ -112,8 +111,7 @@ namespace Island.Gameplay.Services.World.Items
         private void FinishTransform_ServerRpc()
         {
             _progressValue.Value = -1;
-            //todo: should be changed on spawn worldItem 
-            _inventoryService.TryCollect(_resultItem);
+            SpawnResult();
 
             _completionSource.TrySetResult();
 

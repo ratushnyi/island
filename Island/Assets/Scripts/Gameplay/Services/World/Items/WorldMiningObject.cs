@@ -17,13 +17,13 @@ namespace Island.Gameplay.Services.World.Items
         [SerializeField, SerializedDictionary("Tool", "Damage")]
         private SerializedDictionary<InventoryItemType, int> _tools;
         [SerializeField] private float _duration;
-        [SerializeField] private ItemEntity _resultItem;
 
-        [Inject] private InventoryService _inventoryService;
         [Inject] private InputService _inputService;
         [Inject] private AimService _aimService;
         [Inject] private HUDService _hudService;
+        [Inject] private InventoryService _inventoryService;
 
+        //todo: should network variable to prevent mining same object by different clients
         private UniTaskCompletionSource _completionSource;
 
         public override string Name => Type.ToString();
@@ -64,11 +64,6 @@ namespace Island.Gameplay.Services.World.Items
                 return false;
             }
 
-            if (!Check())
-            {
-                return false;
-            }
-
             if (!await TryHold())
             {
                 return false;
@@ -78,8 +73,8 @@ namespace Island.Gameplay.Services.World.Items
             {
                 return false;
             }
-            
-            _inventoryService.TryCollect(_resultItem);
+
+            SpawnResult();
 
             return true;
         }
@@ -98,16 +93,6 @@ namespace Island.Gameplay.Services.World.Items
             if (Health.Value <= 0)
             {
                 Despawn_ServerRpc();
-            }
-
-            return true;
-        }
-
-        private bool Check()
-        {
-            if (!_inventoryService.IsEnoughSpace(_resultItem))
-            {
-                return false;
             }
 
             return true;

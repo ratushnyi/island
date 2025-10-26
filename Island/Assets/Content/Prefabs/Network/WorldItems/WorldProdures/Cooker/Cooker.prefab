@@ -561,7 +561,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  <Type>k__BackingField: 3
+  <ResultItem>k__BackingField:
+    _type: 5
+    _count: 1
+  <Type>k__BackingField: 4
   _materials:
     _serializedList:
     - Key: 4
@@ -570,9 +573,6 @@ MonoBehaviour:
       Value: 1
   _duration: 5
   _progressBar: {fileID: 1793928933528552702}
-  _resultItem:
-    _type: 5
-    _count: 1
 --- !u!4 &5874106457217019660 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3451616297354679487, guid: a95574217014743ec8cbaffe14b89f03, type: 3}

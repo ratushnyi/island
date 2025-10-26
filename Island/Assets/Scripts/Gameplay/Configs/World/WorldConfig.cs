@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AYellowpaper.SerializedCollections;
+using Island.Common;
 using Island.Common.Services.Network;
 using Island.Gameplay.Services.World;
 using Island.Gameplay.Services.World.Items;
@@ -14,9 +15,8 @@ namespace Island.Gameplay.Configs.World
     public class WorldConfig : ConfigBase
     {
         [field: SerializedDictionary("Type", "Prefab")]
-        public SerializedDictionary<WorldObjectType, WorldObjectBase> WorldItemObjects;
-
-        [field: SerializeField] public List<NetworkSpawnRequest> WorldItemPlacement;
+        public SerializedDictionary<WorldObjectType, WorldObjectBase> WorldObjects;
+        [field: SerializeField] public List<NetworkSpawnRequest> WorldObjectPlacement;
     }
 
 #if UNITY_EDITOR
@@ -73,7 +73,7 @@ namespace Island.Gameplay.Configs.World
 
             foreach (var item in worldItems)
             {
-                _worldConfig.WorldItemPlacement.Add(new NetworkSpawnRequest(item.CombineHash, item.Type, item.transform.position, item.transform.rotation));
+                _worldConfig.WorldObjectPlacement.Add(new NetworkSpawnRequest(item.GenerateHash(), item.Type, item.transform.position, item.transform.rotation));
             }
 
             EditorUtility.SetDirty(_worldConfig);

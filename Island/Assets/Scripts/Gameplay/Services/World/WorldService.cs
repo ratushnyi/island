@@ -1,9 +1,14 @@
+using System.Linq;
+using Island.Common;
 using Island.Common.Services;
+using Island.Common.Services.Network;
 using Island.Gameplay.Configs.World;
 using Island.Gameplay.Profiles;
 using Island.Gameplay.Services.Inventory.Items;
+using Island.Gameplay.Services.World.Items;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Services;
+using UnityEngine;
 using Zenject;
 
 namespace Island.Gameplay.Services.World
@@ -30,31 +35,58 @@ namespace Island.Gameplay.Services.World
                 return;
             }
 
-            for (var index = 0; index < _worldConfig.WorldItemPlacement.Count; index++)
+            for (var index = 0; index < _worldConfig.WorldObjectPlacement.Count; index++)
             {
-                var item = _worldConfig.WorldItemPlacement[index];
-                if (_worldProfile.WorldObjectDestroyed.Contains(item.Hash))
+                var request = _worldConfig.WorldObjectPlacement[index];
+                if (_worldProfile.DestroyedObject.Contains(request.Hash))
                 {
                     continue;
                 }
 
-                if (_worldProfile.ObjectHealthDictionary.TryGetValue(item.Hash, out var health))
+                if (_worldProfile.ObjectHealthDictionary.TryGetValue(request.Hash, out var health))
                 {
-                    item.Health = health;
+                    request.Health = health;
                 }
 
-                if (_worldProfile.ObjectContainerDictionary.TryGetValue(item.Hash, out var container))
+                if (_worldProfile.ObjectContainerDictionary.TryGetValue(request.Hash, out var container))
                 {
-                    item.Container = container.ToItemsList();
+                    request.Container = container.ToItemsList();
                 }
 
-                _networkService.Spawn(item);
+                _networkService.Spawn(request);
             }
+            
+            for (var index = 0; index < _worldProfile.SpawnedObjects.Values.Count; index++)
+            {
+                var request = _worldProfile.SpawnedObjects.Values.ElementAt(index);
+                if (_worldProfile.ObjectHealthDictionary.TryGetValue(request.Hash, out var health))
+                {
+                    request.Health = health;
+                }
+
+                if (_worldProfile.ObjectContainerDictionary.TryGetValue(request.Hash, out var container))
+                {
+                    request.Container = container.ToItemsList();
+                }
+
+                _networkService.Spawn(request);
+            }
+        }
+
+        public void SpawnResultItem(WorldObjectBase worldItemObject)
+        {
+            var type = WorldObjectType.Collectable;
+            var position = worldItemObject.transform.position + Vector3.up + Vector3.up;
+            var hash = IslandExtensions.GenerateHash(type, position);
+            var request = new NetworkSpawnRequest(hash, type, position, resultItem: worldItemObject.ResultItem);
+            _worldProfile.SpawnedObjects.Add(hash, request);
+            _networkService.Spawn(request);
         }
 
         public void MarkDestroyed(WorldObjectBase worldItemObject)
         {
-            _worldProfile.WorldObjectDestroyed.Add(worldItemObject.Hash);
+            _worldProfile.SpawnedObjects.Remove(worldItemObject.Hash);
+            _worldProfile.DestroyedObject.Add(worldItemObject.Hash);
         }
 
         public void UpdateHealth(WorldObjectBase worldItemObject)

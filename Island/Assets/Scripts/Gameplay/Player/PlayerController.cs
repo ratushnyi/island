@@ -73,9 +73,15 @@ namespace Island.Gameplay.Player
         {
             if (_inputService.PlayerActions.Interact.inProgress)
             {
-                if (_aimService.TargetObject.Value is WorldTransformerObject itemObject)
+                if (_aimService.TargetObject.Value is WorldCollectableObject collectableObject)
                 {
-                    itemObject.Perform(_inputService.PlayerActions.Interact.WasPressedThisFrame()).Forget();
+                    collectableObject.Perform(_inputService.PlayerActions.Interact.WasPressedThisFrame()).Forget();
+                    return;
+                }
+                
+                if (_aimService.TargetObject.Value is WorldTransformerObject transformerObject)
+                {
+                    transformerObject.Perform(_inputService.PlayerActions.Interact.WasPressedThisFrame()).Forget();
                     return;
                 }
                 

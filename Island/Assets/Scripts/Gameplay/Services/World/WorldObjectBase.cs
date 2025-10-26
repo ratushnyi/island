@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Island.Gameplay.Services.Inventory.Items;
@@ -13,19 +12,17 @@ namespace Island.Gameplay.Services.World
 {
     public abstract class WorldObjectBase : NetworkBehaviour
     {
-        [field: SerializeField] public WorldObjectType Type { get; set; }
-        public int CombineHash => HashCode.Combine(Type, transform.position, transform.rotation);
-        public abstract string Name { get; }
-        
+        [field: SerializeField] public ItemEntity ResultItem { get; private set; }
+        [field: SerializeField] public WorldObjectType Type { get; private set; }
+        public int Hash { get; private set; }
         public readonly NetworkVariable<int> Health = new();
         public readonly NetworkList<ItemEntity> Container = new();
-        public int Hash => _hash;
-        private int _hash;
         [Inject] private WorldService _worldService;
+        public abstract string Name { get; }
 
-        public void Init(int hash, int health, List<ItemEntity> container)
+        public void Init(int hash, int health, List<ItemEntity> container, ItemEntity resultItem)
         {
-            _hash = hash;
+            Hash = hash;
             Health.Value = health;
             if (container != null)
             {
@@ -34,12 +31,22 @@ namespace Island.Gameplay.Services.World
                     Container.Add(item);
                 }
             }
+
+            if (resultItem.Type != InventoryItemType.None)
+            {
+                ResultItem = resultItem;
+            }
         }
 
         public abstract UniTask<bool> Perform(bool isJustUsed);
 
         protected virtual void UpdateView(int health)
         {
+        }
+
+        protected void SpawnResult()
+        {
+            _worldService.SpawnResultItem(this);
         }
 
         public override void OnNetworkSpawn()
@@ -89,10 +96,16 @@ namespace Island.Gameplay.Services.World
         private void ChangeContainer_ServerRpc(InventoryItemType type, int count)
         {
             var index = Container.IndexOf(t => t.Type == type);
-            int endValue = count;
+            var endValue = count;
             if (index >= 0)
             {
-                endValue = Container[index].Count + count;
+                endValue += Container[index].Count;
+            }
+
+            _worldService.UpdateContainer(this, type, endValue);
+
+            if (index >= 0)
+            {
                 if (endValue > 0)
                 {
                     Container[index] = new ItemEntity(type, endValue);
@@ -106,8 +119,6 @@ namespace Island.Gameplay.Services.World
             {
                 Container.Add(new ItemEntity(type, endValue));
             }
-
-            _worldService.UpdateContainer(this, type, endValue);
         }
     }
 }
