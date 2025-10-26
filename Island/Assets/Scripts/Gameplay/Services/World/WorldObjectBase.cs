@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Inventory.Items;
 using Island.Gameplay.Services.World.Items;
 using TendedTarsier.Core.Utilities.Extensions;
@@ -18,6 +19,7 @@ namespace Island.Gameplay.Services.World
         public readonly NetworkVariable<int> Health = new();
         public readonly NetworkList<ItemEntity> Container = new();
         [Inject] private WorldService _worldService;
+        [Inject] private InventoryService _inventoryService;
         public abstract string Name { get; }
 
         public void Init(int hash, int health, List<ItemEntity> container, ItemEntity resultItem)
@@ -79,21 +81,27 @@ namespace Island.Gameplay.Services.World
             return entity.Count;
         }
 
-        protected bool TryChangeContainer(InventoryItemType type, int count)
+        protected bool TryChangeContainer(InventoryItemType type, int count, long targetClientId = -1)
         {
             Container.TryGet(t => t.Type == type, out var entity);
 
             if (entity.Count + count >= 0)
             {
-                ChangeContainer_ServerRpc(type, count);
+                ChangeContainer_ServerRpc(type, count, targetClientId);
                 return true;
             }
 
             return false;
         }
 
+        [ClientRpc]
+        private void ChargeItem_ClientRpc(InventoryItemType type, int count, ClientRpcParams clientRpcParams = default)
+        {
+            _inventoryService.TryRemove(type, count);
+        }
+
         [ServerRpc(RequireOwnership = false)]
-        private void ChangeContainer_ServerRpc(InventoryItemType type, int count)
+        private void ChangeContainer_ServerRpc(InventoryItemType type, int count, long targetClientId)
         {
             var index = Container.IndexOf(t => t.Type == type);
             var endValue = count;
@@ -103,6 +111,11 @@ namespace Island.Gameplay.Services.World
             }
 
             _worldService.UpdateContainer(this, type, endValue);
+
+            if (targetClientId >= 0)
+            {
+                ChargeItem_ClientRpc(type, count, targetClientId.ToClientRpcParams());
+            }
 
             if (index >= 0)
             {
@@ -115,7 +128,7 @@ namespace Island.Gameplay.Services.World
                     Container.RemoveAt(index);
                 }
             }
-            else if (count > 0)
+            else if (endValue > 0)
             {
                 Container.Add(new ItemEntity(type, endValue));
             }

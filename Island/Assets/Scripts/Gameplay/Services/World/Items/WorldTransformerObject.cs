@@ -55,9 +55,7 @@ namespace Island.Gameplay.Services.World.Items
             {
                 if (_inventoryService.SelectedItem == item.Key && _inventoryService.IsSuitable(item.Key, 1))
                 {
-                    //todo: should be remover only after server validation on container capacity
-                    _inventoryService.TryRemove(item.Key, 1);
-                    TryChangeContainer(item.Key, 1);
+                    TryChangeContainer(item.Key, 1, (long)NetworkManager.LocalClientId);
 
                     return UniTask.FromResult(true);
                 }
@@ -94,7 +92,7 @@ namespace Island.Gameplay.Services.World.Items
             {
                 return;
             }
-            
+
             if (!CheckMaterial())
             {
                 return;
