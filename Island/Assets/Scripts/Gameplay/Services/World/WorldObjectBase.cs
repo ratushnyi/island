@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Inventory.Items;
 using Island.Gameplay.Services.World.Items;
 using TendedTarsier.Core.Utilities.Extensions;
@@ -13,14 +12,18 @@ namespace Island.Gameplay.Services.World
 {
     public abstract class WorldObjectBase : NetworkBehaviour
     {
+        [SerializeField] private int _containerCapacity = 1;
+        [SerializeField] private int _containerStackCapacity = 1;
         [field: SerializeField] public ItemEntity ResultItem { get; private set; }
         [field: SerializeField] public WorldObjectType Type { get; private set; }
-        public int Hash { get; private set; }
-        public readonly NetworkVariable<int> Health = new();
-        public readonly NetworkList<ItemEntity> Container = new();
+
         [Inject] private WorldService _worldService;
-        [Inject] private InventoryService _inventoryService;
+
+        public int Hash { get; private set; }
         public abstract string Name { get; }
+        public readonly NetworkList<ItemEntity> Container = new();
+        public readonly NetworkVariable<int> Health = new();
+        private readonly ISubject<ItemEntity> _onContainerChanged = new Subject<ItemEntity>();
 
         public void Init(int hash, int health, List<ItemEntity> container, ItemEntity resultItem)
         {
@@ -81,56 +84,62 @@ namespace Island.Gameplay.Services.World
             return entity.Count;
         }
 
-        protected bool TryChangeContainer(InventoryItemType type, int count, long targetClientId = -1)
+        protected UniTask<ItemEntity> TryChangeContainer(ItemEntity item)
         {
-            Container.TryGet(t => t.Type == type, out var entity);
+            Container.TryGet(t => t.Type == item.Type, out var entity);
 
-            if (entity.Count + count >= 0)
+            if (entity.Count + item.Count >= 0)
             {
-                ChangeContainer_ServerRpc(type, count, targetClientId);
-                return true;
+                ChangeContainer_ServerRpc(item, NetworkManager.LocalClientId);
+
+                return _onContainerChanged.First().ToUniTask();
             }
 
-            return false;
+            return UniTask.FromResult(default(ItemEntity));
         }
 
         [ClientRpc]
-        private void ChargeItem_ClientRpc(InventoryItemType type, int count, ClientRpcParams clientRpcParams = default)
+        private void OnContainerChanged_ClientRpc(ItemEntity item, ClientRpcParams _ = default)
         {
-            _inventoryService.TryRemove(type, count);
+            onContainerChanged().Forget();
+
+            async UniTaskVoid onContainerChanged()
+            {
+                await UniTask.Yield();
+                _onContainerChanged.OnNext(item);
+            }
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void ChangeContainer_ServerRpc(InventoryItemType type, int count, long targetClientId)
+        private void ChangeContainer_ServerRpc(ItemEntity item, ulong targetClientId)
         {
-            var index = Container.IndexOf(t => t.Type == type);
-            var endValue = count;
-            if (index >= 0)
+            var index = Container.IndexOf(t => t.Type == item.Type);
+            var overCapacity = item.Count > 0 && (_containerCapacity == 0 || (index >= 0 && (Container.Count >= _containerCapacity || Container[index].Count >= _containerStackCapacity)));
+            if (overCapacity)
             {
-                endValue += Container[index].Count;
+                OnContainerChanged_ClientRpc(default, targetClientId.ToClientRpcParams());
+                return;
             }
 
-            _worldService.UpdateContainer(this, type, endValue);
+            OnContainerChanged_ClientRpc(item, targetClientId.ToClientRpcParams());
 
-            if (targetClientId >= 0)
-            {
-                ChargeItem_ClientRpc(type, count, targetClientId.ToClientRpcParams());
-            }
+            _worldService.UpdateContainer(this, item);
 
             if (index >= 0)
             {
+                var endValue = item.Count + Container[index].Count;
                 if (endValue > 0)
                 {
-                    Container[index] = new ItemEntity(type, endValue);
+                    Container[index] = new ItemEntity(item.Type, endValue);
                 }
                 else
                 {
                     Container.RemoveAt(index);
                 }
             }
-            else if (endValue > 0)
+            else if (item.Type != InventoryItemType.None && item.Count > 0)
             {
-                Container.Add(new ItemEntity(type, endValue));
+                Container.Add(item);
             }
         }
     }

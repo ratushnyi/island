@@ -1,4 +1,4 @@
-using AYellowpaper.SerializedCollections;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Island.Gameplay.Services.Inventory;
@@ -13,9 +13,7 @@ namespace Island.Gameplay.Services.World.Items
 {
     public class WorldTransformerObject : WorldObjectBase
     {
-        [SerializeField, SerializedDictionary("Item", "Count")]
-        private SerializedDictionary<InventoryItemType, int> _materials;
-
+        [SerializeField] private List<ItemEntity> _materials;
         [SerializeField] private float _duration;
         [SerializeField] private WorldProgressBar _progressBar;
 
@@ -44,31 +42,36 @@ namespace Island.Gameplay.Services.World.Items
             TryStartTransform_ServerRpc();
         }
 
-        public override UniTask<bool> Perform(bool isJustUsed)
+        public override async UniTask<bool> Perform(bool isJustUsed)
         {
             if (!isJustUsed)
             {
-                return UniTask.FromResult(false);
+                return false;
             }
 
             foreach (var item in _materials)
             {
-                if (_inventoryService.SelectedItem == item.Key && _inventoryService.IsSuitable(item.Key, 1))
+                if (_inventoryService.SelectedItem == item.Type && _inventoryService.IsSuitable(item))
                 {
-                    TryChangeContainer(item.Key, 1, (long)NetworkManager.LocalClientId);
+                    var changedEntity = await TryChangeContainer(item);
+                    var result = changedEntity.Equals(item);
+                    if (result)
+                    {
+                        _inventoryService.TryRemove(item);
+                    }
 
-                    return UniTask.FromResult(true);
+                    return result;
                 }
             }
 
-            return UniTask.FromResult(false);
+            return false;
         }
 
         private bool CheckMaterial()
         {
             foreach (var item in _materials)
             {
-                if (GetCount(item.Key) < item.Value)
+                if (GetCount(item.Type) < item.Count)
                 {
                     return false;
                 }
@@ -81,7 +84,7 @@ namespace Island.Gameplay.Services.World.Items
         {
             foreach (var item in _materials)
             {
-                TryChangeContainer(item.Key, -item.Value);
+                TryChangeContainer(new ItemEntity(item.Type, -item.Count));
             }
         }
 
@@ -99,7 +102,6 @@ namespace Island.Gameplay.Services.World.Items
             }
 
             _completionSource = new UniTaskCompletionSource();
-            UseMaterials();
 
             _progressValue.Value = 0;
             _progressValue.DOValue(1, _duration).OnComplete(FinishTransform_ServerRpc).SetEase(Ease.Linear);
@@ -109,6 +111,7 @@ namespace Island.Gameplay.Services.World.Items
         private void FinishTransform_ServerRpc()
         {
             _progressValue.Value = -1;
+            UseMaterials();
             SpawnResult();
 
             _completionSource.TrySetResult();

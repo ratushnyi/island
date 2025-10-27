@@ -55,7 +55,7 @@ namespace Island.Gameplay.Services.World
 
                 _networkService.Spawn(request);
             }
-            
+
             for (var index = 0; index < _worldProfile.SpawnedObjects.Values.Count; index++)
             {
                 var request = _worldProfile.SpawnedObjects.Values.ElementAt(index);
@@ -78,6 +78,12 @@ namespace Island.Gameplay.Services.World
             var type = WorldObjectType.Collectable;
             var position = worldItemObject.transform.position + Vector3.up + Vector3.up;
             var hash = IslandExtensions.GenerateHash(type, position);
+            while (_worldProfile.SpawnedObjects.ContainsKey(hash))
+            {
+                position += new Vector3(Random.Range(-0.1f, 0.1f), 0, Random.Range(-0.1f, 0.1f));
+                hash = IslandExtensions.GenerateHash(type, position);
+            }
+
             var request = new NetworkSpawnRequest(hash, type, position, resultItem: worldItemObject.ResultItem);
             _worldProfile.SpawnedObjects.Add(hash, request);
             _networkService.Spawn(request);
@@ -102,25 +108,26 @@ namespace Island.Gameplay.Services.World
             }
         }
 
-        public void UpdateContainer(WorldObjectBase worldItemObject, InventoryItemType type, int count)
+        public void UpdateContainer(WorldObjectBase worldItemObject, ItemEntity item)
         {
             if (!_worldProfile.ObjectContainerDictionary.TryGetValue(worldItemObject.Hash, out var container))
             {
-                if (count == 0)
+                if (item.Count == 0)
                 {
                     return;
                 }
+
                 container = new ObjectContainer();
                 _worldProfile.ObjectContainerDictionary.Add(worldItemObject.Hash, container);
             }
-            
-            if (count == 0)
+
+            if (item.Count == 0)
             {
-                container.Items.Remove(type);
+                container.Items.Remove(item.Type);
             }
             else
             {
-                container.Items[type] = count;
+                container.Items[item.Type] = item.Count;
             }
 
             if (container.Items.Count == 0)
