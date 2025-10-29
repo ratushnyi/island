@@ -234,11 +234,13 @@ MonoBehaviour:
   _playerConfig: {fileID: 11400000, guid: 23959e38303344073ac33a72a0560a25, type: 2}
   _statsConfig: {fileID: 11400000, guid: c5adf31d4e8fb471884b73b6ce7814ca, type: 2}
   _inventoryConfig: {fileID: 11400000, guid: cee975dcfa07f4712b6dd3199b44f1d4, type: 2}
+  _craftConfig: {fileID: 11400000, guid: 9b82c70fe73dd4e3595ce894a6475b5e, type: 2}
   _inventoryPopup: {fileID: 5131322837647147988, guid: f8319b42121934e4dba985a1972ec944, type: 3}
   _inputPanel: {fileID: 4842827540725903201, guid: 062822cee88454521a5782aa3c6c178d, type: 3}
   _hudPanel: {fileID: -6269519497728431671, guid: 4c8eaa2e4c5bc4a61826480b0aea28ed, type: 3}
   _pausePopup: {fileID: 1639367369623693751, guid: c51c3cdc32a8f49f9916d8a97cef9691, type: 3}
   _settingsPopup: {fileID: 7918920839453004830, guid: 06b6aa841de604db4bd88a6222e613b8, type: 3}
+  _craftPopup: {fileID: 3047772752273262551, guid: 0e26514dd5ea14463a25c2f44556e4de, type: 3}
   _canvas: {fileID: 6368572182129791260}
 --- !u!1 &535735355
 GameObject:

@@ -1,8 +1,10 @@
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Island.Gameplay.Configs.Craft;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Inventory.Items;
+using NaughtyAttributes;
+using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Utilities.Extensions;
 using UniRx;
 using Unity.Netcode;
@@ -11,17 +13,20 @@ using Zenject;
 
 namespace Island.Gameplay.Services.World.Items
 {
-    public class WorldTransformerObject : WorldObjectBase
+    public class WorldCraftObject : WorldObjectBase
     {
-        [SerializeField] private List<ItemEntity> _materials;
+        [SerializeField] private bool _simpleCraft;
+        [SerializeField, ShowIf("_simpleCraft")] private CraftReceipt _defaultReceipt;
         [SerializeField] private float _duration;
         [SerializeField] private WorldProgressBar _progressBar;
 
         [Inject] private InventoryService _inventoryService;
         [Inject] private WorldService _worldService;
+        [Inject] private PanelLoader<CraftPopup> _popup;
 
         private UniTaskCompletionSource _completionSource;
         private readonly NetworkVariable<float> _progressValue = new();
+        private readonly NetworkVariable<CraftReceipt> _receipt = new();
 
         public override string Name => Type.ToString();
 
@@ -49,7 +54,17 @@ namespace Island.Gameplay.Services.World.Items
                 return false;
             }
 
-            foreach (var item in _materials)
+            if (_simpleCraft)
+            {
+                _receipt.Value = _defaultReceipt;
+            }
+            else
+            {
+                var popup = await _popup.Show();
+                _receipt.Value = await popup.WaitForResult();
+            }
+
+            foreach (var item in _receipt.Value.Materials)
             {
                 if (_inventoryService.SelectedItem == item.Type && _inventoryService.IsSuitable(item))
                 {
@@ -69,7 +84,7 @@ namespace Island.Gameplay.Services.World.Items
 
         private bool CheckMaterial()
         {
-            foreach (var item in _materials)
+            foreach (var item in _receipt.Value.Materials)
             {
                 if (GetCount(item.Type) < item.Count)
                 {
@@ -82,7 +97,7 @@ namespace Island.Gameplay.Services.World.Items
 
         private void UseMaterials()
         {
-            foreach (var item in _materials)
+            foreach (var item in _receipt.Value.Materials)
             {
                 TryChangeContainer(new ItemEntity(item.Type, -item.Count));
             }
@@ -112,7 +127,7 @@ namespace Island.Gameplay.Services.World.Items
         {
             _progressValue.Value = -1;
             UseMaterials();
-            SpawnResult();
+            SpawnResult(_receipt.Value.Result);
 
             _completionSource.TrySetResult();
 

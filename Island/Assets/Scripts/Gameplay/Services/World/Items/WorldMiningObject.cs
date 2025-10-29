@@ -74,7 +74,7 @@ namespace Island.Gameplay.Services.World.Items
                 return false;
             }
 
-            SpawnResult();
+            SpawnResult(ResultItem);
 
             return true;
         }

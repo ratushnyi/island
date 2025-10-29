@@ -73,7 +73,7 @@ namespace Island.Gameplay.Services.World
             }
         }
 
-        public void SpawnResultItem(WorldObjectBase worldItemObject)
+        public void SpawnResultItem(WorldObjectBase worldItemObject, ItemEntity resultItem)
         {
             var type = WorldObjectType.Collectable;
             var position = worldItemObject.transform.position + Vector3.up + Vector3.up;
@@ -84,7 +84,7 @@ namespace Island.Gameplay.Services.World
                 hash = IslandExtensions.GenerateHash(type, position);
             }
 
-            var request = new NetworkSpawnRequest(hash, type, position, resultItem: worldItemObject.ResultItem);
+            var request = new NetworkSpawnRequest(hash, type, position, resultItem: resultItem);
             _worldProfile.SpawnedObjects.Add(hash, request);
             _networkService.Spawn(request);
         }

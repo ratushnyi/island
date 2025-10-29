@@ -567,9 +567,13 @@ MonoBehaviour:
     _type: 4
     _count: 1
   <Type>k__BackingField: 3
-  _materials:
-  - _type: 3
-    _count: 1
+  _defaultReceipt:
+    <Materials>k__BackingField:
+    - _type: 3
+      _count: 2
+    <Result>k__BackingField:
+      _type: 4
+      _count: 1
   _duration: 5
   _progressBar: {fileID: 1793928933528552702}
 --- !u!4 &5874106457217019660 stripped

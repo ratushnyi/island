@@ -49,9 +49,9 @@ namespace Island.Gameplay.Services.World
         {
         }
 
-        protected void SpawnResult()
+        protected void SpawnResult(ItemEntity result)
         {
-            _worldService.SpawnResultItem(this);
+            _worldService.SpawnResultItem(this, result);
         }
 
         public override void OnNetworkSpawn()

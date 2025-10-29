@@ -79,7 +79,7 @@ namespace Island.Gameplay.Player
                     return;
                 }
                 
-                if (_aimService.TargetObject.Value is WorldTransformerObject transformerObject)
+                if (_aimService.TargetObject.Value is WorldCraftObject transformerObject)
                 {
                     transformerObject.Perform(_inputService.PlayerActions.Interact.WasPressedThisFrame()).Forget();
                     return;
