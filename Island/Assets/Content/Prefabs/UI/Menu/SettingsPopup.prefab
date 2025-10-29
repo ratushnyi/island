@@ -64,6 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _showInstantly: 0
+  _showCursor: 1
   <PlayAnimation>k__BackingField: 1
   <AnimationDuration>k__BackingField: 0.2
   <AnimationEase>k__BackingField: 4

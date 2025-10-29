@@ -561,13 +561,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  _containerCapacity: 1
-  _containerStackCapacity: 1
+  <Capacity>k__BackingField: 2
   <ResultItem>k__BackingField:
     _type: 5
     _count: 1
   <Type>k__BackingField: 4
-  _simpleCraft: 0
+  _isBench: 1
   _defaultReceipt:
     _materials: []
     _result:

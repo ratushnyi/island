@@ -15,7 +15,6 @@ namespace Island.Gameplay.Services.HUD
         private void Start()
         {
             _canvas.enabled = false;
-            _canvas.worldCamera = Camera.main;
         }
 
         public async UniTask Show(float duration)
@@ -27,7 +26,7 @@ namespace Island.Gameplay.Services.HUD
 
             void onUpdate()
             {
-                transform.LookAt(transform.position + _canvas.worldCamera.transform.rotation * Vector3.forward, _canvas.worldCamera.transform.rotation * Vector3.up);
+                transform.LookAt(transform.position + Vector3.forward, Vector3.up);
             }
         }
 

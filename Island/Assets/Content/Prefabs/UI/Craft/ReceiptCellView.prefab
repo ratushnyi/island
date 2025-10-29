@@ -271,6 +271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3111c8531cfb4fc2bb22c934fa5946d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _button: {fileID: 2444388064904870500}
   _result: {fileID: 1675507366527643609}
   _name: {fileID: 4280091215083752354}
 --- !u!1001 &7326551548912405726
@@ -369,16 +370,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8281480634303324935, guid: 834a674fb393a4c4da566030af850898, type: 3}
-      propertyPath: _button
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 9054235302293854950, guid: 834a674fb393a4c4da566030af850898, type: 3}
       propertyPath: m_Color.a
       value: 0.11764706
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

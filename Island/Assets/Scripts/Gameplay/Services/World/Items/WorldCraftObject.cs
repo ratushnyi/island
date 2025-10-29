@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using Island.Gameplay.Configs.Craft;
@@ -15,8 +17,8 @@ namespace Island.Gameplay.Services.World.Items
 {
     public class WorldCraftObject : WorldObjectBase
     {
-        [SerializeField] private bool _simpleCraft;
-        [SerializeField, ShowIf("_simpleCraft")] private CraftReceipt _defaultReceipt;
+        [SerializeField] private bool _isBench;
+        [SerializeField, ShowIf("_isBench")] private CraftReceipt _defaultReceipt;
         [SerializeField] private float _duration;
         [SerializeField] private WorldProgressBar _progressBar;
 
@@ -35,16 +37,6 @@ namespace Island.Gameplay.Services.World.Items
             base.OnNetworkSpawn();
 
             _progressValue.AsObservable().Subscribe(_progressBar.SetValue).AddTo(this);
-
-            if (IsServer)
-            {
-                Container.AsObservable().Subscribe(ContainerNetworkOnOnListChanged).AddTo(this);
-            }
-        }
-
-        private void ContainerNetworkOnOnListChanged(NetworkListEvent<ItemEntity> changeEvent)
-        {
-            TryStartTransform_ServerRpc();
         }
 
         public override async UniTask<bool> Perform(bool isJustUsed)
@@ -54,64 +46,162 @@ namespace Island.Gameplay.Services.World.Items
                 return false;
             }
 
-            if (_simpleCraft)
+            ItemEntity[] ingredients;
+
+            if (_isBench)
             {
-                _receipt.Value = _defaultReceipt;
+                var popup = await _popup.Show(extraArgs: new object[] { Type });
+                var result = await popup.WaitForResult();
+                if (result == null)
+                {
+                    return false;
+                }
+
+                _receipt.Value = result.Value;
+                ingredients = _receipt.Value.Ingredients;
             }
             else
             {
-                var popup = await _popup.Show();
-                _receipt.Value = await popup.WaitForResult();
-            }
-
-            foreach (var item in _receipt.Value.Materials)
-            {
-                if (_inventoryService.SelectedItem == item.Type && _inventoryService.IsSuitable(item))
+                var first = _defaultReceipt.Ingredients.FirstOrDefault(t => t.Type == _inventoryService.SelectedItem);
+                if (first.Type == InventoryItemType.None)
                 {
-                    var changedEntity = await TryChangeContainer(item);
-                    var result = changedEntity.Equals(item);
-                    if (result)
-                    {
-                        _inventoryService.TryRemove(item);
-                    }
-
-                    return result;
+                    return false;
                 }
+
+                _receipt.Value = _defaultReceipt;
+                ingredients = new ItemEntity[] { new(_inventoryService.SelectedItem, 1) };
             }
 
-            return false;
-        }
-
-        private bool CheckMaterial()
-        {
-            foreach (var item in _receipt.Value.Materials)
+            if (_receipt.Value.Ingredients == null)
             {
-                if (GetCount(item.Type) < item.Count)
+                return false;
+            }
+
+            foreach (var item in ingredients)
+            {
+                if (!_inventoryService.IsSuitable(item))
                 {
                     return false;
                 }
             }
 
+            CheckItemsForReceipt_ServerRpc(ingredients, _receipt.Value, NetworkManager.LocalClientId);
+
             return true;
         }
 
-        private void UseMaterials()
+        [ServerRpc(RequireOwnership = false)]
+        private void CheckItemsForReceipt_ServerRpc(ItemEntity[] items, CraftReceipt receipt, ulong targetClientId)
         {
-            foreach (var item in _receipt.Value.Materials)
+            for (var index = 0; index < items.Length; index++)
             {
-                TryChangeContainer(new ItemEntity(item.Type, -item.Count));
+                bool result;
+                var item = items[index];
+                var receiptItem = receipt.Ingredients.FirstOrDefault(t => t.Type == item.Type);
+                if (receiptItem.Type == InventoryItemType.None)
+                {
+                    Debug.LogError($"Trying to check is item {item.Type} suitable from invalid receipt ({receipt})");
+                    result = false;
+                }
+                else
+                {
+                    var maxCount = receipt.Ingredients.First(t => t.Type == item.Type).Count;
+                    var exist = Container.TryGet(t => t.Type == item.Type, out var entity);
+                    var overCapacity = maxCount != -1 && exist && entity.Count >= maxCount;
+                    var isSuitableValue = (entity.Count + item.Count) > 0;
+                    result = !overCapacity && isSuitableValue;
+                }
+
+                if (!result)
+                {
+                    CheckItemsForReceipt_ClientRpc(null, targetClientId.ToClientRpcParams());
+                    return;
+                }
             }
+
+            CheckItemsForReceipt_ClientRpc(items, targetClientId.ToClientRpcParams());
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        private void TryStartTransform_ServerRpc()
+        [ClientRpc]
+        private void CheckItemsForReceipt_ClientRpc(ItemEntity[] items, ClientRpcParams _)
         {
-            if (_completionSource?.Task.Status == UniTaskStatus.Pending)
+            if (items == null)
             {
                 return;
             }
 
-            if (!CheckMaterial())
+            foreach (var item in items)
+            {
+                _inventoryService.TryRemove(item);
+            }
+
+            ChangeContainer_ServerRpc(items, NetworkManager.LocalClientId);
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void ChangeContainer_ServerRpc(ItemEntity[] stack, ulong targetClientId)
+        {
+            foreach (var item in stack)
+            {
+                ItemEntity resultItem;
+                var index = Container.IndexOf(t => t.Type == item.Type);
+                if (index == -1)
+                {
+                    if (item.Count >= 0)
+                    {
+                        resultItem = item;
+                        Container.Add(item);
+                    }
+                    else if (item.Count == 0)
+                    {
+                        Debug.LogError($"Trying to add empty item {item.Type} in container {name}");
+                        return;
+                    }
+                    else
+                    {
+                        Debug.LogError($"Trying to remove item {item.Type} not contained in container {name}");
+                        return;
+                    }
+                }
+                else
+                {
+                    var result = Container[index].Count + item.Count;
+                    if (result >= 0)
+                    {
+                        resultItem = new ItemEntity(item.Type, result);
+                        Container[index] = resultItem;
+                    }
+                    else
+                    {
+                        Debug.LogError($"Trying to remove item {item.Type} more ({item.Count}) than contained ({Container[index].Count}) in container {name}");
+                        return;
+                    }
+                }
+
+                _worldService.UpdateContainer(this, resultItem);
+            }
+
+            OnContainerChanged_ClientRpc(targetClientId.ToClientRpcParams());
+        }
+
+        [ClientRpc]
+        private void OnContainerChanged_ClientRpc(ClientRpcParams _)
+        {
+            foreach (var item in _receipt.Value.Ingredients)
+            {
+                if (GetCount(item.Type) < item.Count)
+                {
+                    return;
+                }
+            }
+
+            TryStartCraft_ServerRpc();
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void TryStartCraft_ServerRpc()
+        {
+            if (_completionSource?.Task.Status == UniTaskStatus.Pending)
             {
                 return;
             }
@@ -119,19 +209,17 @@ namespace Island.Gameplay.Services.World.Items
             _completionSource = new UniTaskCompletionSource();
 
             _progressValue.Value = 0;
-            _progressValue.DOValue(1, _duration).OnComplete(FinishTransform_ServerRpc).SetEase(Ease.Linear);
+            _progressValue.DOValue(1, _duration).OnComplete(FinishCraft_ServerRpc).SetEase(Ease.Linear);
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void FinishTransform_ServerRpc()
+        private void FinishCraft_ServerRpc()
         {
             _progressValue.Value = -1;
-            UseMaterials();
+            ChangeContainer_ServerRpc(_receipt.Value.InvertIngredients, NetworkManager.LocalClientId);
             SpawnResult(_receipt.Value.Result);
 
             _completionSource.TrySetResult();
-
-            TryStartTransform_ServerRpc();
         }
     }
 }

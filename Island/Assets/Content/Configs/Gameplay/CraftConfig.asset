@@ -13,5 +13,23 @@ MonoBehaviour:
   m_Name: CraftConfig
   m_EditorClassIdentifier: 
   Receipts:
-    _serializedList: []
+    _serializedList:
+    - Key: 4
+      Value:
+      - _ingredients:
+        - _type: 4
+          _count: 1
+        - _type: 2
+          _count: 1
+        _result:
+          _type: 5
+          _count: 1
+      - _ingredients:
+        - _type: 3
+          _count: 1
+        - _type: 2
+          _count: 1
+        _result:
+          _type: 7
+          _count: 1
   <CraftReceiptView>k__BackingField: {fileID: 1887409185011205869, guid: 856a38dabcb0b4ee18e56ea856955b54, type: 3}
