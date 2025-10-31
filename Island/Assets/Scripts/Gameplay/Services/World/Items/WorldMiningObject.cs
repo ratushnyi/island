@@ -91,11 +91,6 @@ namespace Island.Gameplay.Services.World.Items
 
             OnHealthChanged_ServerRpc(Health.Value - damage);
 
-            if (Health.Value <= 0)
-            {
-                Despawn_ServerRpc();
-            }
-
             return true;
         }
 

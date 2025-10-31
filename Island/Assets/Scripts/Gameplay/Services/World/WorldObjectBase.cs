@@ -60,6 +60,11 @@ namespace Island.Gameplay.Services.World
         {
             Health.Value = value;
             _worldService.UpdateHealth(this);
+            
+            if (Health.Value <= 0)
+            {
+                Despawn_ServerRpc();
+            }
         }
 
         [ServerRpc(RequireOwnership = false)]
