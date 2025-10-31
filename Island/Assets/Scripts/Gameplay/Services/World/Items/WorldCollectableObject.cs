@@ -10,7 +10,7 @@ namespace Island.Gameplay.Services.World.Items
 
         private UniTaskCompletionSource _completionSource;
 
-        public override string Name => ResultItem.Type.ToString();
+        public override string Name => ResultItem.Value.Type.ToString();
 
 
         public override UniTask<bool> Perform(bool isJustUsed)
@@ -20,7 +20,7 @@ namespace Island.Gameplay.Services.World.Items
                 return UniTask.FromResult(false);
             }
 
-            if (_inventoryService.TryCollect(ResultItem))
+            if (_inventoryService.TryCollect(ResultItem.Value))
             {
                 Despawn_ServerRpc();
             }

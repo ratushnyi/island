@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Island.Gameplay.Services.Inventory.Items;
 using TendedTarsier.Core.Utilities.Extensions;
@@ -20,7 +19,7 @@ namespace Island.Gameplay.Configs.Craft
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
             serializer.SerializeValue(ref _result);
-            serializer.SerializeValue(ref _ingredients);
+            serializer.SerializeArray(ref _ingredients);
         }
     }
 }

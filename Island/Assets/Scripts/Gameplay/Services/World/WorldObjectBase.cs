@@ -12,15 +12,13 @@ namespace Island.Gameplay.Services.World
 {
     public abstract class WorldObjectBase : NetworkBehaviour
     {
-        [field: SerializeField] public ItemEntity ResultItem { get; private set; }
         [field: SerializeField] public WorldObjectType Type { get; private set; }
-
         [Inject] private WorldService _worldService;
-
         public int Hash { get; private set; }
         public abstract string Name { get; }
-        public readonly NetworkList<ItemEntity> Container = new();
         public readonly NetworkVariable<int> Health = new();
+        protected readonly NetworkList<ItemEntity> Container = new();
+        protected readonly NetworkVariable<ItemEntity> ResultItem = new();
 
         public void Init(int hash, int health, List<ItemEntity> container, ItemEntity resultItem)
         {
@@ -34,10 +32,7 @@ namespace Island.Gameplay.Services.World
                 }
             }
 
-            if (resultItem.Type != InventoryItemType.None)
-            {
-                ResultItem = resultItem;
-            }
+            ResultItem.Value = resultItem;
         }
 
         public abstract UniTask<bool> Perform(bool isJustUsed);

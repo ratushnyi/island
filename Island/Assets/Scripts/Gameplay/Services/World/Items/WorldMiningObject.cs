@@ -17,6 +17,7 @@ namespace Island.Gameplay.Services.World.Items
         [SerializeField, SerializedDictionary("Tool", "Damage")]
         private SerializedDictionary<InventoryItemType, int> _tools;
         [SerializeField] private float _duration;
+        [SerializeField] private ItemEntity _dropItem;
 
         [Inject] private InputService _inputService;
         [Inject] private AimService _aimService;
@@ -74,7 +75,7 @@ namespace Island.Gameplay.Services.World.Items
                 return false;
             }
 
-            SpawnResult(ResultItem);
+            SpawnResult(_dropItem);
 
             return true;
         }

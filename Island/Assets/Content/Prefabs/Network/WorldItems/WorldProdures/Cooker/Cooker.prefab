@@ -561,17 +561,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  <Capacity>k__BackingField: 2
-  <ResultItem>k__BackingField:
-    _type: 5
-    _count: 1
   <Type>k__BackingField: 4
-  _isBench: 1
-  _defaultReceipt:
-    _materials: []
-    _result:
-      _type: 0
-      _count: 0
+  _showPopup: 1
   _duration: 5
   _progressBar: {fileID: 1793928933528552702}
 --- !u!4 &5874106457217019660 stripped

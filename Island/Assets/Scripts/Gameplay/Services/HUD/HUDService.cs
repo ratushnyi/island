@@ -11,6 +11,7 @@ using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services;
 using TendedTarsier.Core.Services.Input;
 using UniRx;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
@@ -94,7 +95,6 @@ namespace Island.Gameplay.Services.HUD
                 if (isExit)
                 {
                     _islandGameplayModuleController.LoadMenu().Forget();
-                    return;
                 }
             }
             else if (_pausePanel.Instance != null)
@@ -112,7 +112,6 @@ namespace Island.Gameplay.Services.HUD
             if (isExit)
             {
                 _islandGameplayModuleController.LoadMenu().Forget();
-                return;
             }
         }
 

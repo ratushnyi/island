@@ -32,4 +32,12 @@ MonoBehaviour:
         _result:
           _type: 7
           _count: 1
+    - Key: 3
+      Value:
+      - _ingredients:
+        - _type: 3
+          _count: 2
+        _result:
+          _type: 4
+          _count: 1
   <CraftReceiptView>k__BackingField: {fileID: 1887409185011205869, guid: 856a38dabcb0b4ee18e56ea856955b54, type: 3}

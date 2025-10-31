@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks;
 using Island.Common.Services;
 using Island.Gameplay.Profiles;
 using Island.Gameplay.Settings;

@@ -175,9 +175,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  <ResultItem>k__BackingField:
-    _type: 2
-    _count: 10
   <Type>k__BackingField: 1
   _healthView:
     _serializedList:
@@ -196,6 +193,9 @@ MonoBehaviour:
     - Key: 10
       Value: 25
   _duration: 5
+  _dropItem:
+    _type: 2
+    _count: 10
 --- !u!4 &5874106457217019660 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3451616297354679487, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
