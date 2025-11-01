@@ -17,6 +17,7 @@ namespace Island.Gameplay.Panels.Inventory
 
         private ItemModel _model;
 
+        public Button Button => _button;
         public IObservable<InventoryItemType> OnButtonClicked => _onButtonClicked;
 
         private void Start()

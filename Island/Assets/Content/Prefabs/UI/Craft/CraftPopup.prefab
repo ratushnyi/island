@@ -1999,6 +1999,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: InventoryCellView
       objectReference: {fileID: 0}
+    - target: {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8276370556511690979, guid: 834a674fb393a4c4da566030af850898, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2115,6 +2123,14 @@ PrefabInstance:
     - target: {fileID: 883697294786899943, guid: 834a674fb393a4c4da566030af850898, type: 3}
       propertyPath: m_Name
       value: InventoryCellView (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8276370556511690979, guid: 834a674fb393a4c4da566030af850898, type: 3}
       propertyPath: m_Pivot.x
@@ -2233,6 +2249,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: InventoryCellView (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8276370556511690979, guid: 834a674fb393a4c4da566030af850898, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2349,6 +2373,14 @@ PrefabInstance:
     - target: {fileID: 883697294786899943, guid: 834a674fb393a4c4da566030af850898, type: 3}
       propertyPath: m_Name
       value: InventoryCellView (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8276370556511690979, guid: 834a674fb393a4c4da566030af850898, type: 3}
       propertyPath: m_Pivot.x
@@ -2467,6 +2499,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: InventoryCellView (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8276370556511690979, guid: 834a674fb393a4c4da566030af850898, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2583,6 +2623,14 @@ PrefabInstance:
     - target: {fileID: 883697294786899943, guid: 834a674fb393a4c4da566030af850898, type: 3}
       propertyPath: m_Name
       value: InventoryCellView (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8276370556511690979, guid: 834a674fb393a4c4da566030af850898, type: 3}
       propertyPath: m_Pivot.x
@@ -2701,6 +2749,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: InventoryCellView (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8276370556511690979, guid: 834a674fb393a4c4da566030af850898, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2818,6 +2874,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: InventoryCellView (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8276370556511690979, guid: 834a674fb393a4c4da566030af850898, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2934,6 +2998,14 @@ PrefabInstance:
     - target: {fileID: 883697294786899943, guid: 834a674fb393a4c4da566030af850898, type: 3}
       propertyPath: m_Name
       value: InventoryCellView (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6413773675521053835, guid: 834a674fb393a4c4da566030af850898, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.a
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8276370556511690979, guid: 834a674fb393a4c4da566030af850898, type: 3}
       propertyPath: m_Pivot.x

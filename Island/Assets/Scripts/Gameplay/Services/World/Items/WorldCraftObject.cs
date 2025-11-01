@@ -50,13 +50,13 @@ namespace Island.Gameplay.Services.World.Items
             {
                 var popup = await _popup.Show(extraArgs: new object[] { Type });
                 var result = await popup.WaitForResult();
-                if (result == null)
+                if (result.Count == 0)
                 {
                     return false;
                 }
 
-                UpdateReceipt_ServerRpc(result.Value);
-                ingredients = _receipt.Value.Ingredients;
+                UpdateReceipt_ServerRpc(result.Receipt);
+                ingredients = _receipt.Value.Ingredients.Select(t => new ItemEntity(t.Type, t.Count * result.Count)).ToArray();
             }
             else
             {
@@ -64,6 +64,7 @@ namespace Island.Gameplay.Services.World.Items
                 {
                     return false;
                 }
+
                 var first = receipts[0].Ingredients.FirstOrDefault(t => t.Type == _inventoryService.SelectedItem);
                 if (first.Type == InventoryItemType.None)
                 {
@@ -81,7 +82,7 @@ namespace Island.Gameplay.Services.World.Items
 
             foreach (var item in ingredients)
             {
-                if (!_inventoryService.IsSuitable(item))
+                if (!_inventoryService.IsEnough(item))
                 {
                     return false;
                 }
@@ -194,7 +195,6 @@ namespace Island.Gameplay.Services.World.Items
 
                 _worldService.UpdateContainer(this, resultItem);
             }
-
         }
 
         private bool IsEnoughIngredients()
@@ -226,7 +226,7 @@ namespace Island.Gameplay.Services.World.Items
             ApplyContainer(_receipt.Value.InvertIngredients);
             SpawnResult(_receipt.Value.Result);
             _progressValue.Value = -1;
-            
+
             if (IsEnoughIngredients())
             {
                 PerformCraft();

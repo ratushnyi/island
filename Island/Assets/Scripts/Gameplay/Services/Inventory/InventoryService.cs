@@ -93,9 +93,9 @@ namespace Island.Gameplay.Services.Inventory
             }
         }
 
-        public bool IsSuitable(ItemEntity itemEntity) => IsSuitable(itemEntity.Type, itemEntity.Count);
+        public bool IsEnough(ItemEntity itemEntity, int multiplier = 1) => IsEnough(itemEntity.Type, itemEntity.Count * multiplier);
 
-        public bool IsSuitable(InventoryItemType type, int count)
+        public bool IsEnough(InventoryItemType type, int count)
         {
             if (_inventoryProfile.InventoryItems.TryGetValue(type, out var item))
             {
