@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WorldObjects:
     _serializedList:
+    - Key: -1
+      Value: {fileID: 6376655596301536914, guid: a282c0b0c0cf744beb79691a43b331aa, type: 3}
     - Key: 0
       Value: {fileID: 8490108568058332848, guid: 5339f930ceb714eab919efc7c791e2e8, type: 3}
     - Key: 1
@@ -25,6 +27,15 @@ MonoBehaviour:
     - Key: 4
       Value: {fileID: 8570223336612559781, guid: 21646163bdf1d4fd9b42345097abbd60, type: 3}
   WorldObjectPlacement:
+  - Hash: 0
+    Type: -1
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Health: 100
+    ResultItem:
+      _type: 0
+      _count: 0
+    Container: []
   - Hash: 2044481614
     Type: 1
     Position: {x: 34.83, y: 15.95, z: 0}

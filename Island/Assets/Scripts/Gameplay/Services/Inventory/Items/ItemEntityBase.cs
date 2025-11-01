@@ -14,20 +14,7 @@ namespace Island.Gameplay.Services.Inventory.Tools
         [field: SerializeField] public bool IsUsable { private set; get; }
         [Inject] protected StatsService StatsService;
 
-        public virtual bool Check()
-        {
-            foreach (var fee in StatFeeModel)
-            {
-                if (!StatsService.IsSuitable(fee.Type, fee.Value))
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        public virtual void Pay()
+        protected virtual void Pay()
         {
             foreach (var fee in StatFeeModel)
             {

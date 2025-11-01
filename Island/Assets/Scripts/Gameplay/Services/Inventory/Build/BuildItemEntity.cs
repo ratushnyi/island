@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using Island.Gameplay.Services.Build;
 using Island.Gameplay.Services.Inventory.Tools;
+using Island.Gameplay.Services.World.Items;
 using UnityEngine;
 using Zenject;
 
@@ -28,12 +29,23 @@ namespace Island.Gameplay.Services.Inventory.Build
                 }
             }
 
-            if (!_buildService.IsSuitablePlace())
+            if (_aimService.TargetObject.Value is WorldGroundObject groundObject)
+            {
+                if (!_buildService.IsSuitablePlace())
+                {
+                    result = false;
+                }
+                else
+                {
+                    _buildService.Build(groundObject);
+                }
+            }
+            else
             {
                 result = false;
             }
+
             
-            _buildService.Build();
 
             return result;
         }
