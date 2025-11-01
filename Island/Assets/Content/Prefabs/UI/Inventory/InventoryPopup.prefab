@@ -65,6 +65,7 @@ MonoBehaviour:
   <PlayAnimation>k__BackingField: 1
   <AnimationDuration>k__BackingField: 0.2
   <AnimationEase>k__BackingField: 4
+  _backgroundCloseButton: {fileID: 8449124002945064224}
   _gridContainer: {fileID: 1227261593176604472}
   _freehandCell: {fileID: 6245682597852737072}
 --- !u!225 &4578419179411867861

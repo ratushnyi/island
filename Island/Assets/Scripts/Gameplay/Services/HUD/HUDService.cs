@@ -71,19 +71,35 @@ namespace Island.Gameplay.Services.HUD
         {
             if (!_networkService.IsServer)
             {
-                _networkService.IsServerPaused.Subscribe(HandleServerPause).AddTo(CompositeDisposable);
+                _networkService.IsServerPaused.Subscribe(ProcessServerPause).AddTo(CompositeDisposable);
             }
         }
 
-        private void HandleServerPause(bool value)
+        private void ProcessServerPause(bool value)
         {
             if (value)
             {
-                HandlePause().Forget();
+                processServerPauseAsync().Forget();
             }
             else if (_pausePopup.Instance != null)
             {
                 _pausePopup.Hide().Forget();
+            }
+
+            async UniTaskVoid processServerPauseAsync()
+            {
+                if (_pausePopup.PanelState.Value is PanelState.Show or PanelState.Showing)
+                {
+                    _pausePopup.Instance.UpdateActiveCloseButton();
+                    return;
+                }
+
+                if (_pausePopup.PanelState.Value is PanelState.Hiding)
+                {
+                    await _pausePopup.PanelState.First();
+                }
+
+                HandlePause().Forget();
             }
         }
 
@@ -106,7 +122,7 @@ namespace Island.Gameplay.Services.HUD
 
         private async UniTask SwitchInventory()
         {
-            if (_pausePopup.PanelState != PanelLoader<PausePopup>.State.Hide)
+            if (_pausePopup.PanelState.Value != PanelState.Hide)
             {
                 return;
             }

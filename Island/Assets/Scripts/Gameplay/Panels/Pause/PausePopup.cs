@@ -14,7 +14,7 @@ namespace Island.Gameplay.Panels.Pause
     public class PausePopup : ResultPopupBase<bool>
     {
         [SerializeField] private TMP_Text _joinCode;
-        [SerializeField] private List<Button> _closeButton;
+        [SerializeField] private Button _closeButton;
         [SerializeField] private Button _settingsButton;
         [SerializeField] private Button _exitButton;
         private PanelLoader<SettingsPopup> _settingsPanel;
@@ -35,16 +35,32 @@ namespace Island.Gameplay.Panels.Pause
             }
             else
             {
-                _closeButton.ForEach(t => t.gameObject.SetActive(!_networkService.IsServerPaused.Value));;
+                UpdateActiveCloseButton();
                 _joinCode.gameObject.SetActive(false);
             }
+
             _settingsButton.OnClickAsObservable().Subscribe(_ => OnSettingsButtonClick()).AddTo(this);
             _exitButton.OnClickAsObservable().Subscribe(_ => HideWithResult(true)).AddTo(this);
+        }
+
+        public void UpdateActiveCloseButton()
+        {
+            _closeButton.gameObject.SetActive(!_networkService.IsServerPaused.Value);
         }
 
         private void OnSettingsButtonClick()
         {
             _settingsPanel.Show().Forget();
+        }
+
+        public override void Hide(bool immediate = false)
+        {
+            if (!_networkService.IsServer && _networkService.IsServerPaused.Value)
+            {
+                return;
+            }
+
+            base.Hide(immediate);
         }
     }
 }

@@ -10,7 +10,6 @@ namespace Island.Menu.Panels.Join
 {
     public class JoinPopup : ResultPopupBase<string>
     {
-        [SerializeField] private Button _closeButton;
         [SerializeField] private Button _buttonAccept;
         [SerializeField] private TMP_InputField _textField;
         Tween _tween;
@@ -19,7 +18,6 @@ namespace Island.Menu.Panels.Join
         {
             await base.ShowAnimation();
             
-            _closeButton.OnClickAsObservable().Subscribe(t => Decline()).AddTo(this);
             _buttonAccept.OnClickAsObservable().Subscribe(t => Accept()).AddTo(this);
             _textField.Select();
         }
