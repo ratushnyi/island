@@ -25,7 +25,7 @@ namespace Island.Gameplay.Services.HUD
         private NetworkService _networkService;
         private AimService _aimService;
         private PanelLoader<HUDPanel> _hudPanel;
-        private PanelLoader<PausePopup> _pausePanel;
+        private PanelLoader<PausePopup> _pausePopup;
         private PanelLoader<InventoryPopup> _inventoryPanel;
         private IslandGameplayModuleController _islandGameplayModuleController;
 
@@ -45,7 +45,7 @@ namespace Island.Gameplay.Services.HUD
         {
             _islandGameplayModuleController = islandGameplayModuleController;
             _inventoryPanel = inventoryPanel;
-            _pausePanel = pausePanel;
+            _pausePopup = pausePanel;
             _hudPanel = hudPanel;
             _aimService = aimService;
             _networkService = networkService;
@@ -87,23 +87,23 @@ namespace Island.Gameplay.Services.HUD
         {
             if (value)
             {
-                var panel = await _pausePanel.Show();
+                var panel = await _pausePopup.Show();
                 var isExit = await panel.WaitForResult();
                 if (isExit)
                 {
                     _islandGameplayModuleController.LoadMenu().Forget();
                 }
             }
-            else if (_pausePanel.Instance != null)
+            else if (_pausePopup.Instance != null)
             {
-                _pausePanel.Hide().Forget();
+                _pausePopup.Hide().Forget();
             }
         }
 
         private async UniTaskVoid HandlePause()
         {
             _networkService.SetPaused(true);
-            var panel = await _pausePanel.Show();
+            var panel = await _pausePopup.Show();
             var isExit = await panel.WaitForResult();
             _networkService.SetPaused(false);
             if (isExit)

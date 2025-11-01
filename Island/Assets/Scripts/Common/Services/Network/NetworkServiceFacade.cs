@@ -1,3 +1,4 @@
+using System;
 using Island.Common.Services.Network;
 using Island.Gameplay.Configs.World;
 using UniRx;
@@ -10,6 +11,9 @@ namespace Island.Common.Services
 {
     public class NetworkServiceFacade : NetworkBehaviour
     {
+        public IObservable<Unit> OnShutdown => _onShutdown;
+        private readonly ISubject<Unit> _onShutdown = new Subject<Unit>();
+
         public readonly ReactiveProperty<bool> IsPaused = new();
         private readonly NetworkVariable<bool> _isPausedNetwork = new();
 
@@ -79,6 +83,12 @@ namespace Island.Common.Services
             worldObject.NetworkObject.Spawn();
             worldObject.Init(request.Hash, request.Health, request.Container, request.ResultItem);
             worldObject.NetworkObject.TrySetParent(NetworkObject);
+        }
+
+        [ClientRpc]
+        public void Shutdown_ClientRpc(ClientRpcParams _ = default)
+        {
+            _onShutdown.OnNext(Unit.Default);
         }
     }
 }

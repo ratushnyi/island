@@ -28,7 +28,7 @@ namespace Island.Common.Services
         public bool IsServer => NetworkManager.Singleton.IsServer;
         public bool IsClient => NetworkManager.Singleton.IsClient;
         public bool IsHost => NetworkManager.Singleton.IsHost;
-        public IObservable<Unit> OnServerStopped => Observable.FromEvent(t => NetworkManager.Singleton.OnPreShutdown += t, t => NetworkManager.Singleton.OnPreShutdown -= t);
+        public IObservable<Unit> OnShutdown => Observable.FromEvent(t => NetworkManager.Singleton.OnPreShutdown += t, t => NetworkManager.Singleton.OnPreShutdown -= t).Merge(_networkServiceFacade.OnShutdown);
         public IReadOnlyReactiveProperty<bool> IsServerPaused => _networkServiceFacade.IsPaused;
         public string ServerId => _networkServiceFacade.ServerId.Value;
 
@@ -49,6 +49,7 @@ namespace Island.Common.Services
 
         public void Shutdown()
         {
+            _networkServiceFacade.Shutdown_ClientRpc();
             NetworkManager.Singleton.Shutdown();
         }
         

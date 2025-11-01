@@ -4,7 +4,6 @@ using TendedTarsier.Core.Modules.Project;
 using TendedTarsier.Core.Services.Modules;
 using TendedTarsier.Core.Services.Profile;
 using UniRx;
-using UnityEngine;
 using Zenject;
 
 namespace Island.Gameplay.Module
@@ -27,14 +26,14 @@ namespace Island.Gameplay.Module
         {
             if (!_networkService.IsServer)
             {
-                _networkService.OnServerStopped.Subscribe(_ => LoadMenu().Forget()).AddTo(CompositeDisposable);
+                _networkService.OnShutdown.Subscribe(_ => LoadMenu().Forget()).AddTo(CompositeDisposable);
             }
         }
 
         public async UniTaskVoid LoadMenu()
         {
-            await _moduleService.LoadModule(_projectConfig.MenuScene);
             _networkService.Shutdown();
+            await _moduleService.LoadModule(_projectConfig.MenuScene);
         }
     }
 }
