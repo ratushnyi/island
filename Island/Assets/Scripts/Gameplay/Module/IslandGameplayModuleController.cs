@@ -21,7 +21,7 @@ namespace Island.Gameplay.Module
             _moduleService = moduleService;
             _projectConfig = projectConfig;
         }
-        
+
         public void OnNetworkInitialize()
         {
             if (!_networkService.IsServer)

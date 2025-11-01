@@ -1,17 +1,14 @@
-using Cysharp.Threading.Tasks;
 using Island.Common.Services;
 using Island.Menu.Panels.Setting;
 using TendedTarsier.Core.Panels;
 using UniRx;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
 namespace Island.Menu.Panels.Settings
 {
     public class SettingsPopup : PopupBase
     {
-        [SerializeField] private Button _closeButton;
         [SerializeField] private SettingsSlider _fovSlider;
         [SerializeField] private SettingsSlider _cameraSensitivitySlider;
         private SettingsService _settingsService;
@@ -29,13 +26,6 @@ namespace Island.Menu.Panels.Settings
             
             _fovSlider.OnValueChangedObservable.Subscribe(value => _settingsService.Fov.Value = value).AddTo(this);
             _cameraSensitivitySlider.OnValueChangedObservable.Subscribe(value => _settingsService.CameraSensitivity.Value = value).AddTo(this);
-        }
-        
-        public override async UniTask ShowAnimation()
-        {
-            await base.ShowAnimation();
-            
-            _closeButton.OnClickAsObservable().Subscribe(t => Hide()).AddTo(this);
         }
     }
 }

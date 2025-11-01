@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Island.Common.Services;
 using Island.Menu.Panels.Settings;
@@ -13,7 +14,7 @@ namespace Island.Gameplay.Panels.Pause
     public class PausePopup : ResultPopupBase<bool>
     {
         [SerializeField] private TMP_Text _joinCode;
-        [SerializeField] private Button _closeButton;
+        [SerializeField] private List<Button> _closeButton;
         [SerializeField] private Button _settingsButton;
         [SerializeField] private Button _exitButton;
         private PanelLoader<SettingsPopup> _settingsPanel;
@@ -34,7 +35,7 @@ namespace Island.Gameplay.Panels.Pause
             }
             else
             {
-                _closeButton.gameObject.SetActive(!_networkService.IsServerPaused.Value);
+                _closeButton.ForEach(t => t.gameObject.SetActive(!_networkService.IsServerPaused.Value));;
                 _joinCode.gameObject.SetActive(false);
             }
             _settingsButton.OnClickAsObservable().Subscribe(_ => OnSettingsButtonClick()).AddTo(this);

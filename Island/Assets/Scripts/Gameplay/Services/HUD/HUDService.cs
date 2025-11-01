@@ -11,7 +11,6 @@ using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services;
 using TendedTarsier.Core.Services.Input;
 using UniRx;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
@@ -62,15 +61,8 @@ namespace Island.Gameplay.Services.HUD
 
         private void SubscribeOnInput()
         {
-            if (Application.isMobilePlatform)
-            {
-                _hudPanel.Instance.SelectedItem.OnButtonClicked.Subscribe(_ => SwitchInventory().Forget()).AddTo(CompositeDisposable);
-            }
-            else
-            {
-                _inputService.OnOptionsButtonPerformed.Subscribe(_ => SwitchInventory().Forget()).AddTo(CompositeDisposable);
-            }
-            
+            _inputService.OnOptionsButtonPerformed.Subscribe(_ => SwitchInventory().Forget()).AddTo(CompositeDisposable);
+
             SubscribeOnServerPause();
             SubscribeOnPause();
         }
@@ -79,20 +71,15 @@ namespace Island.Gameplay.Services.HUD
         {
             if (!_networkService.IsServer)
             {
-                _networkService.IsServerPaused.Subscribe(t => HandleServerPause(t).Forget()).AddTo(CompositeDisposable);
+                _networkService.IsServerPaused.Subscribe(HandleServerPause).AddTo(CompositeDisposable);
             }
         }
 
-        private async UniTaskVoid HandleServerPause(bool value)
+        private void HandleServerPause(bool value)
         {
             if (value)
             {
-                var panel = await _pausePopup.Show();
-                var isExit = await panel.WaitForResult();
-                if (isExit)
-                {
-                    _islandGameplayModuleController.LoadMenu().Forget();
-                }
+                HandlePause().Forget();
             }
             else if (_pausePopup.Instance != null)
             {
@@ -119,6 +106,11 @@ namespace Island.Gameplay.Services.HUD
 
         private async UniTask SwitchInventory()
         {
+            if (_pausePopup.PanelState != PanelLoader<PausePopup>.State.Hide)
+            {
+                return;
+            }
+
             if (_inventoryPanel.Instance != null)
             {
                 await _inventoryPanel.Hide();
