@@ -6,6 +6,7 @@ using TendedTarsier.Core.Modules.Menu;
 using TendedTarsier.Core.Panels;
 using UniRx;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Zenject;
 
@@ -36,14 +37,14 @@ namespace Island.Menu.Panels
         
         protected override async UniTask OnContinueButtonClick()
         {
-            await base.OnContinueButtonClick();
+            base.OnContinueButtonClick().Forget();
             await _networkService.StartHost(false);
         }
 
         protected override async UniTask OnNewGameButtonClick()
         {
             ProfileService.SetNewGame(true);
-            await ModuleService.LoadModule(ProjectConfig.GameplayScene);
+            ModuleService.LoadModule(ProjectConfig.GameplayScene).Forget();
             await _networkService.StartHost(true);
         }
 
@@ -57,7 +58,14 @@ namespace Island.Menu.Panels
             }
 
             ProfileService.SetNewGame(false);
-            await _networkService.TryStartClient(joinCode, base.OnContinueButtonClick);
+            await _networkService.TryStartClient(joinCode, beforeClientStarted);
+
+            async UniTask beforeClientStarted()
+            {
+                base.OnContinueButtonClick().Forget();
+                
+                await UniTask.WaitUntil(() => SceneManager.GetActiveScene().name == ProjectConfig.GameplayScene);
+            }
         }
 
         private void OnSettingsButtonClick()

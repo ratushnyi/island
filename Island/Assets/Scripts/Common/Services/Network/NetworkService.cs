@@ -20,8 +20,8 @@ namespace Island.Common.Services
     {
         public string JoinCode { get; private set; }
         
-        private ProjectProfile _projectProfile;
-        private NetworkConfig _config;
+        [Inject] private ProjectProfile _projectProfile;
+        [Inject] private NetworkConfig _config;
         private NetworkServiceFacade _networkServiceFacade;
 
         public bool IsReady => NetworkManager.Singleton.IsApproved;
@@ -34,13 +34,6 @@ namespace Island.Common.Services
 
         public void SetPaused(bool value) => _networkServiceFacade.SetPaused(value);
         public void Spawn(NetworkSpawnRequest request) => _networkServiceFacade.Spawn_ServerRpc(request);
-
-        [Inject]
-        private void Construct(NetworkConfig config, ProjectProfile projectProfile)
-        {
-            _config = config;
-            _projectProfile = projectProfile;
-        }
 
         public void Initialize(NetworkServiceFacade networkServiceFacade)
         {

@@ -4,6 +4,7 @@ using TendedTarsier.Core.Modules.Project;
 using TendedTarsier.Core.Services.Modules;
 using TendedTarsier.Core.Services.Profile;
 using UniRx;
+using Unity.Netcode;
 using Zenject;
 
 namespace Island.Gameplay.Module
@@ -20,6 +21,14 @@ namespace Island.Gameplay.Module
             _networkService = networkService;
             _moduleService = moduleService;
             _projectConfig = projectConfig;
+        }
+
+        public override async UniTask Initialize()
+        {
+            bool? isPlayerSpawned() => NetworkManager.Singleton.SpawnManager?.GetLocalPlayerObject()?.IsSpawned;
+            await UniTask.WaitUntil(() => isPlayerSpawned().HasValue && isPlayerSpawned()!.Value);
+            
+            await base.Initialize();
         }
 
         public void OnNetworkInitialize()
