@@ -15,6 +15,8 @@ namespace Island.Gameplay.Services.Inventory.Items
         //tools
         Hammer,
         Shovel,
-        Axe
+        Axe,
+        //build
+        Cooker
     }
 }

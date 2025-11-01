@@ -11,6 +11,7 @@ using Island.Gameplay.Profiles;
 using Island.Gameplay.Profiles.Inventory;
 using Island.Gameplay.Profiles.Stats;
 using Island.Gameplay.Services;
+using Island.Gameplay.Services.Build;
 using Island.Gameplay.Services.CameraInput;
 using Island.Gameplay.Services.HUD;
 using Island.Gameplay.Services.Inventory;
@@ -76,6 +77,7 @@ namespace Island.Gameplay.Module
             Container.BindService<AimService>();
             Container.BindService<WorldService>();
             Container.BindService<PlayerService>();
+            Container.BindService<BuildService>();
             Container.BindService<NetworkServiceBridge, NetworkServiceFacade>(_networkServiceFacade);
         }
 

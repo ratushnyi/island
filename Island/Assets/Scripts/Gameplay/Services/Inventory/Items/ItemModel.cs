@@ -13,6 +13,7 @@ namespace Island.Gameplay.Services.Inventory.Items
         [field: SerializeField] public ItemEntityBase ItemEntity { get; set; }
         [field: SerializeField] public bool IsCountable { get; set; }
         [field: SerializeField] public bool IsDisposable { private set; get; }
+        [field: SerializeField] public bool IsBuildable { private set; get; }
 
         public UniTask<bool> Perform(bool isJustUsed, float deltaTime)
         {
