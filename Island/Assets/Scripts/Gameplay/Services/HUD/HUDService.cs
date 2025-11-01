@@ -11,7 +11,6 @@ using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services;
 using TendedTarsier.Core.Services.Input;
 using UniRx;
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
@@ -21,7 +20,6 @@ namespace Island.Gameplay.Services.HUD
     [UsedImplicitly]
     public class HUDService : ServiceBase, INetworkInitialize
     {
-        private EventSystem _eventSystem;
         private InputService _inputService;
         private BackButtonService _backButtonService;
         private NetworkService _networkService;
@@ -53,7 +51,6 @@ namespace Island.Gameplay.Services.HUD
             _networkService = networkService;
             _inputService = inputService;
             _backButtonService = backButtonService;
-            _eventSystem = eventSystem;
         }
 
         public void OnNetworkInitialize()
@@ -129,7 +126,6 @@ namespace Island.Gameplay.Services.HUD
             else
             {
                 await _inventoryPanel.Show();
-                _eventSystem.SetSelectedGameObject(_inventoryPanel.Instance.FirstCellView.gameObject);
             }
         }
 

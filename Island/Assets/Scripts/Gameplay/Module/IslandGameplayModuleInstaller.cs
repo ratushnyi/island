@@ -11,6 +11,7 @@ using Island.Gameplay.Profiles;
 using Island.Gameplay.Profiles.Inventory;
 using Island.Gameplay.Profiles.Stats;
 using Island.Gameplay.Services;
+using Island.Gameplay.Services.CameraInput;
 using Island.Gameplay.Services.HUD;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Stats;
@@ -68,6 +69,7 @@ namespace Island.Gameplay.Module
 
         private void BindServices()
         {
+            Container.BindService<CameraInputService>();
             Container.BindService<HUDService>();
             Container.BindService<InventoryService>();
             Container.BindService<StatsService>();

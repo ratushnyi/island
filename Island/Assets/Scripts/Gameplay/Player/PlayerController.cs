@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using Island.Common.Services;
 using Island.Gameplay.Services;
+using Island.Gameplay.Services.CameraInput;
 using Island.Gameplay.Services.HUD;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Stats;
@@ -9,13 +10,12 @@ using Island.Gameplay.Services.World.Items;
 using Island.Gameplay.Settings;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services.Input;
+using TendedTarsier.Core.Utilities.Extensions;
 using UniRx;
 using Unity.Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Zenject;
-using InputExtensions = TendedTarsier.Core.Utilities.Extensions.InputExtensions;
 
 namespace Island.Gameplay.Player
 {
@@ -28,6 +28,7 @@ namespace Island.Gameplay.Player
         [SerializeField] private LayerMask _aimMask;
         [SerializeField] private float _aimMaxDistance = 3;
 
+        [Inject] private CameraInputService _cameraInputService;
         [Inject] private InputService _inputService;
         [Inject] private WorldService _worldService;
         [Inject] private AimService _aimService;
@@ -173,7 +174,7 @@ namespace Island.Gameplay.Player
             }
 
 
-            var lookInput = GetActiveCameraInput() * _settingsService.CameraSensitivity.Value / 100;
+            var lookInput = _cameraInputService.GetCameraInput() * _settingsService.CameraSensitivity.Value / 100;
 
             NetworkObject.transform.Rotate(Vector3.up * lookInput.x);
             _cameraPitch -= lookInput.y;
@@ -181,24 +182,7 @@ namespace Island.Gameplay.Player
             _head.transform.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
             _cinemachineCamera.Lens.FieldOfView = Mathf.Lerp(_settingsService.Fov.Value, _settingsService.Fov.Value * _cameraConfig.FovSprintModifier, _sprintLerp);
         }
-
-        private Vector2 GetActiveCameraInput()
-        {
-            if (!Application.isMobilePlatform)
-            {
-                return _inputService.PlayerActions.Look.ReadValue<Vector2>();
-            }
-
-            if (_inputService.PlayerActions.Look.inProgress)
-            {
-                if (!InputExtensions.IsOverUI(_inputService.PlayerActions.Look.activeControl.device.deviceId))
-                {
-                    return _inputService.PlayerActions.Look.ReadValue<Vector2>();
-                }
-            }
-
-            return default;
-        }
+        
 
         private void HandleAim()
         {

@@ -5,6 +5,7 @@ using Island.Gameplay.Services.Inventory.Items;
 using TendedTarsier.Core.Panels;
 using UniRx;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Zenject;
 
 namespace Island.Gameplay.Panels.Inventory
@@ -13,30 +14,20 @@ namespace Island.Gameplay.Panels.Inventory
     {
         [SerializeField] private Transform _gridContainer;
         [SerializeField] private InventoryCellView _freehandCell;
-        private InventoryProfile _inventoryProfile;
-        private InventoryConfig _inventoryConfig;
+        [Inject] private InventoryProfile _inventoryProfile;
+        [Inject] private InventoryConfig _inventoryConfig;
+        [Inject] private EventSystem _eventSystem;
         private InventoryCellView[] _cellsList;
-
-        public InventoryCellView FirstCellView => _cellsList?[0];
-
-        [Inject]
-        private void Construct(
-            InventoryProfile inventoryProfile,
-            InventoryConfig inventoryConfig)
-        {
-            _inventoryProfile = inventoryProfile;
-            _inventoryConfig = inventoryConfig;
-
-            _inventoryProfile.InventoryItems.ObserveAdd().Subscribe(Put).AddTo(this);
-        }
 
         protected override void Initialize()
         {
+            _inventoryProfile.InventoryItems.ObserveAdd().Subscribe(Put).AddTo(this);
             _cellsList = new InventoryCellView[_inventoryConfig.InventoryCapacity + 1];
             _cellsList[0] = _freehandCell;
             _cellsList[0].SetItem(_inventoryConfig[InventoryItemType.Hand], _inventoryProfile.InventoryItems[InventoryItemType.Hand]);
             _cellsList[0].OnButtonClicked.Subscribe(onCellClicked).AddTo(this);
-            
+            _eventSystem.SetSelectedGameObject(_cellsList[0].gameObject);
+
             for (var i = 1; i < _cellsList.Length; i++)
             {
                 _cellsList[i] = Instantiate(_inventoryConfig.InventoryCellView, _gridContainer);
@@ -46,6 +37,10 @@ namespace Island.Gameplay.Panels.Inventory
                 {
                     var item = _inventoryProfile.InventoryItems.ElementAt(i);
                     SetItem(_cellsList[i], item.Key, item.Value);
+                    if (_inventoryProfile.SelectedItem.Value == item.Key)
+                    {
+                        _eventSystem.SetSelectedGameObject(_cellsList[i].gameObject);
+                    }
                 }
             }
 
@@ -55,6 +50,7 @@ namespace Island.Gameplay.Panels.Inventory
                 {
                     return;
                 }
+
                 _inventoryProfile.SelectedItem.Value = type;
                 _inventoryProfile.Save();
             }

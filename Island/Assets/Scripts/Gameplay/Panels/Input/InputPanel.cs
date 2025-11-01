@@ -1,7 +1,6 @@
-using Island.Gameplay.Player;
-using Island.Gameplay.Services;
 using Island.Gameplay.Services.Stats;
 using TendedTarsier.Core.Panels;
+using TendedTarsier.Core.Services.Input;
 using TendedTarsier.Core.Utilities.Extensions;
 using UniRx;
 using UnityEngine;
@@ -12,11 +11,12 @@ namespace Island.Gameplay.Panels.HUD
 {
     public class InputPanel : PanelBase
     {
-        public override bool ShowInstantly => Application.isMobilePlatform || Application.isEditor;
+        public override bool ShowInstantly => Application.isMobilePlatform;
 
         [SerializeField] private Image _runImage;
         [SerializeField] private Color _runImageEnabledColor;
         [Inject] private StatsService _statService;
+        [Inject] private InputService _inputService;
         private Color _runImageDefaultColor;
 
         protected override void Initialize()

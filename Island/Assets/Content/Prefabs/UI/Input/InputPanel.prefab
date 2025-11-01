@@ -229,6 +229,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _showInstantly: 0
+  _showCursor: 0
   <PlayAnimation>k__BackingField: 1
   <AnimationDuration>k__BackingField: 0.2
   <AnimationEase>k__BackingField: 4
@@ -841,8 +842,28 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7697352902689596455, guid: f77f88b14a477764bb65a49d28c02d33, type: 3}
+      propertyPath: m_Behaviour
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7697352902689596455, guid: f77f88b14a477764bb65a49d28c02d33, type: 3}
       propertyPath: m_MovementRange
       value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 7697352902689596455, guid: f77f88b14a477764bb65a49d28c02d33, type: 3}
+      propertyPath: m_DynamicOriginRange
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 7697352902689596455, guid: f77f88b14a477764bb65a49d28c02d33, type: 3}
+      propertyPath: m_UseIsolatedInputActions
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7697352902689596455, guid: f77f88b14a477764bb65a49d28c02d33, type: 3}
+      propertyPath: m_PointerDownAction.m_Name
+      value: Pointer Down
+      objectReference: {fileID: 0}
+    - target: {fileID: 7697352902689596455, guid: f77f88b14a477764bb65a49d28c02d33, type: 3}
+      propertyPath: m_PointerMoveAction.m_Name
+      value: Pointer Move
       objectReference: {fileID: 0}
     - target: {fileID: 7729525505794687137, guid: f77f88b14a477764bb65a49d28c02d33, type: 3}
       propertyPath: m_Name
@@ -948,7 +969,8 @@ PrefabInstance:
       propertyPath: m_PreserveAspect
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7729525505794687151, guid: f77f88b14a477764bb65a49d28c02d33, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
