@@ -79,13 +79,13 @@ namespace Island.Gameplay.Player
                     collectableObject.Perform(_inputService.PlayerActions.Interact.WasPressedThisFrame()).Forget();
                     return;
                 }
-                
+
                 if (_aimService.TargetObject.Value is WorldCraftObject transformerObject)
                 {
                     transformerObject.Perform(_inputService.PlayerActions.Interact.WasPressedThisFrame()).Forget();
                     return;
                 }
-                
+
                 _inventoryService.PerformSelectedItem(_inputService.PlayerActions.Interact.WasPressedThisFrame(), deltaTime).Forget();
             }
         }
@@ -152,11 +152,11 @@ namespace Island.Gameplay.Player
                 }
 
                 _playerConfig.SprintFee.Deposit = 0;
-                SprintButtonToggleState = true;
             }
 
             if (IsRunning && _statService.TrackFee(_playerConfig.SprintFee, deltaTime))
             {
+                SprintButtonToggleState = true;
                 _sprintLerp = Mathf.Lerp(_sprintLerp, 1, deltaTime * _playerConfig.SprintGetSpeed);
             }
             else if (_sprintLerp > 0)
@@ -182,7 +182,7 @@ namespace Island.Gameplay.Player
             _head.transform.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
             _cinemachineCamera.Lens.FieldOfView = Mathf.Lerp(_settingsService.Fov.Value, _settingsService.Fov.Value * _cameraConfig.FovSprintModifier, _sprintLerp);
         }
-        
+
 
         private void HandleAim()
         {
