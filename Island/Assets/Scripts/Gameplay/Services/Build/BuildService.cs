@@ -1,4 +1,4 @@
-using Island.Gameplay.Services.World.Items;
+using Island.Gameplay.Services.World.Objects;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Services;
 

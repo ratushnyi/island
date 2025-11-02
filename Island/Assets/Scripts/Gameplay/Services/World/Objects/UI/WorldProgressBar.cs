@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Island.Gameplay.Services.World.Items
+namespace Island.Gameplay.Services.World.Objects.UI
 {
     public class WorldProgressBar : MonoBehaviour
     {

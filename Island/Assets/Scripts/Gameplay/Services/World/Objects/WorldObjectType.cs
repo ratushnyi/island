@@ -1,4 +1,4 @@
-namespace Island.Gameplay.Services.World.Items
+namespace Island.Gameplay.Services.World.Objects
 {
     public enum WorldObjectType
     {

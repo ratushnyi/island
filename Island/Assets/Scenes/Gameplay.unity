@@ -207,7 +207,7 @@ MonoBehaviour:
   _hudPanel: {fileID: -6269519497728431671, guid: 4c8eaa2e4c5bc4a61826480b0aea28ed, type: 3}
   _pausePopup: {fileID: 1639367369623693751, guid: c51c3cdc32a8f49f9916d8a97cef9691, type: 3}
   _settingsPopup: {fileID: 7918920839453004830, guid: 06b6aa841de604db4bd88a6222e613b8, type: 3}
-  _craftPopup: {fileID: 3047772752273262551, guid: 0e26514dd5ea14463a25c2f44556e4de, type: 3}
+  _worldCraftPopup: {fileID: 3047772752273262551, guid: 0e26514dd5ea14463a25c2f44556e4de, type: 3}
   _canvas: {fileID: 6368572182129791260}
 --- !u!1 &535735355
 GameObject:

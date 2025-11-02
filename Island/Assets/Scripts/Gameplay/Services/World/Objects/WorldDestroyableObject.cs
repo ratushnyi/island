@@ -4,13 +4,15 @@ using Island.Gameplay.Services.HUD;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Inventory.Items;
 using TendedTarsier.Core.Services.Input;
+using TendedTarsier.Core.Utilities.Extensions;
 using UniRx;
+using Unity.Netcode;
 using UnityEngine;
 using Zenject;
 
-namespace Island.Gameplay.Services.World.Items
+namespace Island.Gameplay.Services.World.Objects
 {
-    public class WorldMiningObject : WorldObjectBase
+    public class WorldDestroyableObject : WorldObjectBase
     {
         [SerializeField, SerializedDictionary("Health", "ViewObject")]
         private SerializedDictionary<int, GameObject> _healthView;
@@ -23,13 +25,28 @@ namespace Island.Gameplay.Services.World.Items
         [Inject] private AimService _aimService;
         [Inject] private HUDService _hudService;
         [Inject] private InventoryService _inventoryService;
+        [Inject] private WorldService _worldService;
 
-        //todo: should network variable to prevent mining same object by different clients
-        private UniTaskCompletionSource _completionSource;
+        private readonly NetworkVariable<bool> _isPerforming = new();
+        private readonly NetworkVariable<int> _health = new();
 
         public override string Name => Type.ToString();
 
-        protected override void UpdateView(int health)
+        public void InitHealth(int health)
+        {
+            _health.Value = health;
+        }
+
+        public override void OnNetworkSpawn()
+        {
+            _health.AsObservable().Subscribe(UpdateView).AddTo(this);
+            if (IsClient)
+            {
+                UpdateView(_health.Value);
+            }
+        }
+
+        private void UpdateView(int health)
         {
             bool selected = false;
             foreach (var view in _healthView)
@@ -47,20 +64,17 @@ namespace Island.Gameplay.Services.World.Items
 
         public void Reset()
         {
-            if (_completionSource?.Task.Status == UniTaskStatus.Pending)
-            {
-                _completionSource.TrySetResult();
-            }
+            _isPerforming.Value = false;
         }
 
         public override async UniTask<bool> Perform(bool isJustUsed)
         {
-            if (_completionSource?.Task.Status == UniTaskStatus.Pending)
+            if (_isPerforming.Value)
             {
                 return false;
             }
 
-            if (Health.Value <= 0)
+            if (_health.Value <= 0)
             {
                 return false;
             }
@@ -75,7 +89,8 @@ namespace Island.Gameplay.Services.World.Items
                 return false;
             }
 
-            SpawnResult(_dropItem);
+            var position = transform.position + Vector3.up + Vector3.up;
+            _worldService.SpawnCollectableItem(position, _dropItem);
 
             return true;
         }
@@ -89,22 +104,35 @@ namespace Island.Gameplay.Services.World.Items
                 return false;
             }
 
-            OnHealthChanged_ServerRpc(Health.Value - damage);
+            OnHealthChanged_ServerRpc(_health.Value - damage);
 
             return true;
         }
 
+        [ServerRpc(RequireOwnership = false)]
+        private void OnHealthChanged_ServerRpc(int value)
+        {
+            _health.Value = value;
+            _worldService.UpdateHealth(this, _health.Value);
+            
+            if (_health.Value <= 0)
+            {
+                Despawn_ServerRpc();
+            }
+        }
+
         private async UniTask<bool> TryHold()
         {
-            _completionSource = new UniTaskCompletionSource();
+            _isPerforming.Value = true;
             var onPlayerExit = _aimService.TargetObject.SkipLatestValueOnSubscribe().First().ToUniTask();
             var onStopInteract = _inputService.OnInteractButtonCanceled.First().ToUniTask();
             var progressBar = _hudService.ProgressBar.Show(_duration);
-            var holdTask = UniTask.WhenAny(progressBar, onStopInteract, onPlayerExit, _completionSource.Task);
+            var onStopPerforming = UniTask.WaitWhile(() => _isPerforming.Value);
+            var holdTask = UniTask.WhenAny(progressBar, onStopInteract, onPlayerExit, onStopPerforming);
             var holdResult = await holdTask == 0;
 
             _hudService.ProgressBar.Hide();
-            _completionSource.TrySetResult();
+            _isPerforming.Value = false;
 
             return holdResult;
         }

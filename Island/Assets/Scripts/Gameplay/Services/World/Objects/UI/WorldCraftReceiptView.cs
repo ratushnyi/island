@@ -7,9 +7,9 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Island.Gameplay.Services.World.Items
+namespace Island.Gameplay.Services.World.Objects.UI
 {
-    public class CraftReceiptView : MonoBehaviour
+    public class WorldCraftReceiptView : MonoBehaviour
     {
         [SerializeField] private Button _button;
         [SerializeField] private InventoryCellView _result;

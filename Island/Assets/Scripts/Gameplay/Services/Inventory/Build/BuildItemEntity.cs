@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using Island.Gameplay.Services.Build;
 using Island.Gameplay.Services.Inventory.Tools;
-using Island.Gameplay.Services.World.Items;
+using Island.Gameplay.Services.World.Objects;
 using UnityEngine;
 using Zenject;
 

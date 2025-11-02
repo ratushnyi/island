@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 
-namespace Island.Gameplay.Services.World.Items
+namespace Island.Gameplay.Services.World.Objects
 {
     public class WorldGroundObject : WorldObjectBase
     {

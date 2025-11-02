@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Island.Gameplay.Services.Inventory.Items;
-using Island.Gameplay.Services.World.Items;
+using Island.Gameplay.Services.World.Objects;
 using MemoryPack;
 using TendedTarsier.Core.Utilities.Extensions;
 using Unity.Netcode;
@@ -17,17 +17,17 @@ namespace Island.Common.Services.Network
         public Vector3 Position;
         public Quaternion Rotation;
         public int Health;
-        public ItemEntity ResultItem;
-        public List<ItemEntity> Container;
+        public ItemEntity CollectableItem;
+        public ItemEntity[] Container;
 
-        public NetworkSpawnRequest(int hash, WorldObjectType type, Vector3 position, Quaternion rotation = default, int health = 100, ItemEntity resultItem = default, List<ItemEntity> container = null)
+        public NetworkSpawnRequest(int hash, WorldObjectType type, Vector3 position, Quaternion rotation = default, int health = 100, ItemEntity collectableItem = default, ItemEntity[] container = null)
         {
             Hash = hash;
             Type = type;
             Position = position;
             Rotation = rotation;
             Health = health;
-            ResultItem = resultItem;
+            CollectableItem = collectableItem;
             Container = container;
         }
 
@@ -38,8 +38,8 @@ namespace Island.Common.Services.Network
             serializer.SerializeValue(ref Position);
             serializer.SerializeValue(ref Rotation);
             serializer.SerializeValue(ref Health);
-            serializer.SerializeValue(ref ResultItem);
-            serializer.SerializeList(ref Container);
+            serializer.SerializeValue(ref CollectableItem);
+            serializer.SerializeArray(ref Container);
         }
     }
 }

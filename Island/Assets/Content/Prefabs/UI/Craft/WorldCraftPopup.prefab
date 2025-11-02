@@ -719,7 +719,7 @@ GameObject:
   - component: {fileID: 4578419179411867861}
   - component: {fileID: 3047772752273262551}
   m_Layer: 5
-  m_Name: CraftPopup
+  m_Name: WorldCraftPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -17,7 +17,7 @@ using Island.Gameplay.Services.HUD;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Stats;
 using Island.Gameplay.Services.World;
-using Island.Gameplay.Services.World.Items;
+using Island.Gameplay.Services.World.Objects.UI;
 using Island.Gameplay.Settings;
 using Island.Menu.Panels.Settings;
 using TendedTarsier.Core.Services.Modules;
@@ -39,7 +39,7 @@ namespace Island.Gameplay.Module
         [SerializeField] private HUDPanel _hudPanel;
         [SerializeField] private PausePopup _pausePopup;
         [SerializeField] private SettingsPopup _settingsPopup;
-        [SerializeField] private CraftPopup _craftPopup;
+        [SerializeField] private WorldCraftPopup _worldCraftPopup;
         [SerializeField] private Canvas _canvas;
 
         protected override void InstallModuleBindings()
@@ -65,7 +65,7 @@ namespace Island.Gameplay.Module
             Container.BindPanel(_hudPanel, _canvas);
             Container.BindPanel(_pausePopup, _canvas);
             Container.BindPanel(_settingsPopup, _canvas);
-            Container.BindPanel(_craftPopup, _canvas);
+            Container.BindPanel(_worldCraftPopup, _canvas);
         }
 
         private void BindServices()

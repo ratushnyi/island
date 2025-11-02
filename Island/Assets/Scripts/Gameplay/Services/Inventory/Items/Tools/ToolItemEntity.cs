@@ -1,5 +1,5 @@
 using Cysharp.Threading.Tasks;
-using Island.Gameplay.Services.World.Items;
+using Island.Gameplay.Services.World.Objects;
 using UnityEngine;
 using Zenject;
 
@@ -26,7 +26,7 @@ namespace Island.Gameplay.Services.Inventory.Tools
                 }
             }
 
-            if (_aimService.TargetObject.Value is WorldMiningObject itemObject)
+            if (_aimService.TargetObject.Value is WorldDestroyableObject itemObject)
             {
                 if (result)
                 {

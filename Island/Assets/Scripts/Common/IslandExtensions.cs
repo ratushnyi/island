@@ -1,6 +1,6 @@
 using System;
 using Island.Gameplay.Services.World;
-using Island.Gameplay.Services.World.Items;
+using Island.Gameplay.Services.World.Objects;
 using UnityEngine;
 
 namespace Island.Common
@@ -9,12 +9,12 @@ namespace Island.Common
     {
         public static int GenerateHash(this WorldObjectBase objectBase)
         {
-            return GenerateHash(objectBase.Type, objectBase.transform.position, objectBase.transform.rotation);
+            return GenerateHash(objectBase.transform.position, objectBase.transform.rotation);
         }
 
-        public static int GenerateHash(WorldObjectType type, Vector3 position, Quaternion rotation = default)
+        public static int GenerateHash(Vector3 position, Quaternion rotation = default)
         {
-            return HashCode.Combine(type, position, rotation);
+            return HashCode.Combine(position, rotation);
         }
     }
 }

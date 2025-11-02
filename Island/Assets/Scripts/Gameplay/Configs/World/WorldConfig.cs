@@ -4,7 +4,7 @@ using AYellowpaper.SerializedCollections;
 using Island.Common;
 using Island.Common.Services.Network;
 using Island.Gameplay.Services.World;
-using Island.Gameplay.Services.World.Items;
+using Island.Gameplay.Services.World.Objects;
 using TendedTarsier.Core.Services.Modules;
 using UnityEditor;
 using UnityEngine;

@@ -11,9 +11,9 @@ namespace Island.Gameplay.Profiles
         [MemoryPackAllowSerialize]
         public Dictionary<InventoryItemType, int> Items = new();
 
-        public List<ItemEntity> ToItemsList()
+        public ItemEntity[] AsArray()
         {
-            return Items.Select(item => new ItemEntity(item.Key, item.Value)).ToList();
+            return Items.Select(item => new ItemEntity(item.Key, item.Value)).ToArray();
         }
     }
 }

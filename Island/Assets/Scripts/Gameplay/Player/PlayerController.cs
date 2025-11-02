@@ -6,7 +6,7 @@ using Island.Gameplay.Services.HUD;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Stats;
 using Island.Gameplay.Services.World;
-using Island.Gameplay.Services.World.Items;
+using Island.Gameplay.Services.World.Objects;
 using Island.Gameplay.Settings;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services.Input;

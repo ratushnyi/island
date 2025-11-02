@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 2444388064904870500}
   - component: {fileID: 1887409185011205869}
   m_Layer: 5
-  m_Name: ReceiptCellView
+  m_Name: WorldReceiptCellView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

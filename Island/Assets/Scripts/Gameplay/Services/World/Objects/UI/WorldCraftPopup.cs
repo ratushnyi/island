@@ -11,9 +11,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Zenject;
 
-namespace Island.Gameplay.Services.World.Items
+namespace Island.Gameplay.Services.World.Objects.UI
 {
-    public class CraftPopup : ResultPopupBase<(CraftReceipt Receipt, int Count)>
+    public class WorldCraftPopup : ResultPopupBase<(CraftReceipt Receipt, int Count)>
     {
         [SerializeField] private Button _buttonPlus;
         [SerializeField] private Button _buttonMinus;
@@ -35,7 +35,7 @@ namespace Island.Gameplay.Services.World.Items
             var receipts = _craftConfig.Receipts[type];
             for (var index = 0; index < receipts.Count; index++)
             {
-                var view = Instantiate(_craftConfig.CraftReceiptView, _receiptsContainer);
+                var view = Instantiate(_craftConfig.WorldCraftReceiptView, _receiptsContainer);
                 view.Init(receipts[index], _inventoryConfig);
                 view.OnButtonClicked.Subscribe(OnReceiptClicked).AddTo(this);
                 if (index != 0)

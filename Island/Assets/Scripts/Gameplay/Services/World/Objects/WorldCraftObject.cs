@@ -4,6 +4,7 @@ using DG.Tweening;
 using Island.Gameplay.Configs.Craft;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Inventory.Items;
+using Island.Gameplay.Services.World.Objects.UI;
 using ModestTree;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Utilities.Extensions;
@@ -12,7 +13,7 @@ using Unity.Netcode;
 using UnityEngine;
 using Zenject;
 
-namespace Island.Gameplay.Services.World.Items
+namespace Island.Gameplay.Services.World.Objects
 {
     public class WorldCraftObject : WorldObjectBase
     {
@@ -22,13 +23,25 @@ namespace Island.Gameplay.Services.World.Items
 
         [Inject] private InventoryService _inventoryService;
         [Inject] private WorldService _worldService;
-        [Inject] private PanelLoader<CraftPopup> _popup;
+        [Inject] private PanelLoader<WorldCraftPopup> _popup;
         [Inject] private CraftConfig _craftConfig;
 
         private readonly NetworkVariable<float> _progressValue = new(-1);
         private readonly NetworkVariable<CraftReceipt> _receipt = new();
+        private readonly NetworkList<ItemEntity> _container = new();
 
         public override string Name => Type.ToString();
+
+        public void InitCraft(ItemEntity[] container)
+        {
+            if (container != null)
+            {
+                foreach (var item in container)
+                {
+                    _container.Add(item);
+                }
+            }
+        }
 
         public override void OnNetworkSpawn()
         {
@@ -99,10 +112,9 @@ namespace Island.Gameplay.Services.World.Items
         [ServerRpc(RequireOwnership = false)]
         private void CheckItemsForReceipt_ServerRpc(ItemEntity[] items, ulong targetClientId)
         {
-            for (var index = 0; index < items.Length; index++)
+            foreach (var item in items)
             {
                 bool result;
-                var item = items[index];
                 var receiptItem = _receipt.Value.Ingredients.FirstOrDefault(t => t.Type == item.Type);
                 if (receiptItem.Type == InventoryItemType.None)
                 {
@@ -112,7 +124,7 @@ namespace Island.Gameplay.Services.World.Items
                 else
                 {
                     var maxCount = _receipt.Value.Ingredients.First(t => t.Type == item.Type).Count;
-                    var exist = Container.TryGet(t => t.Type == item.Type, out var entity);
+                    var exist = _container.TryGet(t => t.Type == item.Type, out var entity);
                     var overCapacity = maxCount != -1 && exist && entity.Count >= maxCount;
                     var isSuitableValue = (entity.Count + item.Count) > 0;
                     result = !overCapacity && isSuitableValue;
@@ -159,13 +171,13 @@ namespace Island.Gameplay.Services.World.Items
             foreach (var item in stack)
             {
                 ItemEntity resultItem;
-                var index = Container.IndexOf(t => t.Type == item.Type);
+                var index = _container.IndexOf(t => t.Type == item.Type);
                 if (index == -1)
                 {
                     if (item.Count >= 0)
                     {
                         resultItem = item;
-                        Container.Add(item);
+                        _container.Add(item);
                     }
                     else if (item.Count == 0)
                     {
@@ -180,15 +192,15 @@ namespace Island.Gameplay.Services.World.Items
                 }
                 else
                 {
-                    var result = Container[index].Count + item.Count;
+                    var result = _container[index].Count + item.Count;
                     if (result >= 0)
                     {
                         resultItem = new ItemEntity(item.Type, result);
-                        Container[index] = resultItem;
+                        _container[index] = resultItem;
                     }
                     else
                     {
-                        Debug.LogError($"Trying to remove item {item.Type} more ({item.Count}) than contained ({Container[index].Count}) in container {name}");
+                        Debug.LogError($"Trying to remove item {item.Type} more ({item.Count}) than contained ({_container[index].Count}) in container {name}");
                         return;
                     }
                 }
@@ -201,7 +213,8 @@ namespace Island.Gameplay.Services.World.Items
         {
             foreach (var item in _receipt.Value.Ingredients)
             {
-                if (GetCount(item.Type) < item.Count)
+                _container.TryGet(t => t.Type == item.Type, out var entity);
+                if (entity.Count < item.Count)
                 {
                     return false;
                 }
@@ -224,7 +237,8 @@ namespace Island.Gameplay.Services.World.Items
         private void FinishCraft()
         {
             ApplyContainer(_receipt.Value.InvertIngredients);
-            SpawnResult(_receipt.Value.Result);
+            var position = transform.position + Vector3.up + Vector3.up;
+            _worldService.SpawnCollectableItem(position, _receipt.Value.Result);
             _progressValue.Value = -1;
 
             if (IsEnoughIngredients())

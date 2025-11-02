@@ -5,7 +5,6 @@ using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Panels.HUD;
 using Island.Gameplay.Profiles.Inventory;
 using Island.Gameplay.Services.Inventory.Items;
-using Island.Gameplay.Services.World.Items;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services;

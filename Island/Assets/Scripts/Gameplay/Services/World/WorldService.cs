@@ -5,7 +5,7 @@ using Island.Common.Services.Network;
 using Island.Gameplay.Configs.World;
 using Island.Gameplay.Profiles;
 using Island.Gameplay.Services.Inventory.Items;
-using Island.Gameplay.Services.World.Items;
+using Island.Gameplay.Services.World.Objects;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Services;
 using UnityEngine;
@@ -50,7 +50,7 @@ namespace Island.Gameplay.Services.World
 
                 if (_worldProfile.ObjectContainerDictionary.TryGetValue(request.Hash, out var container))
                 {
-                    request.Container = container.ToItemsList();
+                    request.Container = container.AsArray();
                 }
 
                 _networkService.Spawn(request);
@@ -66,51 +66,50 @@ namespace Island.Gameplay.Services.World
 
                 if (_worldProfile.ObjectContainerDictionary.TryGetValue(request.Hash, out var container))
                 {
-                    request.Container = container.ToItemsList();
+                    request.Container = container.AsArray();
                 }
 
                 _networkService.Spawn(request);
             }
         }
 
-        public void SpawnResultItem(WorldObjectBase worldItemObject, ItemEntity resultItem)
+        public void SpawnCollectableItem(Vector3 position, ItemEntity collectableItem)
         {
             var type = WorldObjectType.Collectable;
-            var position = worldItemObject.transform.position + Vector3.up + Vector3.up;
-            var hash = IslandExtensions.GenerateHash(type, position);
+            var hash = IslandExtensions.GenerateHash(position);
             while (_worldProfile.SpawnedObjects.ContainsKey(hash))
             {
                 position += new Vector3(Random.Range(-0.1f, 0.1f), 0, Random.Range(-0.1f, 0.1f));
-                hash = IslandExtensions.GenerateHash(type, position);
+                hash = IslandExtensions.GenerateHash(position);
             }
 
-            var request = new NetworkSpawnRequest(hash, type, position, resultItem: resultItem);
+            var request = new NetworkSpawnRequest(hash, type, position, collectableItem: collectableItem);
             _worldProfile.SpawnedObjects.Add(hash, request);
             _networkService.Spawn(request);
         }
 
-        public void MarkDestroyed(WorldObjectBase worldItemObject)
+        public void MarkDestroyed(WorldObjectBase worldObject)
         {
-            _worldProfile.SpawnedObjects.Remove(worldItemObject.Hash);
-            _worldProfile.DestroyedObject.Add(worldItemObject.Hash);
+            _worldProfile.SpawnedObjects.Remove(worldObject.Hash);
+            _worldProfile.DestroyedObject.Add(worldObject.Hash);
         }
 
-        public void UpdateHealth(WorldObjectBase worldItemObject)
+        public void UpdateHealth(WorldObjectBase worldObject, int health)
         {
-            if (worldItemObject.Health.Value == 0)
+            if (health == 0)
             {
-                _worldProfile.ObjectHealthDictionary.Remove(worldItemObject.Hash);
+                _worldProfile.ObjectHealthDictionary.Remove(worldObject.Hash);
             }
 
-            if (!_worldProfile.ObjectHealthDictionary.TryAdd(worldItemObject.Hash, worldItemObject.Health.Value))
+            if (!_worldProfile.ObjectHealthDictionary.TryAdd(worldObject.Hash, health))
             {
-                _worldProfile.ObjectHealthDictionary[worldItemObject.Hash] = worldItemObject.Health.Value;
+                _worldProfile.ObjectHealthDictionary[worldObject.Hash] = health;
             }
         }
 
-        public void UpdateContainer(WorldObjectBase worldItemObject, ItemEntity item)
+        public void UpdateContainer(WorldObjectBase worldObject, ItemEntity item)
         {
-            if (!_worldProfile.ObjectContainerDictionary.TryGetValue(worldItemObject.Hash, out var container))
+            if (!_worldProfile.ObjectContainerDictionary.TryGetValue(worldObject.Hash, out var container))
             {
                 if (item.Count == 0)
                 {
@@ -118,7 +117,7 @@ namespace Island.Gameplay.Services.World
                 }
 
                 container = new ObjectContainer();
-                _worldProfile.ObjectContainerDictionary.Add(worldItemObject.Hash, container);
+                _worldProfile.ObjectContainerDictionary.Add(worldObject.Hash, container);
             }
 
             if (item.Count == 0)
@@ -132,7 +131,7 @@ namespace Island.Gameplay.Services.World
 
             if (container.Items.Count == 0)
             {
-                _worldProfile.ObjectContainerDictionary.Remove(worldItemObject.Hash);
+                _worldProfile.ObjectContainerDictionary.Remove(worldObject.Hash);
             }
         }
     }

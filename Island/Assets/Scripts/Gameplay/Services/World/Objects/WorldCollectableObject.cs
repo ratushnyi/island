@@ -1,18 +1,24 @@
 using Cysharp.Threading.Tasks;
 using Island.Gameplay.Services.Inventory;
+using Island.Gameplay.Services.Inventory.Items;
+using Unity.Netcode;
 using Zenject;
 
-namespace Island.Gameplay.Services.World.Items
+namespace Island.Gameplay.Services.World.Objects
 {
     public class WorldCollectableObject : WorldObjectBase
     {
         [Inject] private InventoryService _inventoryService;
 
-        private UniTaskCompletionSource _completionSource;
+        private readonly NetworkVariable<ItemEntity> _collectableItem = new();
 
-        public override string Name => ResultItem.Value.Type.ToString();
+        public override string Name => _collectableItem.Value.Type.ToString();
 
-
+        public void InitCollectable(ItemEntity collectableItem)
+        {
+            _collectableItem.Value = collectableItem;
+        }
+        
         public override UniTask<bool> Perform(bool isJustUsed)
         {
             if (!isJustUsed)
@@ -20,7 +26,7 @@ namespace Island.Gameplay.Services.World.Items
                 return UniTask.FromResult(false);
             }
 
-            if (_inventoryService.TryCollect(ResultItem.Value))
+            if (_inventoryService.TryCollect(_collectableItem.Value))
             {
                 Despawn_ServerRpc();
             }

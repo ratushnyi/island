@@ -1,6 +1,7 @@
 using System;
 using Island.Common.Services.Network;
 using Island.Gameplay.Configs.World;
+using Island.Gameplay.Services.World.Objects;
 using UniRx;
 using Unity.Collections;
 using Unity.Netcode;
@@ -81,7 +82,20 @@ namespace Island.Common.Services
         {
             var worldObject = Instantiate(_worldConfig.WorldObjects[request.Type], request.Position, request.Rotation);
             worldObject.NetworkObject.Spawn();
-            worldObject.Init(request.Hash, request.Health, request.Container, request.ResultItem);
+            worldObject.Init(request.Hash);
+            switch (worldObject)
+            {
+                case WorldDestroyableObject worldDestroyableObject:
+                    worldDestroyableObject.InitHealth(request.Health);
+                    break;
+                case WorldCraftObject worldCraftObject:
+                    worldCraftObject.InitCraft(request.Container);
+                    break;
+                case WorldCollectableObject worldCollectableObject:
+                    worldCollectableObject.InitCollectable(request.CollectableItem);
+                    break;
+            }
+
             worldObject.NetworkObject.TrySetParent(NetworkObject);
         }
 
