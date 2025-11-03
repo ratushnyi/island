@@ -1,12 +1,6 @@
-using Cysharp.Threading.Tasks;
 using Island.Common.Services;
-using Island.Gameplay.Services;
 using Island.Gameplay.Services.CameraInput;
-using Island.Gameplay.Services.HUD;
-using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Stats;
-using Island.Gameplay.Services.World;
-using Island.Gameplay.Services.World.Objects;
 using Island.Gameplay.Settings;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services.Input;
@@ -22,20 +16,13 @@ namespace Island.Gameplay.Player
     public class PlayerController : NetworkBehaviour
     {
         [SerializeField] private Transform _head;
-        [SerializeField] private Camera _camera;
         [SerializeField] private CinemachineCamera _cinemachineCamera;
         [SerializeField] private CharacterController _characterController;
-        [SerializeField] private LayerMask _aimMask;
-        [SerializeField] private float _aimMaxDistance = 3;
 
         [Inject] private CameraInputService _cameraInputService;
         [Inject] private InputService _inputService;
-        [Inject] private WorldService _worldService;
-        [Inject] private AimService _aimService;
         [Inject] private StatsService _statService;
         [Inject] private SettingsService _settingsService;
-        [Inject] private InventoryService _inventoryService;
-        [Inject] private HUDService _hudService;
         [Inject] private PanelService _panelService;
         [Inject] private PlayerService _playerService;
         [Inject] private PlayerConfig _playerConfig;
@@ -70,26 +57,6 @@ namespace Island.Gameplay.Player
             _settingsService.Fov.Subscribe(OnFovChanged).AddTo(this);
         }
 
-        private void OnUseButtonClicked(float deltaTime)
-        {
-            if (_inputService.PlayerActions.Interact.inProgress)
-            {
-                if (_aimService.TargetObject.Value is WorldCollectableObject collectableObject)
-                {
-                    collectableObject.Perform(_inputService.PlayerActions.Interact.WasPressedThisFrame()).Forget();
-                    return;
-                }
-
-                if (_aimService.TargetObject.Value is WorldCraftObject transformerObject)
-                {
-                    transformerObject.Perform(_inputService.PlayerActions.Interact.WasPressedThisFrame()).Forget();
-                    return;
-                }
-
-                _inventoryService.PerformSelectedItem(_inputService.PlayerActions.Interact.WasPressedThisFrame(), deltaTime).Forget();
-            }
-        }
-
         private void OnFovChanged(int value)
         {
             _cinemachineCamera.Lens.FieldOfView = Mathf.Lerp(value, value * _cameraConfig.FovSprintModifier, _sprintLerp);
@@ -97,12 +64,10 @@ namespace Island.Gameplay.Player
 
         private void OnTick(long frame)
         {
-            OnUseButtonClicked(Time.deltaTime);
             HandleSprint(Time.deltaTime);
             HandleVerticalVelocity(Time.deltaTime);
             HandleMove(Time.deltaTime);
             HandleCamera();
-            HandleAim();
         }
 
         private void HandleVerticalVelocity(float deltaTime)
@@ -181,30 +146,6 @@ namespace Island.Gameplay.Player
             _cameraPitch = Mathf.Clamp(_cameraPitch, _cameraConfig.PitchLimits.x, _cameraConfig.PitchLimits.y);
             _head.transform.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
             _cinemachineCamera.Lens.FieldOfView = Mathf.Lerp(_settingsService.Fov.Value, _settingsService.Fov.Value * _cameraConfig.FovSprintModifier, _sprintLerp);
-        }
-
-
-        private void HandleAim()
-        {
-            _aimRay = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-
-            if (Physics.Raycast(_aimRay, out var hit, _aimMaxDistance, _aimMask, QueryTriggerInteraction.Collide))
-            {
-                var worldItem = hit.collider.GetComponentInParent<WorldObjectBase>();
-                if (worldItem != null)
-                {
-                    _aimService.SetTarget(worldItem);
-                    return;
-                }
-            }
-
-            _aimService.SetTarget(null);
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(_aimRay.origin, _aimRay.origin + _aimRay.direction * _aimMaxDistance);
         }
     }
 }

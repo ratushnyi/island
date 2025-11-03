@@ -1,4 +1,5 @@
 using Island.Common.Services;
+using Island.Gameplay.Configs.Aim;
 using Island.Gameplay.Configs.Craft;
 using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Configs.Stats;
@@ -30,6 +31,7 @@ namespace Island.Gameplay.Module
     {
         [SerializeField] private NetworkServiceFacade _networkServiceFacade;
         [SerializeField] private WorldConfig _worldConfig;
+        [SerializeField] private AimConfig _aimConfig;
         [SerializeField] private PlayerConfig _playerConfig;
         [SerializeField] private StatsConfig _statsConfig;
         [SerializeField] private InventoryConfig _inventoryConfig;
@@ -88,6 +90,7 @@ namespace Island.Gameplay.Module
             Container.BindConfigs(_playerConfig);
             Container.BindConfigs(_worldConfig);
             Container.BindConfigs(_craftConfig);
+            Container.BindConfigs(_aimConfig);
         }
     }
 }

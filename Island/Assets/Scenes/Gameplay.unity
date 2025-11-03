@@ -198,6 +198,7 @@ MonoBehaviour:
   _moduleController: {fileID: 2006302207401808471}
   _networkServiceFacade: {fileID: 2119657990}
   _worldConfig: {fileID: 11400000, guid: 373498d3b5f754fab8490e20a5aaea0a, type: 2}
+  _aimConfig: {fileID: 11400000, guid: 8122fd1749a6348e4bf7daddaeaa1385, type: 2}
   _playerConfig: {fileID: 11400000, guid: 23959e38303344073ac33a72a0560a25, type: 2}
   _statsConfig: {fileID: 11400000, guid: c5adf31d4e8fb471884b73b6ce7814ca, type: 2}
   _inventoryConfig: {fileID: 11400000, guid: cee975dcfa07f4712b6dd3199b44f1d4, type: 2}

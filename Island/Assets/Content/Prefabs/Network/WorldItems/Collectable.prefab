@@ -135,6 +135,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3821721149766240113, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
+      propertyPath: m_Center.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3821721149766240113, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
@@ -175,9 +179,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  <ResultItem>k__BackingField:
-    _type: 0
-    _count: 0
   <Type>k__BackingField: 0
 --- !u!4 &5874106457217019660 stripped
 Transform:
