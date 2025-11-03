@@ -1,9 +1,10 @@
 using Cysharp.Threading.Tasks;
+using Island.Gameplay.Services.Inventory.Tools;
 using Island.Gameplay.Services.World.Objects;
 using UnityEngine;
 using Zenject;
 
-namespace Island.Gameplay.Services.Inventory.Tools
+namespace Island.Gameplay.Services.Inventory.Items.Tools
 {
     [CreateAssetMenu(menuName = "Item/Tool", fileName = "Tool")]
     public class ToolItemEntity : ItemEntityBase
@@ -30,7 +31,7 @@ namespace Island.Gameplay.Services.Inventory.Tools
             {
                 if (result)
                 {
-                    result = await itemObject.Perform(isJustUsed);
+                    result = await itemObject.Perform(isJustUsed, deltaTime);
                 }
                 else
                 {

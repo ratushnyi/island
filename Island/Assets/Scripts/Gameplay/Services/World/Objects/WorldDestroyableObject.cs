@@ -67,7 +67,7 @@ namespace Island.Gameplay.Services.World.Objects
             _isPerforming.Value = false;
         }
 
-        public override async UniTask<bool> Perform(bool isJustUsed)
+        public override async UniTask<bool> Perform(bool isJustUsed, float deltaTime)
         {
             if (_isPerforming.Value)
             {

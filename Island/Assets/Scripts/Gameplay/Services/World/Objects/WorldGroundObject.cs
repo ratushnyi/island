@@ -6,7 +6,7 @@ namespace Island.Gameplay.Services.World.Objects
     {
         public override string Name => Type.ToString();
 
-        public override UniTask<bool> Perform(bool isJustUsed)
+        public override UniTask<bool> Perform(bool isJustUsed, float deltaTime)
         {
             return UniTask.FromResult(false);
         }

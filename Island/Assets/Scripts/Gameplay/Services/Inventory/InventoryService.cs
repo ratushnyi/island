@@ -14,7 +14,7 @@ using Zenject;
 namespace Island.Gameplay.Services.Inventory
 {
     [UsedImplicitly]
-    public class InventoryService : ServiceBase, INetworkInitialize
+    public class InventoryService : ServiceBase, INetworkInitialize, IPerformable
     {
         private PanelLoader<HUDPanel> _hudPanel;
         private InventoryConfig _inventoryConfig;
@@ -200,11 +200,11 @@ namespace Island.Gameplay.Services.Inventory
             }
         }
 
-        public async UniTask<bool> PerformSelectedItem(bool isJustUsed, float deltaTime)
+        public async UniTask<bool> Perform(bool isJustUsed, float deltaTime)
         {
             var item = _inventoryProfile.SelectedItem.Value;
             var itemModel = _inventoryConfig[item];
-            var result = await itemModel.Perform(isJustUsed, deltaTime);
+            var result = await itemModel.ItemEntity.Perform(isJustUsed, deltaTime);
 
             if (itemModel.IsDisposable && result)
             {

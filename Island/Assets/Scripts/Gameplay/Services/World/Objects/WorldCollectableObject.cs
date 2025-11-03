@@ -19,7 +19,7 @@ namespace Island.Gameplay.Services.World.Objects
             _collectableItem.Value = collectableItem;
         }
         
-        public override UniTask<bool> Perform(bool isJustUsed)
+        public override UniTask<bool> Perform(bool isJustUsed, float deltaTime)
         {
             if (!isJustUsed)
             {

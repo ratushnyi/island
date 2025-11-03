@@ -50,7 +50,7 @@ namespace Island.Gameplay.Services.World.Objects
             _progressValue.AsObservable().Subscribe(_progressBar.SetValue).AddTo(this);
         }
 
-        public override async UniTask<bool> Perform(bool isJustUsed)
+        public override async UniTask<bool> Perform(bool isJustUsed, float deltaTime)
         {
             if (!isJustUsed)
             {

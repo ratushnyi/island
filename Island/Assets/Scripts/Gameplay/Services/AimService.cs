@@ -52,7 +52,6 @@ namespace Island.Gameplay.Services
                     return;
                 }
             }
-            
 
             SetTarget(null);
         }
@@ -61,19 +60,13 @@ namespace Island.Gameplay.Services
         {
             if (_inputService.PlayerActions.Interact.inProgress)
             {
-                if (TargetObject.Value is WorldCollectableObject collectableObject)
+                IPerformable performable = TargetObject.Value switch
                 {
-                    collectableObject.Perform(_inputService.PlayerActions.Interact.WasPressedThisFrame()).Forget();
-                    return;
-                }
+                    WorldCollectableObject or WorldCraftObject => TargetObject.Value,
+                    _ => _inventoryService
+                };
 
-                if (TargetObject.Value is WorldCraftObject transformerObject)
-                {
-                    transformerObject.Perform(_inputService.PlayerActions.Interact.WasPressedThisFrame()).Forget();
-                    return;
-                }
-
-                _inventoryService.PerformSelectedItem(_inputService.PlayerActions.Interact.WasPressedThisFrame(), deltaTime).Forget();
+                performable.Perform(_inputService.PlayerActions.Interact.WasPressedThisFrame(), deltaTime).Forget();
             }
         }
     }

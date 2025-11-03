@@ -1,18 +1,19 @@
 using Cysharp.Threading.Tasks;
+using Island.Gameplay.Services.Inventory;
 using Unity.Netcode;
 using UnityEngine;
 using Zenject;
 
 namespace Island.Gameplay.Services.World.Objects
 {
-    public abstract class WorldObjectBase : NetworkBehaviour
+    public abstract class WorldObjectBase : NetworkBehaviour, IPerformable
     {
         [Inject] private WorldService _worldService;
         [field: SerializeField] public WorldObjectType Type { get; private set; }
         public int Hash { get; private set; }
 
         public abstract string Name { get; }
-        public abstract UniTask<bool> Perform(bool isJustUsed);
+        public abstract UniTask<bool> Perform(bool isJustUsed, float deltaTime);
 
         public void Init(int hash)
         {
