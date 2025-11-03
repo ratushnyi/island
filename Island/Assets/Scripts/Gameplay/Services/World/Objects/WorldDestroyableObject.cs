@@ -98,7 +98,7 @@ namespace Island.Gameplay.Services.World.Objects
         private bool TryDamage()
         {
             _tools.TryGetValue(InventoryItemType.Hand, out var damage);
-            _tools.TryGetValue(_inventoryService.SelectedItem, out damage);
+            _tools.TryGetValue(_inventoryService.SelectedItem.Type, out damage);
             if (damage == 0)
             {
                 return false;

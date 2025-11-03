@@ -78,14 +78,14 @@ namespace Island.Gameplay.Services.World.Objects
                     return false;
                 }
 
-                var first = receipts[0].Ingredients.FirstOrDefault(t => t.Type == _inventoryService.SelectedItem);
+                var first = receipts[0].Ingredients.FirstOrDefault(t => t.Type == _inventoryService.SelectedItem.Type);
                 if (first.Type == InventoryItemType.None)
                 {
                     return false;
                 }
 
                 UpdateReceipt_ServerRpc(receipts[0]);
-                ingredients = new ItemEntity[] { new(_inventoryService.SelectedItem, 1) };
+                ingredients = new ItemEntity[] { new(_inventoryService.SelectedItem.Type, 1) };
             }
 
             if (_receipt.Value.Ingredients == null)

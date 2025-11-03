@@ -1,5 +1,4 @@
 using System;
-using Cysharp.Threading.Tasks;
 using Island.Gameplay.Services.Inventory.Tools;
 using UnityEngine;
 

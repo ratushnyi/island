@@ -10,8 +10,11 @@ namespace Island.Gameplay.Services.Inventory.Build
     [CreateAssetMenu(menuName = "Item/Build", fileName = "Build")]
     public class BuildItemEntity : ItemEntityBase
     {
+        [SerializeField] private WorldObjectType _resultType;
         [Inject] private AimService _aimService;
         [Inject] private BuildService _buildService;
+
+        public WorldObjectType ResultType => _resultType;
 
         public override async UniTask<bool> Perform(bool isJustUsed, float deltaTime)
         {
