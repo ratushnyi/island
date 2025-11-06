@@ -59,7 +59,7 @@ namespace Island.Gameplay.Services
                 {
                     if (_aimObject != null)
                     {
-                        _aimObject.transform.position = _hit.point;
+                        _aimObject.NetworkObject.NetworkTransforms[0].Teleport(_hit.point, _aimObject.transform.rotation, _aimObject.transform.localScale);
                     }
 
                     return;

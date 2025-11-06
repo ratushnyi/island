@@ -16,7 +16,7 @@ namespace Island.Gameplay.Services.Inventory.Build
 
         public WorldObjectType ResultType => _resultType;
 
-        public override async UniTask<bool> Perform(bool isJustUsed, float deltaTime)
+        public override UniTask<bool> Perform(bool isJustUsed, float deltaTime)
         {
             var result = true;
             foreach (var fee in StatFeeModel)
@@ -47,10 +47,8 @@ namespace Island.Gameplay.Services.Inventory.Build
             {
                 result = false;
             }
-
             
-
-            return result;
+            return UniTask.FromResult(result);
         }
     }
 }
