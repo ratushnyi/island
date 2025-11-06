@@ -257,7 +257,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5782650272371915651, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
       propertyPath: m_Name
-      value: G
+      value: Ground
       objectReference: {fileID: 0}
     - target: {fileID: 8653814253975207317, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
       propertyPath: GlobalObjectIdHash
@@ -265,11 +265,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8653814253975207317, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
       propertyPath: SpawnWithObservers
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8653814253975207317, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
       propertyPath: SynchronizeTransform
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3821721149766240113, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
@@ -302,6 +302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   <Type>k__BackingField: -1
+  <Colliders>k__BackingField: []
 --- !u!4 &5874106457217019660 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3451616297354679487, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
