@@ -186,6 +186,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.25, y: 4, z: 0.25}
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!23 &4965465909544291050 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -3442052932067020932, guid: be211b4f877c44c548ba61943a572229, type: 3}
+  m_PrefabInstance: {fileID: 1500754170917856662}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &5099740698846851197 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -3308363611212032533, guid: be211b4f877c44c548ba61943a572229, type: 3}
+  m_PrefabInstance: {fileID: 1500754170917856662}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6202359931895909143 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4413375315796349311, guid: be211b4f877c44c548ba61943a572229, type: 3}
@@ -212,6 +222,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.25, y: 0.8, z: 0.25}
   m_Center: {x: 0, y: 0.4, z: 0}
+--- !u!23 &7386708943991662222 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -985897637474712808, guid: be211b4f877c44c548ba61943a572229, type: 3}
+  m_PrefabInstance: {fileID: 1500754170917856662}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7561777441066646820 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8945111427927529650, guid: be211b4f877c44c548ba61943a572229, type: 3}
@@ -238,6 +253,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.25, y: 4, z: 0.25}
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!23 &9005981687076210474 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7505270045466387132, guid: be211b4f877c44c548ba61943a572229, type: 3}
+  m_PrefabInstance: {fileID: 1500754170917856662}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9107296660814953395
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -342,6 +362,11 @@ MonoBehaviour:
   - {fileID: 1397193570339832377}
   - {fileID: 2690283382109601599}
   - {fileID: 4461085715108350935}
+  <Renderers>k__BackingField:
+  - {fileID: 5099740698846851197}
+  - {fileID: 7386708943991662222}
+  - {fileID: 4965465909544291050}
+  - {fileID: 9005981687076210474}
   _healthView:
     _serializedList:
     - Key: 75

@@ -238,7 +238,7 @@ namespace Island.Gameplay.Services.World.Objects
         {
             ApplyContainer(_receipt.Value.InvertIngredients);
             var position = transform.position + Vector3.up + Vector3.up;
-            _worldService.SpawnCollectableItem(position, _receipt.Value.Result);
+            _worldService.Spawn(position, WorldObjectType.Collectable, _receipt.Value.Result);
             _progressValue.Value = -1;
 
             if (IsEnoughIngredients())

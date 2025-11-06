@@ -11,7 +11,6 @@ namespace Island.Gameplay.Services.Inventory.Tools
     public class ItemEntityBase : ScriptableObject, IPerformable
     {
         [field: SerializeField] public List<StatFeeModel> StatFeeModel { private set; get; }
-        [field: SerializeField] public bool IsUsable { private set; get; }
         [Inject] protected StatsService StatsService;
 
         protected virtual void Pay()
@@ -27,11 +26,8 @@ namespace Island.Gameplay.Services.Inventory.Tools
             var result = false;
             if (isJustUsed)
             {
-                result = IsUsable;
-                if (IsUsable)
-                {
-                    Pay();
-                }
+                result = true;
+                Pay();
             }
 
             return new UniTask<bool>(result);

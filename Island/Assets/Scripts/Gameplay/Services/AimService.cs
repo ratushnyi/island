@@ -1,14 +1,16 @@
 using Cysharp.Threading.Tasks;
+using Island.Common;
 using Island.Common.Services;
 using Island.Common.Services.Network;
 using Island.Gameplay.Configs.Aim;
+using Island.Gameplay.Services.Build;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Inventory.Build;
-using Island.Gameplay.Services.World;
 using Island.Gameplay.Services.World.Objects;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Services;
 using TendedTarsier.Core.Services.Input;
+using TendedTarsier.Core.Utilities.Extensions;
 using UniRx;
 using Unity.Netcode;
 using UnityEngine;
@@ -22,13 +24,14 @@ namespace Island.Gameplay.Services
         [Inject] private AimConfig _aimConfig;
         [Inject] private InventoryService _inventoryService;
         [Inject] private InputService _inputService;
-        [Inject] private WorldService _worldService;
         [Inject] private NetworkService _networkService;
+        [Inject] private BuildService _buildService;
 
-        private WorldObjectBase _aimObject;
         private WorldObjectType _aimType;
         private Ray _aimRay;
         private RaycastHit _hit;
+        private WorldObjectBase _aimObject;
+        public WorldObjectBase AimObject => _aimObject;
         public IReadOnlyReactiveProperty<WorldObjectBase> TargetObject => _targetObject;
         private readonly IReactiveProperty<WorldObjectBase> _targetObject = new ReactiveProperty<WorldObjectBase>();
 
@@ -39,7 +42,7 @@ namespace Island.Gameplay.Services
 
         private void SetTarget(WorldObjectBase targetObject)
         {
-            if (_targetObject.Value is WorldGroundObject && _inventoryService.SelectedItem.ItemEntity is BuildItemEntity buildItemEntity)
+            if (_inventoryService.SelectedItem.ItemEntity is BuildItemEntity buildItemEntity)
             {
                 ShowAimObject(buildItemEntity.ResultType);
             }
@@ -60,6 +63,7 @@ namespace Island.Gameplay.Services
                     if (_aimObject != null)
                     {
                         _aimObject.NetworkObject.NetworkTransforms[0].Teleport(_hit.point, _aimObject.transform.rotation, _aimObject.transform.localScale);
+                        _aimObject.SetColor_ServerRpc(_buildService.IsSuitablePlace(_aimType) ? _aimConfig.AimObjectSuitableColor : _aimConfig.AimObjectUnsuitableColor);
                     }
 
                     return;
@@ -67,7 +71,7 @@ namespace Island.Gameplay.Services
 
                 _aimType = type;
                 _networkService.OnWorldObjectSpawned.First().Subscribe(OnWorldObjectSpawned);
-                _networkService.Spawn(new NetworkSpawnRequest(0, type, _hit.point, owner: NetworkManager.Singleton.LocalClientId, notifyOwner: true));
+                _networkService.Spawn(new NetworkSpawnRequest(IslandExtensions.AimHash, type, _hit.point, owner: NetworkManager.Singleton.LocalClientId, notifyOwner: true));
                 return;
             }
 
@@ -77,11 +81,7 @@ namespace Island.Gameplay.Services
         private void OnWorldObjectSpawned(WorldObjectBase worldObject)
         {
             _aimObject = worldObject;
-
-            foreach (var aimObjectCollider in _aimObject.Colliders)
-            {
-                aimObjectCollider.enabled = false;
-            }
+            _aimObject.gameObject.SetLayerRecursively(_aimConfig.AimObjectLayer);
         }
 
         private void HideAimObject()
@@ -105,8 +105,8 @@ namespace Island.Gameplay.Services
             {
                 return;
             }
-            
-            _aimRay = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+
+            _aimRay = Camera.main.ViewportPointToRay(_aimConfig.AimPosition);
 
             if (Physics.Raycast(_aimRay, out _hit, _aimConfig.AimMaxDistance, _aimConfig.AimMask, QueryTriggerInteraction.Collide))
             {

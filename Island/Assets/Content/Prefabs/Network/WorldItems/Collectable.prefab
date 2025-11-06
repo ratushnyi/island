@@ -180,6 +180,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   <Type>k__BackingField: 0
+  <Colliders>k__BackingField:
+  - {fileID: 5434407878885899458}
+  <Renderers>k__BackingField:
+  - {fileID: 1532101775252534631}
+--- !u!65 &5434407878885899458 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 3821721149766240113, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
+  m_PrefabInstance: {fileID: 9107296660814953395}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5874106457217019660 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3451616297354679487, guid: a95574217014743ec8cbaffe14b89f03, type: 3}

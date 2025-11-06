@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5717042595131749062}
   - component: {fileID: 5085864228926133562}
   - component: {fileID: 4607354743250523229}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 5661546682032512554}
   - component: {fileID: 6097244459288240974}
   - component: {fileID: 383182864716807898}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -259,17 +259,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ground
       objectReference: {fileID: 0}
+    - target: {fileID: 5782650272371915651, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 8653814253975207317, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1887347448
-      objectReference: {fileID: 0}
-    - target: {fileID: 8653814253975207317, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
-      propertyPath: SpawnWithObservers
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8653814253975207317, guid: a95574217014743ec8cbaffe14b89f03, type: 3}
-      propertyPath: SynchronizeTransform
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3821721149766240113, guid: a95574217014743ec8cbaffe14b89f03, type: 3}

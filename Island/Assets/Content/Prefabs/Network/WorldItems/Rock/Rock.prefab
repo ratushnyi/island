@@ -62,6 +62,21 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1a62106ddd2bb4eb7a3f9dd42a53dfdb, type: 3}
   m_PrefabInstance: {fileID: 2327352966892633973}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &2946602914108538032 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 623753549327090629, guid: 1a62106ddd2bb4eb7a3f9dd42a53dfdb, type: 3}
+  m_PrefabInstance: {fileID: 2327352966892633973}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &4993230727621192423 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1943321014134172270, guid: 1a62106ddd2bb4eb7a3f9dd42a53dfdb, type: 3}
+  m_PrefabInstance: {fileID: 2327352966892633973}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &5105667514145355837 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -1831114858780391608, guid: 1a62106ddd2bb4eb7a3f9dd42a53dfdb, type: 3}
+  m_PrefabInstance: {fileID: 2327352966892633973}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6099241558266179974 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8424177512633290483, guid: 1a62106ddd2bb4eb7a3f9dd42a53dfdb, type: 3}
@@ -75,6 +90,11 @@ GameObject:
 --- !u!1 &6793543387544139901 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9082608739341797128, guid: 1a62106ddd2bb4eb7a3f9dd42a53dfdb, type: 3}
+  m_PrefabInstance: {fileID: 2327352966892633973}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &6870937430065163819 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 9157526688117952862, guid: 1a62106ddd2bb4eb7a3f9dd42a53dfdb, type: 3}
   m_PrefabInstance: {fileID: 2327352966892633973}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &8018537762601915961 stripped
@@ -170,6 +190,11 @@ MonoBehaviour:
   <Type>k__BackingField: 2
   <Colliders>k__BackingField:
   - {fileID: 5434407878885899458}
+  <Renderers>k__BackingField:
+  - {fileID: 2946602914108538032}
+  - {fileID: 6870937430065163819}
+  - {fileID: 4993230727621192423}
+  - {fileID: 5105667514145355837}
   _healthView:
     _serializedList:
     - Key: 75

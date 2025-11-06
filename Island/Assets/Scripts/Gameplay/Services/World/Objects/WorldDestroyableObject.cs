@@ -90,7 +90,7 @@ namespace Island.Gameplay.Services.World.Objects
             }
 
             var position = transform.position + Vector3.up + Vector3.up;
-            _worldService.SpawnCollectableItem(position, _dropItem);
+            _worldService.Spawn(position, WorldObjectType.Collectable, _dropItem);
 
             return true;
         }

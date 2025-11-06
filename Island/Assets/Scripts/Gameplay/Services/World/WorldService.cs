@@ -73,11 +73,10 @@ namespace Island.Gameplay.Services.World
             }
         }
 
-        public void SpawnCollectableItem(Vector3 position, ItemEntity collectableItem)
+        public void Spawn(Vector3 position, WorldObjectType type, ItemEntity collectableItem = default)
         {
-            var type = WorldObjectType.Collectable;
             var hash = IslandExtensions.GenerateHash(position);
-            while (_worldProfile.SpawnedObjects.ContainsKey(hash))
+            while (_worldProfile.SpawnedObjects.ContainsKey(hash) || IslandExtensions.SystemHashes.Contains(hash))
             {
                 position += new Vector3(Random.Range(-0.1f, 0.1f), 0, Random.Range(-0.1f, 0.1f));
                 hash = IslandExtensions.GenerateHash(position);

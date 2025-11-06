@@ -1,5 +1,6 @@
 using Island.Common.Services;
 using Island.Gameplay.Configs.Aim;
+using Island.Gameplay.Configs.Build;
 using Island.Gameplay.Configs.Craft;
 using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Configs.Stats;
@@ -29,20 +30,24 @@ namespace Island.Gameplay.Module
 {
     public class IslandGameplayModuleInstaller : ModuleInstallerBase<IslandGameplayModuleController>
     {
+        [Header("System")]
+        [SerializeField] private Canvas _canvas;
         [SerializeField] private NetworkServiceFacade _networkServiceFacade;
+        [Header("Configs")]
         [SerializeField] private WorldConfig _worldConfig;
+        [SerializeField] private BuildConfig _buildConfig;
         [SerializeField] private AimConfig _aimConfig;
         [SerializeField] private PlayerConfig _playerConfig;
         [SerializeField] private StatsConfig _statsConfig;
         [SerializeField] private InventoryConfig _inventoryConfig;
         [SerializeField] private CraftConfig _craftConfig;
+        [Header("UI")]
         [SerializeField] private InventoryPopup _inventoryPopup;
         [SerializeField] private InputPanel _inputPanel;
         [SerializeField] private HUDPanel _hudPanel;
         [SerializeField] private PausePopup _pausePopup;
         [SerializeField] private SettingsPopup _settingsPopup;
         [SerializeField] private WorldCraftPopup _worldCraftPopup;
-        [SerializeField] private Canvas _canvas;
 
         protected override void InstallModuleBindings()
         {
@@ -91,6 +96,7 @@ namespace Island.Gameplay.Module
             Container.BindConfigs(_worldConfig);
             Container.BindConfigs(_craftConfig);
             Container.BindConfigs(_aimConfig);
+            Container.BindConfigs(_buildConfig);
         }
     }
 }

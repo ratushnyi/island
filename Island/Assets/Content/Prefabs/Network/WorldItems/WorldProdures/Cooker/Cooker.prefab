@@ -473,6 +473,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1a62106ddd2bb4eb7a3f9dd42a53dfdb, type: 3}
   m_PrefabInstance: {fileID: 2327352966892633973}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &2946602914108538032 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 623753549327090629, guid: 1a62106ddd2bb4eb7a3f9dd42a53dfdb, type: 3}
+  m_PrefabInstance: {fileID: 2327352966892633973}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &9107296660814953395
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -564,6 +569,8 @@ MonoBehaviour:
   <Type>k__BackingField: 4
   <Colliders>k__BackingField:
   - {fileID: 5434407878885899458}
+  <Renderers>k__BackingField:
+  - {fileID: 2946602914108538032}
   _showPopup: 1
   _duration: 5
   _progressBar: {fileID: 1793928933528552702}

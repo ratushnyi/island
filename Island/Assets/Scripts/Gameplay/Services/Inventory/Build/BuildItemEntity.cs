@@ -16,39 +16,25 @@ namespace Island.Gameplay.Services.Inventory.Build
 
         public WorldObjectType ResultType => _resultType;
 
-        public override UniTask<bool> Perform(bool isJustUsed, float deltaTime)
+        public override async UniTask<bool> Perform(bool isJustUsed, float deltaTime)
         {
-            var result = true;
-            foreach (var fee in StatFeeModel)
+            if (_aimService.TargetObject.Value is WorldGroundObject)
             {
-                if (isJustUsed)
+                if (!await base.Perform(isJustUsed, deltaTime))
                 {
-                    fee.Deposit = 0;
+                    return false;
+                }
+                
+                if (!_buildService.IsSuitablePlace(_resultType))
+                {
+                    return false;
                 }
 
-                if (!StatsService.TrackFee(fee, deltaTime))
-                {
-                    result = false;
-                }
+                _buildService.Build(_resultType);
+                return true;
             }
 
-            if (_aimService.TargetObject.Value is WorldGroundObject groundObject)
-            {
-                if (!_buildService.IsSuitablePlace())
-                {
-                    result = false;
-                }
-                else
-                {
-                    _buildService.Build(groundObject);
-                }
-            }
-            else
-            {
-                result = false;
-            }
-            
-            return UniTask.FromResult(result);
+            return false;
         }
     }
 }

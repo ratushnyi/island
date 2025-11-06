@@ -34,7 +34,7 @@ MonoBehaviour:
   - _type: 3
     _count: 10
   - _type: 11
-    _count: 1
+    _count: 10
   <InventoryItems>k__BackingField:
   - <Type>k__BackingField: 1
     <Sprite>k__BackingField: {fileID: 21300000, guid: 8b6c8e742cc5e4240b9cdd32a29735b3, type: 3}
@@ -99,6 +99,6 @@ MonoBehaviour:
   - <Type>k__BackingField: 11
     <Sprite>k__BackingField: {fileID: 21300000, guid: 4739f3fbeb34e4edbb9a2196dea216f4, type: 3}
     <ItemEntity>k__BackingField: {fileID: 11400000, guid: 911dc6c4ecbbd4a068d36b88c29f3264, type: 2}
-    <IsCountable>k__BackingField: 0
-    <IsDisposable>k__BackingField: 0
+    <IsCountable>k__BackingField: 1
+    <IsDisposable>k__BackingField: 1
     <IsBuildable>k__BackingField: 1
