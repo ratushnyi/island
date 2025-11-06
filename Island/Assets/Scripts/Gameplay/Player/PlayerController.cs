@@ -138,7 +138,6 @@ namespace Island.Gameplay.Player
                 return;
             }
 
-
             var lookInput = _cameraInputService.GetCameraInput() * _settingsService.CameraSensitivity.Value / 100;
 
             NetworkObject.transform.Rotate(Vector3.up * lookInput.x);

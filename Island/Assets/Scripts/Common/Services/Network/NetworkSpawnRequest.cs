@@ -16,19 +16,23 @@ namespace Island.Common.Services.Network
         public WorldObjectType Type;
         public Vector3 Position;
         public Quaternion Rotation;
+        public ulong Owner;
         public int Health;
         public ItemEntity CollectableItem;
         public ItemEntity[] Container;
+        public bool NotifyOwner;
 
-        public NetworkSpawnRequest(int hash, WorldObjectType type, Vector3 position, Quaternion rotation = default, int health = 100, ItemEntity collectableItem = default, ItemEntity[] container = null)
+        public NetworkSpawnRequest(int hash, WorldObjectType type, Vector3 position, Quaternion rotation = default, ulong owner = 0, int health = 100, ItemEntity collectableItem = default, ItemEntity[] container = null, bool notifyOwner = false)
         {
             Hash = hash;
             Type = type;
             Position = position;
             Rotation = rotation;
+            Owner = owner;
             Health = health;
             CollectableItem = collectableItem;
             Container = container;
+            NotifyOwner = notifyOwner;
         }
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
@@ -37,9 +41,11 @@ namespace Island.Common.Services.Network
             serializer.SerializeValue(ref Type);
             serializer.SerializeValue(ref Position);
             serializer.SerializeValue(ref Rotation);
+            serializer.SerializeValue(ref Owner);
             serializer.SerializeValue(ref Health);
             serializer.SerializeValue(ref CollectableItem);
             serializer.SerializeArray(ref Container);
+            serializer.SerializeValue(ref NotifyOwner);
         }
     }
 }

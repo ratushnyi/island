@@ -2,6 +2,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using Island.Common.Services.Network;
 using Island.Gameplay.Services.Inventory;
+using Island.Gameplay.Services.World.Objects;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Modules.Project;
 using TendedTarsier.Core.Services;
@@ -28,6 +29,7 @@ namespace Island.Common.Services
         public bool IsServer => NetworkManager.Singleton.IsServer;
         public bool IsClient => NetworkManager.Singleton.IsClient;
         public bool IsHost => NetworkManager.Singleton.IsHost;
+        public IObservable<WorldObjectBase> OnWorldObjectSpawned => _networkServiceFacade.OnClientObjectSpawned;
         public IObservable<Unit> OnShutdown => Observable.FromEvent(t => NetworkManager.Singleton.OnPreShutdown += t, t => NetworkManager.Singleton.OnPreShutdown -= t).Merge(_networkServiceFacade.OnShutdown);
         public IReadOnlyReactiveProperty<bool> IsServerPaused => _networkServiceFacade.IsPaused;
         public string ServerId => _networkServiceFacade.ServerId.Value;

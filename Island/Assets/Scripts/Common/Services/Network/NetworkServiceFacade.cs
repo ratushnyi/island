@@ -2,6 +2,7 @@ using System;
 using Island.Common.Services.Network;
 using Island.Gameplay.Configs.World;
 using Island.Gameplay.Services.World.Objects;
+using TendedTarsier.Core.Utilities.Extensions;
 using UniRx;
 using Unity.Collections;
 using Unity.Netcode;
@@ -12,6 +13,8 @@ namespace Island.Common.Services
 {
     public class NetworkServiceFacade : NetworkBehaviour
     {
+        public IObservable<WorldObjectBase> OnClientObjectSpawned => _onClientObjectSpawned;
+        private readonly ISubject<WorldObjectBase> _onClientObjectSpawned = new Subject<WorldObjectBase>();
         public IObservable<Unit> OnShutdown => _onShutdown;
         private readonly ISubject<Unit> _onShutdown = new Subject<Unit>();
 
@@ -77,11 +80,17 @@ namespace Island.Common.Services
             ServerId.Value = newValue.Value;
         }
 
+        [ClientRpc]
+        private void OnObjectSpawned_ClientRpc(ulong objectId, ClientRpcParams _)
+        {
+            _onClientObjectSpawned.OnNext(NetworkManager.SpawnManager.SpawnedObjects[objectId].GetComponent<WorldObjectBase>());
+        }
+
         [ServerRpc(RequireOwnership = false)]
         public void Spawn_ServerRpc(NetworkSpawnRequest request)
         {
             var worldObject = Instantiate(_worldConfig.WorldObjects[request.Type], request.Position, request.Rotation);
-            worldObject.NetworkObject.Spawn();
+            worldObject.NetworkObject.SpawnWithOwnership(request.Owner);
             worldObject.Init(request.Hash);
             switch (worldObject)
             {
@@ -97,6 +106,11 @@ namespace Island.Common.Services
             }
 
             worldObject.NetworkObject.TrySetParent(NetworkObject);
+            
+            if (request.NotifyOwner)
+            {
+                OnObjectSpawned_ClientRpc(worldObject.NetworkObject.NetworkObjectId, request.Owner.ToClientRpcParams());
+            }
         }
 
         [ClientRpc]

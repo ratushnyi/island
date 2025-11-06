@@ -337,6 +337,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   <Type>k__BackingField: 1
+  <Colliders>k__BackingField:
+  - {fileID: 6131465896472653211}
+  - {fileID: 1397193570339832377}
+  - {fileID: 2690283382109601599}
+  - {fileID: 4461085715108350935}
   _healthView:
     _serializedList:
     - Key: 75
