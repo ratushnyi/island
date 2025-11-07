@@ -53,7 +53,7 @@ namespace Island.Gameplay.Services.World
                     request.Container = container.AsArray();
                 }
 
-                _networkService.Spawn(request);
+                _networkService.Spawn(request, false);
             }
 
             for (var index = 0; index < _worldProfile.SpawnedObjects.Values.Count; index++)
@@ -69,7 +69,7 @@ namespace Island.Gameplay.Services.World
                     request.Container = container.AsArray();
                 }
 
-                _networkService.Spawn(request);
+                _networkService.Spawn(request, false);
             }
         }
 
@@ -83,8 +83,7 @@ namespace Island.Gameplay.Services.World
             }
 
             var request = new NetworkSpawnRequest(hash, type, position, collectableItem: collectableItem);
-            _worldProfile.SpawnedObjects.Add(hash, request);
-            _networkService.Spawn(request);
+            _networkService.Spawn(request, true);
         }
 
         public void MarkDestroyed(WorldObjectBase worldObject)

@@ -1,6 +1,7 @@
 using System;
 using Island.Common.Services.Network;
 using Island.Gameplay.Configs.World;
+using Island.Gameplay.Profiles;
 using Island.Gameplay.Services.World.Objects;
 using TendedTarsier.Core.Utilities.Extensions;
 using UniRx;
@@ -24,13 +25,8 @@ namespace Island.Common.Services
         public readonly ReactiveProperty<string> ServerId = new();
         private readonly NetworkVariable<FixedString32Bytes> _serverId = new();
 
-        private WorldConfig _worldConfig;
-
-        [Inject]
-        private void Construct(WorldConfig worldConfig)
-        {
-            _worldConfig = worldConfig;
-        }
+        [Inject] private WorldConfig _worldConfig;
+        [Inject] private WorldProfile _worldProfile;
 
         public override void OnNetworkSpawn()
         {
@@ -87,8 +83,12 @@ namespace Island.Common.Services
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void Spawn_ServerRpc(NetworkSpawnRequest request)
+        public void Spawn_ServerRpc(NetworkSpawnRequest request, bool shouldSaveToProfile)
         {
+            if (shouldSaveToProfile)
+            {
+                _worldProfile.SpawnedObjects.Add(request.Hash, request);
+            }
             var worldObject = Instantiate(_worldConfig.WorldObjects[request.Type], request.Position, request.Rotation);
             worldObject.NetworkObject.SpawnWithOwnership(request.Owner);
             worldObject.Init(request.Hash);
@@ -106,7 +106,7 @@ namespace Island.Common.Services
             }
 
             worldObject.NetworkObject.TrySetParent(NetworkObject);
-            
+
             if (request.NotifyOwner)
             {
                 OnObjectSpawned_ClientRpc(worldObject.NetworkObject.NetworkObjectId, request.Owner.ToClientRpcParams());

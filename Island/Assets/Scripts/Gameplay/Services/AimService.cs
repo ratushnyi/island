@@ -71,7 +71,7 @@ namespace Island.Gameplay.Services
 
                 _aimType = type;
                 _networkService.OnWorldObjectSpawned.First().Subscribe(OnWorldObjectSpawned);
-                _networkService.Spawn(new NetworkSpawnRequest(IslandExtensions.AimHash, type, _hit.point, owner: NetworkManager.Singleton.LocalClientId, notifyOwner: true));
+                _networkService.Spawn(new NetworkSpawnRequest(IslandExtensions.AimHash, type, _hit.point, owner: NetworkManager.Singleton.LocalClientId, notifyOwner: true), false);
                 return;
             }
 

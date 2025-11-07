@@ -35,7 +35,7 @@ namespace Island.Common.Services
         public string ServerId => _networkServiceFacade.ServerId.Value;
 
         public void SetPaused(bool value) => _networkServiceFacade.SetPaused(value);
-        public void Spawn(NetworkSpawnRequest request) => _networkServiceFacade.Spawn_ServerRpc(request);
+        public void Spawn(NetworkSpawnRequest request, bool shouldSaveToProfile) => _networkServiceFacade.Spawn_ServerRpc(request, shouldSaveToProfile);
 
         public void Initialize(NetworkServiceFacade networkServiceFacade)
         {
