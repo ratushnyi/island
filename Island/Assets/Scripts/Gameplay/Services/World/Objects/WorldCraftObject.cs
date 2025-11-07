@@ -69,7 +69,7 @@ namespace Island.Gameplay.Services.World.Objects
                 }
 
                 UpdateReceipt_ServerRpc(result.Receipt);
-                ingredients = _receipt.Value.Ingredients.Select(t => new ItemEntity(t.Type, t.Count * result.Count)).ToArray();
+                ingredients = result.Receipt.Ingredients.Select(t => new ItemEntity(t.Type, t.Count * result.Count)).ToArray();
             }
             else
             {

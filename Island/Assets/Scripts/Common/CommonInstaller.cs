@@ -13,6 +13,9 @@ namespace Island.Common
 
         public override void InstallBindings()
         {
+            Screen.sleepTimeout = -1;
+            Application.targetFrameRate = 120;
+            
             BindConfigs();
             BindServices();
         }

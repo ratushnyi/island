@@ -16,8 +16,10 @@ namespace Island.Gameplay.Services.World.Objects
     {
         [SerializeField, SerializedDictionary("Health", "ViewObject")]
         private SerializedDictionary<int, GameObject> _healthView;
+
         [SerializeField, SerializedDictionary("Tool", "Damage")]
         private SerializedDictionary<InventoryItemType, int> _tools;
+
         [SerializeField] private float _duration;
         [SerializeField] private ItemEntity _dropItem;
 
@@ -27,7 +29,7 @@ namespace Island.Gameplay.Services.World.Objects
         [Inject] private InventoryService _inventoryService;
         [Inject] private WorldService _worldService;
 
-        private readonly NetworkVariable<bool> _isPerforming = new();
+        private readonly NetworkVariable<bool> _isPerformingInProgress = new();
         private readonly NetworkVariable<int> _health = new();
 
         public override string Name => Type.ToString();
@@ -62,14 +64,9 @@ namespace Island.Gameplay.Services.World.Objects
             }
         }
 
-        public void Reset()
-        {
-            _isPerforming.Value = false;
-        }
-
         public override async UniTask<bool> Perform(bool isJustUsed, float deltaTime)
         {
-            if (_isPerforming.Value)
+            if (_isPerformingInProgress.Value)
             {
                 return false;
             }
@@ -84,15 +81,7 @@ namespace Island.Gameplay.Services.World.Objects
                 return false;
             }
 
-            if (!TryDamage())
-            {
-                return false;
-            }
-
-            var position = transform.position + Vector3.up + Vector3.up;
-            _worldService.Spawn(position, WorldObjectType.Collectable, _dropItem);
-
-            return true;
+            return TryDamage();
         }
 
         private bool TryDamage()
@@ -104,35 +93,44 @@ namespace Island.Gameplay.Services.World.Objects
                 return false;
             }
 
-            OnHealthChanged_ServerRpc(_health.Value - damage);
+            DoDamage_ServerRpc(_health.Value - damage);
 
             return true;
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void OnHealthChanged_ServerRpc(int value)
+        private void DoDamage_ServerRpc(int value)
         {
             _health.Value = value;
             _worldService.UpdateHealth(this, _health.Value);
-            
+
+            var position = transform.position + Vector3.up + Vector3.up;
+            _worldService.Spawn(position, WorldObjectType.Collectable, _dropItem);
+
             if (_health.Value <= 0)
             {
                 Despawn_ServerRpc();
             }
         }
 
+        [ServerRpc(RequireOwnership = false)]
+        public void SetPerformingInProgress_ServerRpc(bool value)
+        {
+            _isPerformingInProgress.Value = value;
+        }
+
         private async UniTask<bool> TryHold()
         {
-            _isPerforming.Value = true;
+            SetPerformingInProgress_ServerRpc(true);
             var onPlayerExit = _aimService.TargetObject.SkipLatestValueOnSubscribe().First().ToUniTask();
             var onStopInteract = _inputService.OnInteractButtonCanceled.First().ToUniTask();
             var progressBar = _hudService.ProgressBar.Show(_duration);
-            var onStopPerforming = UniTask.WaitWhile(() => _isPerforming.Value);
+            var onStopPerforming = UniTask.WaitWhile(() => _isPerformingInProgress.Value);
             var holdTask = UniTask.WhenAny(progressBar, onStopInteract, onPlayerExit, onStopPerforming);
             var holdResult = await holdTask == 0;
 
             _hudService.ProgressBar.Hide();
-            _isPerforming.Value = false;
+            SetPerformingInProgress_ServerRpc(false);
 
             return holdResult;
         }

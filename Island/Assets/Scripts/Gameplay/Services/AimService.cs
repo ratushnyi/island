@@ -8,6 +8,7 @@ using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Inventory.Build;
 using Island.Gameplay.Services.World.Objects;
 using JetBrains.Annotations;
+using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services;
 using TendedTarsier.Core.Services.Input;
 using TendedTarsier.Core.Utilities.Extensions;
@@ -26,6 +27,7 @@ namespace Island.Gameplay.Services
         [Inject] private InputService _inputService;
         [Inject] private NetworkService _networkService;
         [Inject] private BuildService _buildService;
+        [Inject] private PanelService _panelService;
 
         private WorldObjectType _aimType;
         private Ray _aimRay;
@@ -125,9 +127,10 @@ namespace Island.Gameplay.Services
         {
             if (_inputService.PlayerActions.Interact.inProgress)
             {
-                IPerformable performable = TargetObject.Value switch
+                IPerformable performable = (TargetObject.Value, _panelService.IsAnyPopupOpen) switch
                 {
-                    WorldCollectableObject or WorldCraftObject => TargetObject.Value,
+                    (WorldCollectableObject, false) => TargetObject.Value,
+                    (WorldCraftObject, false) => TargetObject.Value,
                     _ => _inventoryService
                 };
 

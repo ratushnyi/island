@@ -35,7 +35,7 @@ namespace Island.Gameplay.Services.Inventory.Items.Tools
                 }
                 else
                 {
-                    itemObject.Reset();
+                    itemObject.SetPerformingInProgress_ServerRpc(false);
                 }
             }
             else

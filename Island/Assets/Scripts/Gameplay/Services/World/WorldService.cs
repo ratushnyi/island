@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Island.Common;
 using Island.Common.Services;
@@ -8,8 +9,10 @@ using Island.Gameplay.Services.Inventory.Items;
 using Island.Gameplay.Services.World.Objects;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Services;
+using Unity.Netcode;
 using UnityEngine;
 using Zenject;
+using Random = UnityEngine.Random;
 
 namespace Island.Gameplay.Services.World
 {
@@ -75,6 +78,7 @@ namespace Island.Gameplay.Services.World
 
         public void Spawn(Vector3 position, WorldObjectType type, ItemEntity collectableItem = default)
         {
+            CheckPermissions();
             var hash = IslandExtensions.GenerateHash(position);
             while (_worldProfile.SpawnedObjects.ContainsKey(hash) || IslandExtensions.SystemHashes.Contains(hash))
             {
@@ -88,12 +92,14 @@ namespace Island.Gameplay.Services.World
 
         public void MarkDestroyed(WorldObjectBase worldObject)
         {
+            CheckPermissions();
             _worldProfile.SpawnedObjects.Remove(worldObject.Hash);
             _worldProfile.DestroyedObject.Add(worldObject.Hash);
         }
 
         public void UpdateHealth(WorldObjectBase worldObject, int health)
         {
+            CheckPermissions();
             if (health == 0)
             {
                 _worldProfile.ObjectHealthDictionary.Remove(worldObject.Hash);
@@ -107,6 +113,7 @@ namespace Island.Gameplay.Services.World
 
         public void UpdateContainer(WorldObjectBase worldObject, ItemEntity item)
         {
+            CheckPermissions();
             if (!_worldProfile.ObjectContainerDictionary.TryGetValue(worldObject.Hash, out var container))
             {
                 if (item.Count == 0)
@@ -130,6 +137,14 @@ namespace Island.Gameplay.Services.World
             if (container.Items.Count == 0)
             {
                 _worldProfile.ObjectContainerDictionary.Remove(worldObject.Hash);
+            }
+        }
+
+        private void CheckPermissions()
+        {
+            if (!_networkService.IsServer)
+            {
+                throw new Exception("WorldService may used only by server!");
             }
         }
     }
