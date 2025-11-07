@@ -1,3 +1,4 @@
+using System;
 using Island.Common.Services;
 using Island.Gameplay.Services.CameraInput;
 using Island.Gameplay.Services.Stats;
@@ -34,6 +35,11 @@ namespace Island.Gameplay.Player
         private float _sprintLerp;
         private bool IsMoving => _characterController.velocity.magnitude > 0;
         private bool IsRunning => IsMoving && (_inputService.PlayerActions.Sprint.IsPressed() || SprintButtonToggleState);
+
+        public IObservable<Vector3> OnPositionChanged => _onPositionChanged;
+        public ISubject<Vector3> _onPositionChanged = new Subject<Vector3>();
+        public IObservable<Quaternion> OnRotationChanged => _onRotationChanged;
+        public ISubject<Quaternion> _onRotationChanged = new Subject<Quaternion>();
 
         private bool SprintButtonToggleState
         {
@@ -97,8 +103,12 @@ namespace Island.Gameplay.Player
             var moveInput = _inputService.PlayerActions.Move.ReadValue<Vector2>() * movementSpeed;
             var moveDirection = NetworkObject.transform.right * moveInput.x + NetworkObject.transform.forward * moveInput.y + Vector3.up * _verticalVelocity;
             moveDirection *= deltaTime;
-
             _characterController.Move(moveDirection);
+
+            if (moveInput.magnitude > 0 || !_characterController.isGrounded)
+            {
+                _onPositionChanged.OnNext(NetworkObject.transform.position);
+            }
         }
 
         private void HandleSprint(float deltaTime)
@@ -145,6 +155,11 @@ namespace Island.Gameplay.Player
             _cameraPitch = Mathf.Clamp(_cameraPitch, _cameraConfig.PitchLimits.x, _cameraConfig.PitchLimits.y);
             _head.transform.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
             _cinemachineCamera.Lens.FieldOfView = Mathf.Lerp(_settingsService.Fov.Value, _settingsService.Fov.Value * _cameraConfig.FovSprintModifier, _sprintLerp);
+
+            if (lookInput.magnitude > 0)
+            {
+                _onRotationChanged.OnNext(NetworkObject.transform.rotation);
+            }
         }
     }
 }
