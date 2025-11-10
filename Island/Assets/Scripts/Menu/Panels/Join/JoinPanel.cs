@@ -13,15 +13,22 @@ namespace Island.Menu.Panels.Join
         [SerializeField] private Button _buttonAccept;
         [SerializeField] private TMP_InputField _textField;
         Tween _tween;
-        
+
         public override async UniTask ShowAnimation()
         {
             await base.ShowAnimation();
-            
-            _buttonAccept.OnClickAsObservable().Subscribe(t => Accept()).AddTo(this);
+
+            _buttonAccept.OnClickAsObservable().Subscribe(_ => Accept()).AddTo(this);
+            _buttonAccept.interactable = false;
+            _textField.onValueChanged.AsObservable().Subscribe(OnText).AddTo(this);
             _textField.Select();
         }
-        
+
+        private void OnText(string text)
+        {
+            _buttonAccept.interactable = text.Length == 6;
+        }
+
         private void Accept()
         {
             if (_textField.text.Length != 6)
@@ -31,18 +38,11 @@ namespace Island.Menu.Panels.Join
                     .SetEase(Ease.InOutSine)
                     .SetUpdate(true)
                     .SetLoops(10, LoopType.Yoyo)
-                    .OnComplete(() => {
-                        _textField.targetGraphic.color = Color.white;
-                    });
+                    .OnComplete(() => { _textField.targetGraphic.color = Color.white; });
                 return;
             }
-            
+
             HideWithResult(_textField.text.ToUpper());
-        }
-        
-        private void Decline()
-        {
-            HideWithResult(null);
         }
 
         private void OnDestroy()

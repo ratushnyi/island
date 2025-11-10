@@ -43,7 +43,7 @@ namespace Island.Menu.Panels
 
         protected override async UniTask OnNewGameButtonClick()
         {
-            ProfileService.SetNewGame(true);
+            ProfileService.ClearServerSave(ProjectProfile.ServerId);
             ModuleService.LoadModule(ProjectConfig.GameplayScene).Forget();
             await _networkService.StartHost(true);
         }
@@ -57,7 +57,6 @@ namespace Island.Menu.Panels
                 return;
             }
 
-            ProfileService.SetNewGame(false);
             await _networkService.TryStartClient(joinCode, beforeClientStarted);
 
             async UniTask beforeClientStarted()
