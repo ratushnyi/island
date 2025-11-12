@@ -2,6 +2,7 @@ using Island.Common.Services;
 using Island.Gameplay.Configs.Aim;
 using Island.Gameplay.Configs.Build;
 using Island.Gameplay.Configs.Craft;
+using Island.Gameplay.Configs.DateTime;
 using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Configs.Stats;
 using Island.Gameplay.Configs.World;
@@ -15,6 +16,7 @@ using Island.Gameplay.Profiles.Stats;
 using Island.Gameplay.Services;
 using Island.Gameplay.Services.Build;
 using Island.Gameplay.Services.CameraInput;
+using Island.Gameplay.Services.DateTime;
 using Island.Gameplay.Services.HUD;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Stats;
@@ -41,6 +43,7 @@ namespace Island.Gameplay.Module
         [SerializeField] private StatsConfig _statsConfig;
         [SerializeField] private InventoryConfig _inventoryConfig;
         [SerializeField] private CraftConfig _craftConfig;
+        [SerializeField] private DateTimeConfig _dateTimeConfig;
         [Header("UI")]
         [SerializeField] private InventoryPopup _inventoryPopup;
         [SerializeField] private InputPanel _inputPanel;
@@ -63,6 +66,7 @@ namespace Island.Gameplay.Module
             Container.BindProfile<InventoryProfile>();
             Container.BindProfile<PlayerProfile>();
             Container.BindProfile<WorldProfile>();
+            Container.BindProfile<DateTimeProfile>();
         }
 
         private void BindPanels()
@@ -85,6 +89,7 @@ namespace Island.Gameplay.Module
             Container.BindService<WorldService>();
             Container.BindService<PlayerService>();
             Container.BindService<BuildService>();
+            Container.BindService<DateTimeService>();
             Container.BindService<NetworkServiceBridge, NetworkServiceFacade>(_networkServiceFacade);
         }
 
@@ -97,6 +102,7 @@ namespace Island.Gameplay.Module
             Container.BindConfigs(_craftConfig);
             Container.BindConfigs(_aimConfig);
             Container.BindConfigs(_buildConfig);
+            Container.BindConfigs(_dateTimeConfig);
         }
     }
 }

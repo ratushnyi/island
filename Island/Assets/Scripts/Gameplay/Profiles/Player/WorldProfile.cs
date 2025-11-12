@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Island.Common.Services.Network;
 using MemoryPack;
 using TendedTarsier.Core.Services.Profile;
-using Unity.Netcode;
 
 namespace Island.Gameplay.Profiles
 {
