@@ -1,4 +1,3 @@
-using Island.Common.Services;
 using Island.Gameplay.Configs.Aim;
 using Island.Gameplay.Configs.Build;
 using Island.Gameplay.Configs.Craft;
@@ -36,6 +35,7 @@ namespace Island.Gameplay.Module
         [Header("NetworkFacade")]
         [SerializeField] private ServerServiceFacade _serverServiceFacade;
         [SerializeField] private DateTimeServiceFacade _dateTimeServiceFacade;
+        [SerializeField] private BuildServiceFacade _buildServiceFacade;
         [Header("System")]
         [SerializeField] private Canvas _canvas;
         [Header("Configs")]
@@ -91,7 +91,7 @@ namespace Island.Gameplay.Module
             Container.BindService<AimService>();
             Container.BindService<WorldService>();
             Container.BindService<PlayerService>();
-            Container.BindService<BuildService>();
+            Container.BindService<BuildService, BuildServiceFacade>(_buildServiceFacade);
             Container.BindService<DateTimeService, DateTimeServiceFacade>(_dateTimeServiceFacade);
             Container.BindService<ServerService, ServerServiceFacade>(_serverServiceFacade);
         }

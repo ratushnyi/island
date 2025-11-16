@@ -198,6 +198,7 @@ MonoBehaviour:
   _moduleController: {fileID: 2006302207401808471}
   _serverServiceFacade: {fileID: 454331133913626598, guid: 3fe62ec4c00df43debcd4c5685076612, type: 3}
   _dateTimeServiceFacade: {fileID: 2192849165077195661, guid: 377d0e42acce745c7aec7e0e2c7740e1, type: 3}
+  _buildServiceFacade: {fileID: 5806670506674646991, guid: 5e0938e06cd974a86b65a2cbf48c2a81, type: 3}
   _canvas: {fileID: 6368572182129791260}
   _worldConfig: {fileID: 11400000, guid: 373498d3b5f754fab8490e20a5aaea0a, type: 2}
   _buildConfig: {fileID: 11400000, guid: dd752dfb8d1814e9eaa74b19432b990d, type: 2}
