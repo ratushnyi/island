@@ -1,11 +1,11 @@
-namespace Island.Common.Services
+namespace Island.Gameplay.Services.Server
 {
-    public interface INetworkInitialize
+    public interface IServerInitialize
     {
         public void OnNetworkInitialize();
     }    
     
-    public interface INetworkPreInitialize
+    public interface IServerPreInitialize
     {
         public void OnNetworkPreInitialize();
     }

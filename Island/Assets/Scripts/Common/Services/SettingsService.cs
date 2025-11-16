@@ -7,15 +7,12 @@ using Zenject;
 namespace Island.Common.Services
 {
     [UsedImplicitly]
-    public class SettingsService : ServiceBase
+    public class SettingsService : ServiceBase, IInitializable
     {
-        private CameraConfig _cameraConfig;
+        [Inject] private CameraConfig _cameraConfig;
 
-        [Inject]
-        private void Construct(CameraConfig cameraConfig)
+        public void Initialize()
         {
-            _cameraConfig = cameraConfig;
-            
             Fov = new ReactivePrefs<int>("Fov", _cameraConfig.DefaultFov);
             CameraSensitivity = new ReactivePrefs<int>("CameraSensitivity", _cameraConfig.DefaultCameraSensitivity);
         }

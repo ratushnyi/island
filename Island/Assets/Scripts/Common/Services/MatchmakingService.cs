@@ -1,12 +1,8 @@
 using System;
 using Cysharp.Threading.Tasks;
-using Island.Common.Services.Network;
-using Island.Gameplay.Services.Inventory;
-using Island.Gameplay.Services.World.Objects;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Modules.Project;
 using TendedTarsier.Core.Services;
-using UniRx;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Services.Relay;
@@ -17,37 +13,11 @@ using Zenject;
 namespace Island.Common.Services
 {
     [UsedImplicitly]
-    public class NetworkService : ServiceBase
+    public class MatchmakingService : ServiceBase
     {
         public string JoinCode { get; private set; }
-        
         [Inject] private ProjectProfile _projectProfile;
-        [Inject] private NetworkConfig _config;
-        private NetworkServiceFacade _networkServiceFacade;
 
-        public bool IsReady => NetworkManager.Singleton.IsApproved;
-        public bool IsServer => NetworkManager.Singleton.IsServer;
-        public bool IsClient => NetworkManager.Singleton.IsClient;
-        public bool IsHost => NetworkManager.Singleton.IsHost;
-        public IObservable<WorldObjectBase> OnWorldObjectSpawned => _networkServiceFacade.OnClientObjectSpawned;
-        public IObservable<Unit> OnShutdown => Observable.FromEvent(t => NetworkManager.Singleton.OnPreShutdown += t, t => NetworkManager.Singleton.OnPreShutdown -= t).Merge(_networkServiceFacade.OnShutdown);
-        public IReadOnlyReactiveProperty<bool> IsServerPaused => _networkServiceFacade.IsPaused;
-        public string ServerId => _networkServiceFacade.ServerId.Value;
-
-        public void SetPaused(bool value) => _networkServiceFacade.SetPaused(value);
-        public void Spawn(NetworkSpawnRequest request, bool shouldSaveToProfile) => _networkServiceFacade.Spawn_ServerRpc(request, shouldSaveToProfile);
-
-        public void Initialize(NetworkServiceFacade networkServiceFacade)
-        {
-            _networkServiceFacade = networkServiceFacade;
-        }
-
-        public void Shutdown()
-        {
-            _networkServiceFacade.Shutdown_ClientRpc();
-            NetworkManager.Singleton.Shutdown();
-        }
-        
         public async UniTask EnsureServices()
         {
             if (Unity.Services.Core.UnityServices.State != Unity.Services.Core.ServicesInitializationState.Initialized)
@@ -64,7 +34,6 @@ namespace Island.Common.Services
         {
             Allocation alloc = await RelayService.Instance.CreateAllocationAsync(3);
             GUIUtility.systemCopyBuffer = JoinCode = await RelayService.Instance.GetJoinCodeAsync(alloc.AllocationId);
-            Debug.Log($"Relay JoinCode: {JoinCode}");
             if (isNewGame)
             {
                 _projectProfile.ServerId = JoinCode;
@@ -81,8 +50,6 @@ namespace Island.Common.Services
             );
 
             NetworkManager.Singleton.StartHost();
-
-            _networkServiceFacade.SetServerId(_projectProfile.ServerId);
         }
 
         public async UniTask<bool> TryStartClient(string joinCode, Func<UniTask> beforeClientStarted)

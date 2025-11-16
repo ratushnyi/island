@@ -8,6 +8,7 @@ using Island.Gameplay.Services.World.Objects;
 using TendedTarsier.Core.Services.Modules;
 using UnityEditor;
 using UnityEngine;
+using ServerSpawnRequest = Island.Gameplay.Services.Server.ServerSpawnRequest;
 
 namespace Island.Gameplay.Configs.World
 {
@@ -16,7 +17,7 @@ namespace Island.Gameplay.Configs.World
     {
         [field: SerializedDictionary("Type", "Prefab")]
         public SerializedDictionary<WorldObjectType, WorldObjectBase> WorldObjects;
-        [field: SerializeField] public List<NetworkSpawnRequest> WorldObjectPlacement;
+        [field: SerializeField] public List<ServerSpawnRequest> WorldObjectPlacement;
     }
 
 #if UNITY_EDITOR
@@ -73,7 +74,7 @@ namespace Island.Gameplay.Configs.World
 
             foreach (var item in worldItems)
             {
-                _worldConfig.WorldObjectPlacement.Add(new NetworkSpawnRequest(item.GenerateHash(), item.Type, item.transform.position, item.transform.rotation));
+                _worldConfig.WorldObjectPlacement.Add(new ServerSpawnRequest(item.GenerateHash(), item.Type, item.transform.position, item.transform.rotation));
             }
 
             EditorUtility.SetDirty(_worldConfig);

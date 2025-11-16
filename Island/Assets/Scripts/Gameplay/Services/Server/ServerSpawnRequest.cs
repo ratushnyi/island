@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Island.Gameplay.Services.Inventory.Items;
 using Island.Gameplay.Services.World.Objects;
 using MemoryPack;
@@ -7,10 +6,10 @@ using TendedTarsier.Core.Utilities.Extensions;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace Island.Common.Services.Network
+namespace Island.Gameplay.Services.Server
 {
     [MemoryPackable, Serializable]
-    public partial struct NetworkSpawnRequest : INetworkSerializable
+    public partial struct ServerSpawnRequest : INetworkSerializable
     {
         public int Hash;
         public WorldObjectType Type;
@@ -22,7 +21,7 @@ namespace Island.Common.Services.Network
         public ItemEntity[] Container;
         public bool NotifyOwner;
 
-        public NetworkSpawnRequest(int hash, WorldObjectType type, Vector3 position, Quaternion rotation = default, ulong owner = 0, int health = 100, ItemEntity collectableItem = default, ItemEntity[] container = null, bool notifyOwner = false)
+        public ServerSpawnRequest(int hash, WorldObjectType type, Vector3 position, Quaternion rotation = default, ulong owner = 0, int health = 100, ItemEntity collectableItem = default, ItemEntity[] container = null, bool notifyOwner = false)
         {
             Hash = hash;
             Type = type;

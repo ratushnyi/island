@@ -1,39 +1,30 @@
 using System;
 using System.Linq;
 using Island.Common;
-using Island.Common.Services;
-using Island.Common.Services.Network;
 using Island.Gameplay.Configs.World;
 using Island.Gameplay.Profiles;
 using Island.Gameplay.Services.Inventory.Items;
+using Island.Gameplay.Services.Server;
 using Island.Gameplay.Services.World.Objects;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Services;
-using Unity.Netcode;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
+using ServerSpawnRequest = Island.Gameplay.Services.Server.ServerSpawnRequest;
 
 namespace Island.Gameplay.Services.World
 {
     [UsedImplicitly]
-    public class WorldService : ServiceBase, INetworkInitialize
+    public class WorldService : ServiceBase, IServerInitialize
     {
-        private NetworkService _networkService;
-        private WorldConfig _worldConfig;
-        private WorldProfile _worldProfile;
-
-        [Inject]
-        private void Construct(NetworkService networkService, WorldConfig worldConfig, WorldProfile worldProfile)
-        {
-            _worldProfile = worldProfile;
-            _worldConfig = worldConfig;
-            _networkService = networkService;
-        }
+        [Inject] private ServerService _serverService;
+        [Inject] private WorldConfig _worldConfig;
+        [Inject] private WorldProfile _worldProfile;
 
         public void OnNetworkInitialize()
         {
-            if (!_networkService.IsServer)
+            if (!_serverService.IsServer)
             {
                 return;
             }
@@ -56,7 +47,7 @@ namespace Island.Gameplay.Services.World
                     request.Container = container.AsArray();
                 }
 
-                _networkService.Spawn(request, false);
+                _serverService.Spawn(request, false);
             }
 
             for (var index = 0; index < _worldProfile.SpawnedObjects.Values.Count; index++)
@@ -72,7 +63,7 @@ namespace Island.Gameplay.Services.World
                     request.Container = container.AsArray();
                 }
 
-                _networkService.Spawn(request, false);
+                _serverService.Spawn(request, false);
             }
         }
 
@@ -86,8 +77,8 @@ namespace Island.Gameplay.Services.World
                 hash = IslandExtensions.GenerateHash(position);
             }
 
-            var request = new NetworkSpawnRequest(hash, type, position, collectableItem: collectableItem);
-            _networkService.Spawn(request, true);
+            var request = new ServerSpawnRequest(hash, type, position, collectableItem: collectableItem);
+            _serverService.Spawn(request, true);
         }
 
         public void MarkDestroyed(WorldObjectBase worldObject)
@@ -142,7 +133,7 @@ namespace Island.Gameplay.Services.World
 
         private void CheckPermissions()
         {
-            if (!_networkService.IsServer)
+            if (!_serverService.IsServer)
             {
                 throw new Exception("WorldService may used only by server!");
             }

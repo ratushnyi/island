@@ -1,5 +1,6 @@
 using Island.Common.Services;
 using Island.Gameplay.Profiles;
+using Island.Gameplay.Services.Server;
 using Island.Gameplay.Settings;
 using TendedTarsier.Core.Services;
 using UniRx;
@@ -7,11 +8,11 @@ using Zenject;
 
 namespace Island.Gameplay.Player
 {
-    public class PlayerService : ServiceBase, INetworkInitialize
+    public class PlayerService : ServiceBase, IServerInitialize
     {
         [Inject] private readonly PlayerProfile _playerProfile;
         [Inject] private readonly PlayerConfig _playerConfig;
-        [Inject] private readonly NetworkService _networkService;
+        [Inject] private readonly ServerService _serverService;
         private PlayerController _playerController;
 
         public void Register(PlayerController playerController)

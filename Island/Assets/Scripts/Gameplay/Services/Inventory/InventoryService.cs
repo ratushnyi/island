@@ -5,6 +5,7 @@ using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Panels.HUD;
 using Island.Gameplay.Profiles.Inventory;
 using Island.Gameplay.Services.Inventory.Items;
+using Island.Gameplay.Services.Server;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services;
@@ -14,7 +15,7 @@ using Zenject;
 namespace Island.Gameplay.Services.Inventory
 {
     [UsedImplicitly]
-    public class InventoryService : ServiceBase, INetworkInitialize, IPerformable
+    public class InventoryService : ServiceBase, IServerInitialize, IPerformable
     {
         private PanelLoader<HUDPanel> _hudPanel;
         private InventoryConfig _inventoryConfig;

@@ -4,6 +4,7 @@ using Island.Common.Services;
 using Island.Gameplay.Configs.Stats;
 using Island.Gameplay.Profiles.Stats;
 using Island.Gameplay.Services.HUD;
+using Island.Gameplay.Services.Server;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Services;
 using UniRx;
@@ -12,7 +13,7 @@ using Zenject;
 namespace Island.Gameplay.Services.Stats
 {
     [UsedImplicitly]
-    public class StatsService : ServiceBase, INetworkInitialize
+    public class StatsService : ServiceBase, IServerInitialize
     {
         private readonly Dictionary<StatType, IDisposable> _feeDisposables = new();
 

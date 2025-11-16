@@ -1,6 +1,6 @@
-using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Island.Common.Services;
+using Island.Gameplay.Services.Server;
 using Island.Menu.Panels.Settings;
 using TendedTarsier.Core.Panels;
 using TMPro;
@@ -13,30 +13,20 @@ namespace Island.Gameplay.Panels.Pause
 {
     public class PausePopup : ResultPopupBase<bool>
     {
-        [SerializeField] private TMP_Text _joinCode;
+        [SerializeField] private TMP_Text _serverId;
         [SerializeField] private Button _closeButton;
         [SerializeField] private Button _settingsButton;
         [SerializeField] private Button _exitButton;
-        private PanelLoader<SettingsPopup> _settingsPanel;
-        private NetworkService _networkService;
-
-        [Inject]
-        private void Construct(PanelLoader<SettingsPopup> settingsPanel, NetworkService networkService)
-        {
-            _settingsPanel = settingsPanel;
-            _networkService = networkService;
-        }
+        [Inject] private PanelLoader<SettingsPopup> _settingsPanel;
+        [Inject] private ServerService _serverService;
 
         protected override void Initialize()
         {
-            if (_networkService.IsServer)
-            {
-                _joinCode.SetText(_networkService.JoinCode);
-            }
-            else
+            _serverId.SetText(_serverService.ServerId);
+
+            if (!_serverService.IsServer)
             {
                 UpdateActiveCloseButton();
-                _joinCode.gameObject.SetActive(false);
             }
 
             _settingsButton.OnClickAsObservable().Subscribe(_ => OnSettingsButtonClick()).AddTo(this);
@@ -45,7 +35,7 @@ namespace Island.Gameplay.Panels.Pause
 
         public void UpdateActiveCloseButton()
         {
-            _closeButton.gameObject.SetActive(!_networkService.IsServerPaused.Value);
+            _closeButton.gameObject.SetActive(!_serverService.IsServerPaused.Value);
         }
 
         private void OnSettingsButtonClick()
@@ -55,7 +45,7 @@ namespace Island.Gameplay.Panels.Pause
 
         public override void Hide(bool immediate = false)
         {
-            if (!_networkService.IsServer && _networkService.IsServerPaused.Value)
+            if (!_serverService.IsServer && _serverService.IsServerPaused.Value)
             {
                 return;
             }

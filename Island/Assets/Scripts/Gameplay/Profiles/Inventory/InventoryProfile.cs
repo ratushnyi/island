@@ -9,7 +9,7 @@ using Zenject;
 namespace Island.Gameplay.Profiles.Inventory
 {
     [MemoryPackable(GenerateType.VersionTolerant)]
-    public partial class InventoryProfile : NetworkProfileBase
+    public partial class InventoryProfile : ServerProfileBase
     {
         protected override string NetworkName => "Inventory";
 

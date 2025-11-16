@@ -19,6 +19,7 @@ using Island.Gameplay.Services.CameraInput;
 using Island.Gameplay.Services.DateTime;
 using Island.Gameplay.Services.HUD;
 using Island.Gameplay.Services.Inventory;
+using Island.Gameplay.Services.Server;
 using Island.Gameplay.Services.Stats;
 using Island.Gameplay.Services.World;
 using Island.Gameplay.Services.World.Objects.UI;
@@ -32,9 +33,11 @@ namespace Island.Gameplay.Module
 {
     public class IslandGameplayModuleInstaller : ModuleInstallerBase<IslandGameplayModuleController>
     {
+        [Header("NetworkFacade")]
+        [SerializeField] private ServerServiceFacade _serverServiceFacade;
+        [SerializeField] private DateTimeServiceFacade _dateTimeServiceFacade;
         [Header("System")]
         [SerializeField] private Canvas _canvas;
-        [SerializeField] private NetworkServiceFacade _networkServiceFacade;
         [Header("Configs")]
         [SerializeField] private WorldConfig _worldConfig;
         [SerializeField] private BuildConfig _buildConfig;
@@ -89,8 +92,8 @@ namespace Island.Gameplay.Module
             Container.BindService<WorldService>();
             Container.BindService<PlayerService>();
             Container.BindService<BuildService>();
-            Container.BindService<DateTimeService>();
-            Container.BindService<NetworkServiceBridge, NetworkServiceFacade>(_networkServiceFacade);
+            Container.BindService<DateTimeService, DateTimeServiceFacade>(_dateTimeServiceFacade);
+            Container.BindService<ServerService, ServerServiceFacade>(_serverServiceFacade);
         }
 
         private void BindConfigs()

@@ -1,3 +1,6 @@
+using Cysharp.Threading.Tasks;
+using Island.Common.Services;
+using Island.Gameplay.Configs.DateTime;
 using Island.Gameplay.Profiles;
 using UniRx;
 using Unity.Netcode;
@@ -8,8 +11,9 @@ namespace Island.Gameplay.Services.DateTime
 {
     public class SunController : NetworkBehaviour
     {
-        [SerializeField, Range(-90f, 90f)] private float _latitude = 50f;
+        [Inject] private DateTimeService _dateTimeService;
         [Inject] private DateTimeProfile _dateTimeProfile;
+        [Inject] private DateTimeConfig _dateTimeConfig;
 
         public override void OnNetworkSpawn()
         {
@@ -18,46 +22,47 @@ namespace Island.Gameplay.Services.DateTime
                 return;
             }
 
-            _dateTimeProfile.Minutes.Subscribe(t => OnDateTimeChanged(_dateTimeProfile.GetDateTime())).AddTo(this);
+            _dateTimeProfile.Minutes.Subscribe(OnDateTimeChanged).AddTo(this);
         }
 
-        private void OnDateTimeChanged(System.DateTime dateTime)
+        private void OnDateTimeChanged(float minutes)
         {
-            Vector3 sunDirection = CalculateSunDirection(dateTime, _latitude);
+            var dateTime = _dateTimeService.GetDateTime(minutes);
+            var sunDirection = CalculateSunDirection(dateTime, _dateTimeConfig.Latitude);
 
             transform.rotation = Quaternion.LookRotation(sunDirection, Vector3.up);
         }
 
         private Vector3 CalculateSunDirection(System.DateTime dateTime, float latitudeDeg)
         {
-            float hour = dateTime.Hour + dateTime.Minute / 60f + dateTime.Second / 3600f;
+            var hour = dateTime.Hour + dateTime.Minute / 60f + dateTime.Second / 3600f;
 
-            float latRad = latitudeDeg * Mathf.Deg2Rad;
+            var latRad = latitudeDeg * Mathf.Deg2Rad;
 
-            float declDeg = -23.44f * Mathf.Cos(Mathf.Deg2Rad * (360f / 365f * (dateTime.DayOfYear + 10)));
-            float declRad = declDeg * Mathf.Deg2Rad;
+            var declDeg = -23.44f * Mathf.Cos(Mathf.Deg2Rad * (360f / 365f * (dateTime.DayOfYear + 10)));
+            var declRad = declDeg * Mathf.Deg2Rad;
 
-            float hourAngleDeg = 15f * (hour - 12f);
-            float hourAngleRad = hourAngleDeg * Mathf.Deg2Rad;
+            var hourAngleDeg = 15f * (hour - 12f);
+            var hourAngleRad = hourAngleDeg * Mathf.Deg2Rad;
 
-            float sinAlt = Mathf.Sin(latRad) * Mathf.Sin(declRad) + Mathf.Cos(latRad) * Mathf.Cos(declRad) * Mathf.Cos(hourAngleRad);
-            float altRad = Mathf.Asin(sinAlt);
-            float cosAz = (Mathf.Sin(declRad) - Mathf.Sin(altRad) * Mathf.Sin(latRad)) / (Mathf.Cos(altRad) * Mathf.Cos(latRad));
+            var sinAlt = Mathf.Sin(latRad) * Mathf.Sin(declRad) + Mathf.Cos(latRad) * Mathf.Cos(declRad) * Mathf.Cos(hourAngleRad);
+            var altRad = Mathf.Asin(sinAlt);
+            var cosAz = (Mathf.Sin(declRad) - Mathf.Sin(altRad) * Mathf.Sin(latRad)) / (Mathf.Cos(altRad) * Mathf.Cos(latRad));
 
             cosAz = Mathf.Clamp(cosAz, -1f, 1f);
-            float azRad = Mathf.Acos(cosAz);
+            var azRad = Mathf.Acos(cosAz);
 
             if (hourAngleRad > 0)
             {
                 azRad = 2f * Mathf.PI - azRad;
             }
 
-            float horiz = Mathf.Cos(altRad);
-            float x = horiz * Mathf.Sin(azRad);
-            float y = Mathf.Sin(altRad);
-            float z = horiz * Mathf.Cos(azRad);
+            var horiz = Mathf.Cos(altRad);
+            var x = horiz * Mathf.Sin(azRad);
+            var y = Mathf.Sin(altRad);
+            var z = horiz * Mathf.Cos(azRad);
 
-            Vector3 dir = new Vector3(x, y, z);
+            var dir = new Vector3(x, y, z);
 
             return dir.normalized;
         }

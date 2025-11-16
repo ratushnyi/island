@@ -1,22 +1,20 @@
 using Island.Common.Services;
+using Island.Gameplay.Services.Server;
 using TendedTarsier.Core.Services.Profile;
 using Zenject;
 
 namespace Island.Gameplay.Profiles
 {
-    public abstract class NetworkProfileBase : ProfileBase, INetworkPreInitialize
+    public abstract class ServerProfileBase : ProfileBase, IServerPreInitialize
     {
-        private NetworkService _networkService;
+        [Inject] private ServerService _serverService;
         protected abstract string NetworkName { get; }
-        public override string Name => $"{_networkService.ServerId}_{NetworkName}";
+        public override string Name => $"{_serverService.ServerId}_{NetworkName}";
 
-        [Inject]
-        public void Construct(NetworkService networkService)
+        protected override void RegisterProfile()
         {
-            _networkService = networkService;
+            // Do not register the network profile
         }
-
-        protected override void RegisterProfile() { }
 
         public void OnNetworkPreInitialize()
         {

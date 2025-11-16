@@ -18,11 +18,11 @@ namespace Island.Menu.Panels
         [SerializeField] private Button _settingsButton;
         [Inject] private PanelLoader<SettingsPopup> _settingsPanel;
         [Inject] private PanelLoader<JoinPopup> _joinPanel;
-        [Inject] private NetworkService _networkService;
+        [Inject] private MatchmakingService _matchmakingService;
 
         protected override void InitButtons()
         {
-            _networkService.EnsureServices().Forget();
+            _matchmakingService.EnsureServices().Forget();
             base.InitButtons();
             RegisterButton(_settingsButton);
             InitContinueButton(!string.IsNullOrEmpty(ProjectProfile.ServerId));
@@ -38,14 +38,14 @@ namespace Island.Menu.Panels
         protected override async UniTask OnContinueButtonClick()
         {
             base.OnContinueButtonClick().Forget();
-            await _networkService.StartHost(false);
+            await _matchmakingService.StartHost(false);
         }
 
         protected override async UniTask OnNewGameButtonClick()
         {
             ProfileService.ClearServerSave(ProjectProfile.ServerId);
             ModuleService.LoadModule(ProjectConfig.GameplayScene).Forget();
-            await _networkService.StartHost(true);
+            await _matchmakingService.StartHost(true);
         }
 
         private async UniTask OnJoinButtonClick()
@@ -57,7 +57,7 @@ namespace Island.Menu.Panels
                 return;
             }
 
-            await _networkService.TryStartClient(joinCode, beforeClientStarted);
+            await _matchmakingService.TryStartClient(joinCode, beforeClientStarted);
 
             async UniTask beforeClientStarted()
             {

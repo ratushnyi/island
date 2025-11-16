@@ -1,47 +1,39 @@
 using Cysharp.Threading.Tasks;
 using Island.Common.Services;
+using Island.Gameplay.Services.Server;
 using TendedTarsier.Core.Modules.Project;
 using TendedTarsier.Core.Services.Modules;
-using TendedTarsier.Core.Services.Profile;
 using UniRx;
 using Unity.Netcode;
 using Zenject;
 
 namespace Island.Gameplay.Module
 {
-    public class IslandGameplayModuleController : ModuleControllerBase, INetworkInitialize
+    public class IslandGameplayModuleController : ModuleControllerBase, IServerInitialize
     {
-        private NetworkService _networkService;
-        private ModuleService _moduleService;
-        private ProjectConfig _projectConfig;
-
-        [Inject]
-        private void Construct(ProfileService profileService, NetworkService networkService, ModuleService moduleService, ProjectConfig projectConfig)
-        {
-            _networkService = networkService;
-            _moduleService = moduleService;
-            _projectConfig = projectConfig;
-        }
+        [Inject] private ServerService _serverService;
+        [Inject] private ModuleService _moduleService;
+        [Inject] private ProjectConfig _projectConfig;
 
         public override async UniTask Initialize()
         {
             bool? isPlayerSpawned() => NetworkManager.Singleton.SpawnManager?.GetLocalPlayerObject()?.IsSpawned;
             await UniTask.WaitUntil(() => isPlayerSpawned().HasValue && isPlayerSpawned()!.Value);
-            
+
             await base.Initialize();
         }
 
         public void OnNetworkInitialize()
         {
-            if (!_networkService.IsServer)
+            if (!_serverService.IsServer)
             {
-                _networkService.OnShutdown.Subscribe(_ => LoadMenu().Forget()).AddTo(CompositeDisposable);
+                _serverService.OnShutdown.Subscribe(_ => LoadMenu().Forget()).AddTo(CompositeDisposable);
             }
         }
 
         public async UniTaskVoid LoadMenu()
         {
-            _networkService.Shutdown();
+            _serverService.Shutdown();
             await _moduleService.LoadModule(_projectConfig.MenuScene);
         }
     }

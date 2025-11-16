@@ -6,6 +6,7 @@ using Island.Gameplay.Configs.Aim;
 using Island.Gameplay.Services.Build;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Inventory.Build;
+using Island.Gameplay.Services.Server;
 using Island.Gameplay.Services.World.Objects;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Panels;
@@ -16,16 +17,17 @@ using UniRx;
 using Unity.Netcode;
 using UnityEngine;
 using Zenject;
+using ServerSpawnRequest = Island.Gameplay.Services.Server.ServerSpawnRequest;
 
 namespace Island.Gameplay.Services
 {
     [UsedImplicitly]
-    public class AimService : ServiceBase, INetworkInitialize
+    public class AimService : ServiceBase, IServerInitialize
     {
         [Inject] private AimConfig _aimConfig;
         [Inject] private InventoryService _inventoryService;
         [Inject] private InputService _inputService;
-        [Inject] private NetworkService _networkService;
+        [Inject] private ServerService _serverService;
         [Inject] private BuildService _buildService;
         [Inject] private PanelService _panelService;
 
@@ -72,8 +74,8 @@ namespace Island.Gameplay.Services
                 }
 
                 _aimType = type;
-                _networkService.OnWorldObjectSpawned.First().Subscribe(OnWorldObjectSpawned);
-                _networkService.Spawn(new NetworkSpawnRequest(IslandExtensions.AimHash, type, _hit.point, owner: NetworkManager.Singleton.LocalClientId, notifyOwner: true), false);
+                _serverService.OnWorldObjectSpawned.First().Subscribe(OnWorldObjectSpawned);
+                _serverService.Spawn(new ServerSpawnRequest(IslandExtensions.AimHash, type, _hit.point, owner: NetworkManager.Singleton.LocalClientId, notifyOwner: true), false);
                 return;
             }
 

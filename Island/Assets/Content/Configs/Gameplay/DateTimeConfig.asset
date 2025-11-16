@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbe7c90d948b472ba1e923148a2b62cc, type: 3}
   m_Name: DateTimeConfig
   m_EditorClassIdentifier: 
-  <Rate>k__BackingField: 5
+  <StartYear>k__BackingField: 1998
+  <StartMonth>k__BackingField: 5
+  <StartDate>k__BackingField: 3
+  <DayDuration>k__BackingField: 60
+  <Latitude>k__BackingField: 5

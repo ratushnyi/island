@@ -1,58 +1,49 @@
 using System;
-using Island.Common.Services.Network;
+using Island.Common.Services;
 using Island.Gameplay.Configs.World;
 using Island.Gameplay.Profiles;
 using Island.Gameplay.Services.World.Objects;
+using TendedTarsier.Core.Modules.Project;
 using TendedTarsier.Core.Utilities.Extensions;
 using UniRx;
 using Unity.Collections;
 using Unity.Netcode;
-using UnityEngine;
 using Zenject;
 
-namespace Island.Common.Services
+namespace Island.Gameplay.Services.Server
 {
-    public class NetworkServiceFacade : NetworkBehaviour
+    public class ServerServiceFacade : NetworkBehaviour
     {
         public IObservable<WorldObjectBase> OnClientObjectSpawned => _onClientObjectSpawned;
         private readonly ISubject<WorldObjectBase> _onClientObjectSpawned = new Subject<WorldObjectBase>();
         public IObservable<Unit> OnShutdown => _onShutdown;
         private readonly ISubject<Unit> _onShutdown = new Subject<Unit>();
 
-        public readonly ReactiveProperty<bool> IsPaused = new();
+        public IReadOnlyReactiveProperty<bool> IsPaused => _isPausedNetwork.AsReactiveProperty();
         private readonly NetworkVariable<bool> _isPausedNetwork = new();
 
-        public readonly ReactiveProperty<string> ServerId = new();
+        public IReadOnlyReactiveProperty<FixedString32Bytes> ServerId => _serverId.AsReactiveProperty();
         private readonly NetworkVariable<FixedString32Bytes> _serverId = new();
+
+        public IReadOnlyReactiveProperty<FixedString32Bytes> JoinCode => _joinCode.AsReactiveProperty();
+        private readonly NetworkVariable<FixedString32Bytes> _joinCode = new();
 
         [Inject] private WorldConfig _worldConfig;
         [Inject] private WorldProfile _worldProfile;
+        [Inject] private MatchmakingService _matchmakingService;
+        [Inject] private ProjectProfile _projectProfile;
 
         public override void OnNetworkSpawn()
         {
-            _isPausedNetwork.OnValueChanged += OnPauseChanged;
-            _serverId.OnValueChanged += OnServerIdChanged;
-
-            OnPauseChanged(false, _isPausedNetwork.Value);
-            OnServerIdChanged(string.Empty, _serverId.Value);
-        }
-
-        public override void OnNetworkDespawn()
-        {
-            _isPausedNetwork.OnValueChanged -= OnPauseChanged;
-            _serverId.OnValueChanged -= OnServerIdChanged;
-        }
-
-        public void SetServerId(string serverId)
-        {
+            base.OnNetworkSpawn();
+            
             if (!IsServer)
             {
                 return;
             }
 
-            _serverId.Value = new FixedString32Bytes(serverId);
-
-            ServerId.Value = _serverId.Value.Value;
+            _serverId.Value = _projectProfile.ServerId;
+            _joinCode.Value = _matchmakingService.JoinCode;
         }
 
         public void SetPaused(bool value)
@@ -65,17 +56,6 @@ namespace Island.Common.Services
             _isPausedNetwork.Value = value;
         }
 
-        private void OnPauseChanged(bool _, bool newValue)
-        {
-            IsPaused.Value = newValue;
-            Time.timeScale = newValue ? 0f : 1f;
-        }
-
-        private void OnServerIdChanged(FixedString32Bytes _, FixedString32Bytes newValue)
-        {
-            ServerId.Value = newValue.Value;
-        }
-
         [ClientRpc]
         private void OnObjectSpawned_ClientRpc(ulong objectId, ClientRpcParams _)
         {
@@ -83,7 +63,7 @@ namespace Island.Common.Services
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void Spawn_ServerRpc(NetworkSpawnRequest request, bool shouldSaveToProfile)
+        public void Spawn_ServerRpc(ServerSpawnRequest request, bool shouldSaveToProfile)
         {
             if (shouldSaveToProfile)
             {

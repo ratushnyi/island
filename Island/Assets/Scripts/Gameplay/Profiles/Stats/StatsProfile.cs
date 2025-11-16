@@ -6,7 +6,7 @@ using MemoryPack;
 namespace Island.Gameplay.Profiles.Stats
 {
     [MemoryPackable(GenerateType.VersionTolerant)]
-    public partial class StatsProfile : NetworkProfileBase
+    public partial class StatsProfile : ServerProfileBase
     {
         protected override string NetworkName => "Stats";
 

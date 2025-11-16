@@ -12,4 +12,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d975a678fe485da760cdd7214c4e9e, type: 3}
   m_Name: NetworkConfig
   m_EditorClassIdentifier: 
-  <FacadePrefab>k__BackingField: {fileID: 1961217845504596720, guid: 3fe62ec4c00df43debcd4c5685076612, type: 3}

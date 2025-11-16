@@ -1,56 +1,33 @@
 using Cysharp.Threading.Tasks;
-using Island.Common.Services;
 using Island.Gameplay.Configs.Stats;
 using Island.Gameplay.Module;
 using Island.Gameplay.Panels.HUD;
 using Island.Gameplay.Panels.Inventory;
 using Island.Gameplay.Panels.Pause;
 using Island.Gameplay.Profiles.Stats;
+using Island.Gameplay.Services.Server;
 using JetBrains.Annotations;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services;
 using TendedTarsier.Core.Services.Input;
 using UniRx;
-using UnityEngine.EventSystems;
 using Zenject;
 
 namespace Island.Gameplay.Services.HUD
 {
     [UsedImplicitly]
-    public class HUDService : ServiceBase, INetworkInitialize
+    public class HUDService : ServiceBase, IServerInitialize
     {
-        private InputService _inputService;
-        private BackButtonService _backButtonService;
-        private NetworkService _networkService;
-        private AimService _aimService;
-        private PanelLoader<HUDPanel> _hudPanel;
-        private PanelLoader<PausePopup> _pausePopup;
-        private PanelLoader<InventoryPopup> _inventoryPanel;
-        private IslandGameplayModuleController _islandGameplayModuleController;
+        [Inject] private InputService _inputService;
+        [Inject] private BackButtonService _backButtonService;
+        [Inject] private ServerService _serverService;
+        [Inject] private AimService _aimService;
+        [Inject] private PanelLoader<HUDPanel> _hudPanel;
+        [Inject] private PanelLoader<PausePopup> _pausePopup;
+        [Inject] private PanelLoader<InventoryPopup> _inventoryPanel;
+        [Inject] private IslandGameplayModuleController _islandGameplayModuleController;
 
         public ProgressBar ProgressBar => _hudPanel.Instance.ProgressBar;
-
-        [Inject]
-        private void Construct(
-            EventSystem eventSystem,
-            InputService inputService,
-            BackButtonService backButtonService,
-            NetworkService networkService,
-            AimService aimService,
-            PanelLoader<HUDPanel> hudPanel,
-            PanelLoader<PausePopup> pausePanel,
-            PanelLoader<InventoryPopup> inventoryPanel,
-            IslandGameplayModuleController islandGameplayModuleController)
-        {
-            _islandGameplayModuleController = islandGameplayModuleController;
-            _inventoryPanel = inventoryPanel;
-            _pausePopup = pausePanel;
-            _hudPanel = hudPanel;
-            _aimService = aimService;
-            _networkService = networkService;
-            _inputService = inputService;
-            _backButtonService = backButtonService;
-        }
 
         public void OnNetworkInitialize()
         {
@@ -69,9 +46,9 @@ namespace Island.Gameplay.Services.HUD
 
         private void SubscribeOnServerPause()
         {
-            if (!_networkService.IsServer)
+            if (!_serverService.IsServer)
             {
-                _networkService.IsServerPaused.Subscribe(ProcessServerPause).AddTo(CompositeDisposable);
+                _serverService.IsServerPaused.Subscribe(ProcessServerPause).AddTo(CompositeDisposable);
             }
         }
 
@@ -105,10 +82,10 @@ namespace Island.Gameplay.Services.HUD
 
         private async UniTaskVoid HandlePause()
         {
-            _networkService.SetPaused(true);
+            _serverService.SetPaused(true);
             var panel = await _pausePopup.Show();
             var isExit = await panel.WaitForResult();
-            _networkService.SetPaused(false);
+            _serverService.SetPaused(false);
             if (isExit)
             {
                 _islandGameplayModuleController.LoadMenu().Forget();
