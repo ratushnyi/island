@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Island.Gameplay.Panels.Inventory;
+using Island.Gameplay.Panels.Player.Inventory;
 using Island.Gameplay.Services.Inventory.Items;
 using TendedTarsier.Core.Services.Modules;
 using UnityEngine;

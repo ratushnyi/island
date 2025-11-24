@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using Island.Common.Services;
 using Island.Gameplay.Configs.Stats;
-using Island.Gameplay.Panels.Inventory;
+using Island.Gameplay.Panels.Player.Inventory;
 using Island.Gameplay.Services.DateTime;
 using Island.Gameplay.Services.HUD;
 using Island.Gameplay.Services.Server;

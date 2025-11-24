@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Island.Gameplay.Configs.Craft
 {
-    [CreateAssetMenu(menuName = "Island/CraftConfig", fileName = "CraftConfig")]
+    [CreateAssetMenu(menuName = "Island/Craft/Config", fileName = "CraftConfig")]
     public class CraftConfig : ConfigBase
     {
         [field: SerializedDictionary("Type", "Receipts")]

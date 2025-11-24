@@ -2,16 +2,17 @@ using System.Linq;
 using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Profiles.Inventory;
 using Island.Gameplay.Services.Inventory.Items;
-using TendedTarsier.Core.Panels;
 using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
-namespace Island.Gameplay.Panels.Inventory
+namespace Island.Gameplay.Panels.Player.Inventory
 {
-    public class InventoryPopup : PopupBase
+    public class PlayerPopupInventoryPage : PlayerPopupPage
     {
+        public override string Name => "Inventory";
+        
         [SerializeField] private Transform _gridContainer;
         [SerializeField] private InventoryCellView _freehandCell;
         [Inject] private InventoryProfile _inventoryProfile;
@@ -19,7 +20,7 @@ namespace Island.Gameplay.Panels.Inventory
         [Inject] private EventSystem _eventSystem;
         private InventoryCellView[] _cellsList;
 
-        protected override void Initialize()
+        public override void Initialize()
         {
             _inventoryProfile.InventoryItems.ObserveAdd().Subscribe(Put).AddTo(this);
             _cellsList = new InventoryCellView[_inventoryConfig.InventoryCapacity + 1];

@@ -5,7 +5,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Island.Gameplay.Panels.Inventory
+namespace Island.Gameplay.Panels.Player.Inventory
 {
     public class InventoryCellView : MonoBehaviour
     {

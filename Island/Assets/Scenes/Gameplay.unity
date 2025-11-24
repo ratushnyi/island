@@ -208,7 +208,7 @@ MonoBehaviour:
   _inventoryConfig: {fileID: 11400000, guid: cee975dcfa07f4712b6dd3199b44f1d4, type: 2}
   _craftConfig: {fileID: 11400000, guid: 9b82c70fe73dd4e3595ce894a6475b5e, type: 2}
   _dateTimeConfig: {fileID: 11400000, guid: 6150e1961ccc14b9bb8fc350641bb5e9, type: 2}
-  _inventoryPopup: {fileID: 5131322837647147988, guid: f8319b42121934e4dba985a1972ec944, type: 3}
+  _playerPopup: {fileID: 7025884826045418689, guid: f8319b42121934e4dba985a1972ec944, type: 3}
   _inputPanel: {fileID: 4842827540725903201, guid: 062822cee88454521a5782aa3c6c178d, type: 3}
   _hudPanel: {fileID: -6269519497728431671, guid: 4c8eaa2e4c5bc4a61826480b0aea28ed, type: 3}
   _pausePopup: {fileID: 1639367369623693751, guid: c51c3cdc32a8f49f9916d8a97cef9691, type: 3}

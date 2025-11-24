@@ -1,3 +1,4 @@
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -17,13 +18,13 @@ namespace Island.Gameplay.Services.HUD
             _canvas.enabled = false;
         }
 
-        public async UniTask Show(float duration)
+        public async UniTask Show(float duration, CancellationToken token = new())
         {
             _slider.value = 0;
             _canvas.enabled = true;
             _tween = _slider.DOValue(1, duration).SetEase(Ease.Linear).OnUpdate(onUpdate).OnComplete(Hide);
-            await _tween.AwaitForComplete();
-
+            await _tween.AwaitForComplete(TweenCancelBehaviour.Complete, token);
+ 
             void onUpdate()
             {
                 transform.LookAt(transform.position + Vector3.forward, Vector3.up);

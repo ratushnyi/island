@@ -6,8 +6,8 @@ using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Configs.Stats;
 using Island.Gameplay.Configs.World;
 using Island.Gameplay.Panels.HUD;
-using Island.Gameplay.Panels.Inventory;
 using Island.Gameplay.Panels.Pause;
+using Island.Gameplay.Panels.Player;
 using Island.Gameplay.Player;
 using Island.Gameplay.Profiles;
 using Island.Gameplay.Profiles.Inventory;
@@ -48,7 +48,7 @@ namespace Island.Gameplay.Module
         [SerializeField] private CraftConfig _craftConfig;
         [SerializeField] private DateTimeConfig _dateTimeConfig;
         [Header("UI")]
-        [SerializeField] private InventoryPopup _inventoryPopup;
+        [SerializeField] private PlayerPopup _playerPopup;
         [SerializeField] private InputPanel _inputPanel;
         [SerializeField] private HUDPanel _hudPanel;
         [SerializeField] private PausePopup _pausePopup;
@@ -74,7 +74,7 @@ namespace Island.Gameplay.Module
 
         private void BindPanels()
         {
-            Container.BindPanel(_inventoryPopup, _canvas);
+            Container.BindPanel(_playerPopup, _canvas);
             Container.BindPanel(_inputPanel, _canvas);
             Container.BindPanel(_hudPanel, _canvas);
             Container.BindPanel(_pausePopup, _canvas);

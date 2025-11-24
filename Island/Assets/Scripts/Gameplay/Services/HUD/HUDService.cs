@@ -2,8 +2,8 @@ using Cysharp.Threading.Tasks;
 using Island.Gameplay.Configs.Stats;
 using Island.Gameplay.Module;
 using Island.Gameplay.Panels.HUD;
-using Island.Gameplay.Panels.Inventory;
 using Island.Gameplay.Panels.Pause;
+using Island.Gameplay.Panels.Player;
 using Island.Gameplay.Profiles.Stats;
 using Island.Gameplay.Services.Server;
 using JetBrains.Annotations;
@@ -24,7 +24,7 @@ namespace Island.Gameplay.Services.HUD
         [Inject] private AimService _aimService;
         [Inject] private PanelLoader<HUDPanel> _hudPanel;
         [Inject] private PanelLoader<PausePopup> _pausePopup;
-        [Inject] private PanelLoader<InventoryPopup> _inventoryPanel;
+        [Inject] private PanelLoader<PlayerPopup> _playerPanel;
         [Inject] private IslandGameplayModuleController _islandGameplayModuleController;
 
         public ProgressBar ProgressBar => _hudPanel.Instance.ProgressBar;
@@ -38,7 +38,7 @@ namespace Island.Gameplay.Services.HUD
 
         private void SubscribeOnInput()
         {
-            _inputService.OnOptionsButtonPerformed.Subscribe(_ => SwitchInventory().Forget()).AddTo(CompositeDisposable);
+            _inputService.OnOptionsButtonPerformed.Subscribe(_ => SwitchPlayerPopup().Forget()).AddTo(CompositeDisposable);
 
             SubscribeOnServerPause();
             SubscribeOnPause();
@@ -97,20 +97,20 @@ namespace Island.Gameplay.Services.HUD
             _backButtonService.AddAction(() => HandlePause().Forget()).AddTo(CompositeDisposable);
         }
 
-        private async UniTask SwitchInventory()
+        private async UniTask SwitchPlayerPopup()
         {
             if (_pausePopup.PanelState.Value != PanelState.Hide)
             {
                 return;
             }
 
-            if (_inventoryPanel.Instance != null)
+            if (_playerPanel.Instance != null)
             {
-                await _inventoryPanel.Hide();
+                await _playerPanel.Hide();
             }
             else
             {
-                await _inventoryPanel.Show();
+                await _playerPanel.Show();
             }
         }
 

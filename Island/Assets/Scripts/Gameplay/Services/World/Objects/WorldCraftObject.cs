@@ -18,7 +18,6 @@ namespace Island.Gameplay.Services.World.Objects
     public class WorldCraftObject : WorldObjectBase
     {
         [SerializeField] private bool _showPopup;
-        [SerializeField] private float _duration;
         [SerializeField] private WorldProgressBar _progressBar;
 
         [Inject] private InventoryService _inventoryService;
@@ -27,7 +26,7 @@ namespace Island.Gameplay.Services.World.Objects
         [Inject] private CraftConfig _craftConfig;
 
         private readonly NetworkVariable<float> _progressValue = new(-1);
-        private readonly NetworkVariable<CraftReceipt> _receipt = new();
+        private readonly NetworkVariable<CraftReceiptEntity> _receipt = new();
         private readonly NetworkList<ItemEntity> _container = new();
 
         public override string Name => Type.ToString();
@@ -78,13 +77,13 @@ namespace Island.Gameplay.Services.World.Objects
                     return false;
                 }
 
-                var first = receipts[0].Ingredients.FirstOrDefault(t => t.Type == _inventoryService.SelectedItem.Type);
+                var first = receipts[0].Entity.Ingredients.FirstOrDefault(t => t.Type == _inventoryService.SelectedItem.Type);
                 if (first.Type == InventoryItemType.None)
                 {
                     return false;
                 }
 
-                UpdateReceipt_ServerRpc(receipts[0]);
+                UpdateReceipt_ServerRpc(receipts[0].Entity);
                 ingredients = new ItemEntity[] { new(_inventoryService.SelectedItem.Type, 1) };
             }
 
@@ -107,7 +106,7 @@ namespace Island.Gameplay.Services.World.Objects
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void UpdateReceipt_ServerRpc(CraftReceipt receipt) => _receipt.Value = receipt;
+        private void UpdateReceipt_ServerRpc(CraftReceiptEntity receiptEntity) => _receipt.Value = receiptEntity;
 
         [ServerRpc(RequireOwnership = false)]
         private void CheckItemsForReceipt_ServerRpc(ItemEntity[] items, ulong targetClientId)
@@ -231,7 +230,7 @@ namespace Island.Gameplay.Services.World.Objects
             }
 
             _progressValue.Value = 0;
-            _progressValue.DOValue(1, _duration).OnComplete(FinishCraft).SetEase(Ease.Linear);
+            _progressValue.DOValue(1, _receipt.Value.Duration).OnComplete(FinishCraft).SetEase(Ease.Linear);
         }
 
         private void FinishCraft()
