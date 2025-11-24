@@ -31,530 +31,637 @@ MonoBehaviour:
     Type: -1
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 2044481614
     Type: 1
     Position: {x: 34.83, y: 15.95, z: 0}
     Rotation: {x: -0, y: 0.8842413, z: -0, w: 0.4670304}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 1304131230
     Type: 1
     Position: {x: 33.24, y: 15.85, z: 2.16}
     Rotation: {x: -0, y: -0.326724, z: -0, w: 0.9451198}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 345508242
     Type: 1
     Position: {x: 33.24, y: 12.38, z: -9.97}
     Rotation: {x: -0, y: -0.45388716, z: -0, w: 0.8910592}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -1394539813
     Type: 1
     Position: {x: 43.55, y: 14.1, z: -9.97}
     Rotation: {x: -0, y: -0.8853838, z: -0, w: -0.4648608}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -1701606730
     Type: 1
     Position: {x: 43.55, y: 28.69, z: 39.6}
     Rotation: {x: -0, y: -0.8853838, z: -0, w: -0.4648608}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 588037682
     Type: 1
     Position: {x: 43.55, y: 28, z: 34.63}
     Rotation: {x: -0, y: -0.71012294, z: -0, w: -0.7040777}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -1430020647
     Type: 1
     Position: {x: 50.19, y: 28.62, z: 34.63}
     Rotation: {x: -0, y: -0.979341, z: -0, w: -0.20221604}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 1935798354
     Type: 1
     Position: {x: 28.24, y: 15.33, z: 10.99}
     Rotation: {x: -0, y: -0.979341, z: -0, w: -0.20221604}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 2138937905
     Type: 1
     Position: {x: 40.84, y: 20.22, z: 10.99}
     Rotation: {x: -0, y: -0.7885867, z: -0, w: -0.6149237}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -970791418
     Type: 1
     Position: {x: -100.8, y: 29.65, z: 10.99}
     Rotation: {x: -0, y: -0.97330105, z: -0, w: -0.22953266}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -1708817655
     Type: 1
     Position: {x: -92.6, y: 32.16, z: 10.99}
     Rotation: {x: -0, y: -0.46012098, z: -0, w: -0.88785625}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 1373407817
     Type: 1
     Position: {x: -82.65, y: 30.26, z: 10.99}
     Rotation: {x: -0, y: -0.6677532, z: -0, w: -0.7443828}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -1743553993
     Type: 1
     Position: {x: -107.77, y: 30.01, z: 14.13}
     Rotation: {x: 0.010540092, y: 0.22992575, z: 0.0013093331, w: -0.97315025}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -800655436
     Type: 1
     Position: {x: -110.45, y: 29.28, z: 14.13}
     Rotation: {x: 0.010522575, y: -0.027895615, z: -0.001443439, w: -0.99955446}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 1914948532
     Type: 1
     Position: {x: -110.45, y: 16.97, z: -28.04}
     Rotation: {x: 0.008714339, y: -0.4795182, z: -0.0060719564, w: -0.8774677}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -1597585068
     Type: 1
     Position: {x: -98.69, y: 17.27, z: -28.04}
     Rotation: {x: 0.010477565, y: -0.056149885, z: -0.001740423, w: -0.9983658}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -2135576800
     Type: 1
     Position: {x: -131, y: 11.76, z: -70}
     Rotation: {x: 0.010477565, y: -0.056149885, z: -0.001740423, w: -0.9983658}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -1459607306
     Type: 1
     Position: {x: -131.05, y: 11.76, z: -72.55}
     Rotation: {x: 0.008047225, y: -0.56679684, z: -0.0069318716, w: -0.8237892}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -1104321136
     Type: 1
     Position: {x: -131.05, y: 11.76, z: -63.37}
     Rotation: {x: 0.0061576874, y: -0.74722654, z: -0.008653993, w: -0.6644846}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -2043156641
     Type: 1
     Position: {x: -131.05, y: 11.85, z: -58.88}
     Rotation: {x: -0.00418459, y: -0.95629853, z: -0.009762065, w: 0.2921993}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -1075792263
     Type: 1
     Position: {x: -143.76, y: 11.92, z: -58.88}
     Rotation: {x: -0.007986276, y: -0.7367045, z: -0.0070020077, w: 0.67613137}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 781210348
     Type: 1
     Position: {x: -143.76, y: 11.92, z: -67.02}
     Rotation: {x: -0.0046619475, y: -0.94068843, z: -0.009543329, w: 0.33910546}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -493150425
     Type: 1
     Position: {x: -131.05, y: 11.17, z: -79.42}
     Rotation: {x: -0.008293996, y: -0.7054562, z: -0.0066346433, w: 0.7086739}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 556441210
     Type: 1
     Position: {x: -131.05, y: 12.87, z: -53.63}
     Rotation: {x: -0.01059411, y: -0.17883241, z: -0.0007575665, w: 0.9838223}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 789196246
     Type: 1
     Position: {x: -122.86, y: 12.87, z: -57.43}
     Rotation: {x: -0.009619719, y: 0.32337713, z: 0.0045022275, w: 0.9462106}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -1529999453
     Type: 1
     Position: {x: -159.84999, y: 12.54, z: -61.74}
     Rotation: {x: 0.010467761, y: 0.27496856, z: 0.0017984705, w: -0.9613946}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 277624733
     Type: 1
     Position: {x: -159.9, y: 12.78, z: -68.39}
     Rotation: {x: 0.0050085136, y: -0.82558054, z: -0.00936608, w: -0.5641844}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 1192850571
     Type: 1
     Position: {x: -159.9, y: 12.92, z: -63.37}
     Rotation: {x: -0.0021785619, y: -0.9951302, z: -0.010395316, w: 0.09799513}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -979030424
     Type: 1
     Position: {x: -159.9, y: 13.23, z: -58.88}
     Rotation: {x: -0.009231663, y: -0.58561605, z: -0.0052521457, w: 0.81051904}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 765310676
     Type: 1
     Position: {x: -159.9, y: 12.39, z: -73.53}
     Rotation: {x: -0.008293996, y: -0.7054562, z: -0.0066346433, w: 0.7086739}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 1102004923
     Type: 1
     Position: {x: -159.9, y: 13.68, z: -53.63}
     Rotation: {x: -0.01059411, y: -0.17883241, z: -0.0007575665, w: 0.9838223}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 1393633940
     Type: 1
     Position: {x: -151.70999, y: 12.67, z: -57.43}
     Rotation: {x: -0.009619719, y: 0.32337713, z: 0.0045022275, w: 0.9462106}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -1553671730
     Type: 2
     Position: {x: -116.1, y: 23.08, z: 0}
     Rotation: {x: -0, y: -0, z: -0, w: 1}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 1527210481
     Type: 2
     Position: {x: -112.25, y: 23.76, z: 0}
     Rotation: {x: -0.09919821, y: -0.25129437, z: -0.025900098, w: 0.96246564}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 312266043
     Type: 2
     Position: {x: -99.05, y: 28.25, z: 0}
     Rotation: {x: -0.09919821, y: -0.25129437, z: -0.025900098, w: 0.96246564}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -86131186
     Type: 2
     Position: {x: -120.66, y: 22.52, z: 0}
     Rotation: {x: -0.1294111, y: 0.039706383, z: -0.04095509, w: 0.9899489}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -1889406507
     Type: 2
     Position: {x: -67.8, y: 22.52, z: 0}
     Rotation: {x: -0.12225594, y: 0.05811478, z: -0.18456978, w: 0.9734527}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 433150384
     Type: 2
     Position: {x: -82, y: 14.6, z: -39.1}
     Rotation: {x: -0.12225594, y: 0.05811478, z: -0.18456978, w: 0.9734527}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 481712896
     Type: 2
     Position: {x: -94.1, y: 12.897, z: -54.18}
     Rotation: {x: -0.12225594, y: 0.05811478, z: -0.18456978, w: 0.9734527}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -440079857
     Type: 2
     Position: {x: -94.1, y: 13.93, z: -46.75}
     Rotation: {x: -0.19817796, y: 0.53718984, z: -0.09868138, w: 0.8138886}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -439748319
     Type: 2
     Position: {x: -76.47, y: 13, z: -46.75}
     Rotation: {x: -0.19817796, y: 0.53718984, z: -0.09868138, w: 0.8138886}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -1439301982
     Type: 2
     Position: {x: -105.1, y: 11.59, z: -77.52}
     Rotation: {x: -0.16943663, y: 0.5469353, z: -0.14166652, w: 0.80751693}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 1536629
     Type: 2
     Position: {x: -138.3, y: 11.4, z: -77.52}
     Rotation: {x: -0.089114875, y: 0.55822504, z: -0.0871335, w: 0.820275}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -510965001
     Type: 2
     Position: {x: -138.3, y: 12.35, z: -61.95}
     Rotation: {x: -0.089114875, y: 0.55822504, z: -0.0871335, w: 0.820275}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 1882773634
     Type: 2
     Position: {x: -86.01, y: 12.36, z: -54.18}
     Rotation: {x: -0.20681557, y: 0.41276917, z: -0.20689474, w: 0.8625796}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -2145933390
     Type: 2
     Position: {x: -99.71, y: 12.28, z: -64.11}
     Rotation: {x: -0.20681557, y: 0.41276917, z: -0.20689474, w: 0.8625796}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 1355155140
     Type: 2
     Position: {x: -240.71, y: 33.9, z: -64.11}
     Rotation: {x: -0.020927938, y: 0.46627846, z: -0.17984827, w: 0.86591053}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -564075198
     Type: 2
     Position: {x: -240.71, y: 34.34, z: -59.22}
     Rotation: {x: -0.005145908, y: 0.38889745, z: -0.18098879, w: 0.9033136}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 38636777
     Type: 2
     Position: {x: -238.1, y: 32.86, z: -60.9}
     Rotation: {x: 0.0907383, y: 0.8428145, z: -0.18120553, w: 0.49859282}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 2129963308
     Type: 2
     Position: {x: 79.72, y: 16.6, z: 42.9}
     Rotation: {x: 0.0907383, y: 0.8428145, z: -0.18120553, w: 0.49859282}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 1783186169
     Type: 2
     Position: {x: 79.72, y: 21.39, z: 13.5}
     Rotation: {x: 0.0907383, y: 0.8428145, z: -0.18120553, w: 0.49859282}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -504170201
     Type: 2
     Position: {x: 79.91, y: 20.33, z: 6.68}
     Rotation: {x: -0.0052252496, y: 0.978295, z: -0.20258722, w: 0.04324267}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 276056592
     Type: 2
     Position: {x: 46.49, y: 20.33, z: 6.68}
     Rotation: {x: -0.09243634, y: 0.9005405, z: -0.18034525, w: -0.38465312}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -72151430
     Type: 2
     Position: {x: 46.49, y: 15.1, z: -9.2}
     Rotation: {x: -0.09243634, y: 0.9005405, z: -0.18034525, w: -0.38465312}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 470562191
     Type: 2
     Position: {x: 54.8, y: 16.44, z: -9.2}
     Rotation: {x: -0.13698527, y: 0.76615804, z: -0.14934504, w: -0.609863}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: -2022307867
     Type: 2
     Position: {x: -118.64, y: 20.94, z: -7.01}
     Rotation: {x: 0.040759705, y: 0.3865365, z: -0.09662174, w: 0.9162928}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
+    NotifyOwner: 0
   - Hash: 0
     Type: 3
-    Position: {x: -103.21213, y: 11.11, z: -87.22216}
+    Position: {x: -99.28, y: 10.37, z: -87.22216}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
+    Owner: 0
     Health: 100
-    ResultItem:
+    CollectableItem:
       _type: 0
       _count: 0
     Container: []
-  - Hash: 0
-    Type: 4
-    Position: {x: -102.355255, y: 11.08, z: -80.589294}
-    Rotation: {x: 0, y: 0, z: 0, w: 1}
-    Health: 100
-    ResultItem:
-      _type: 0
-      _count: 0
-    Container: []
+    NotifyOwner: 0

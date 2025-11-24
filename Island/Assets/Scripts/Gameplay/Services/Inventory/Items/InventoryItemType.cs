@@ -17,6 +17,6 @@ namespace Island.Gameplay.Services.Inventory.Items
         Shovel,
         Axe,
         //build
-        Cooker
+        Fireplace
     }
 }

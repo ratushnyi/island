@@ -46,13 +46,14 @@ namespace Island.Gameplay.Panels.Player.Inventory
                 }
             }
 
+            var disposable = new CompositeDisposable();
             var cancellationTokenSource = new CancellationTokenSource();
-            _backButtonService.AddAction(() => cancellationTokenSource.Cancel()).AddTo(cancellationTokenSource.Token);
-            _cancelButton.OnClickAsObservable().Subscribe(_ => cancellationTokenSource.Cancel()).AddTo(cancellationTokenSource.Token);
-            OnCraftAsync(order, cancellationTokenSource).Forget();
+            _backButtonService.AddAction(() => cancellationTokenSource.Cancel()).AddTo(disposable);
+            _cancelButton.OnClickAsObservable().Subscribe(_ => cancellationTokenSource.Cancel()).AddTo(disposable);
+            OnCraftAsync(order, cancellationTokenSource, disposable).Forget();
         }
 
-        private async UniTask OnCraftAsync((CraftReceiptEntity Receipt, int Count) order, CancellationTokenSource tokenSource)
+        private async UniTask OnCraftAsync((CraftReceiptEntity Receipt, int Count) order, CancellationTokenSource tokenSource, CompositeDisposable disposable)
         {
             for (int i = 0; i < order.Count; i++)
             {
@@ -60,7 +61,7 @@ namespace Island.Gameplay.Panels.Player.Inventory
                 await _progressBar.Show(order.Receipt.Duration, tokenSource.Token);
                 if (tokenSource.IsCancellationRequested)
                 {
-                    return;
+                    break;
                 }
 
                 foreach (var ingredientEntity in order.Receipt.Ingredients)
@@ -72,7 +73,7 @@ namespace Island.Gameplay.Panels.Player.Inventory
                 _view.UpdateReceiptIngredients();
             }
 
-            tokenSource.Dispose();
+            disposable.Dispose();
         }
     }
 }

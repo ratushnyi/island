@@ -21,19 +21,7 @@ MonoBehaviour:
     _count: 1
   - _type: 8
     _count: 1
-  - _type: 5
-    _count: 5
-  - _type: 6
-    _count: 5
   - _type: 7
-    _count: 5
-  - _type: 4
-    _count: 5
-  - _type: 2
-    _count: 5
-  - _type: 3
-    _count: 10
-  - _type: 11
     _count: 10
   <InventoryItems>k__BackingField:
   - <Type>k__BackingField: 1
