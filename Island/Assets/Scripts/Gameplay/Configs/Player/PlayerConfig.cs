@@ -8,6 +8,7 @@ namespace Island.Gameplay.Settings
     public class PlayerConfig : ConfigBase
     {
         [field: SerializeField] public Vector3 SpawnPosition { get; private set; }
+        [field: SerializeField] public float JumpDelay { get; private set; } = 1f;
         [field: SerializeField] public float JumpForce { get; private set; } = 5f;
         [field: SerializeField] public float Gravity { get; private set; } = 15;
         [field: SerializeField] public int WalkSpeed { get; private set; } = 5;

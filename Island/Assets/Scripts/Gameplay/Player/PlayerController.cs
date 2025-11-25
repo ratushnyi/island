@@ -16,7 +16,12 @@ namespace Island.Gameplay.Player
 {
     public class PlayerController : NetworkBehaviour
     {
+        private readonly int _jumpingAnimatorKey = Animator.StringToHash("Jumping");
+        private readonly int _speedAnimatorKey = Animator.StringToHash("Speed");
+        private readonly int _sideSpeedAnimatorKey = Animator.StringToHash("SideSpeed");
+        
         [SerializeField] private Transform _head;
+        [SerializeField] private Animator _animator;
         [SerializeField] private CinemachineCamera _cinemachineCamera;
         [SerializeField] private CharacterController _characterController;
 
@@ -37,9 +42,9 @@ namespace Island.Gameplay.Player
         private bool IsRunning => IsMoving && (_inputService.PlayerActions.Sprint.IsPressed() || SprintButtonToggleState);
 
         public IObservable<Vector3> OnPositionChanged => _onPositionChanged;
-        public ISubject<Vector3> _onPositionChanged = new Subject<Vector3>();
+        private readonly ISubject<Vector3> _onPositionChanged = new Subject<Vector3>();
         public IObservable<Quaternion> OnRotationChanged => _onRotationChanged;
-        public ISubject<Quaternion> _onRotationChanged = new Subject<Quaternion>();
+        private readonly ISubject<Quaternion> _onRotationChanged = new Subject<Quaternion>();
 
         private bool SprintButtonToggleState
         {
@@ -76,10 +81,22 @@ namespace Island.Gameplay.Player
             HandleCamera();
         }
 
+        private float? _jumpingDelay;
+
         private void HandleVerticalVelocity(float deltaTime)
         {
-            if (_inputService.PlayerActions.Jump.WasPressedThisFrame() && _characterController.isGrounded)
+            if (_inputService.PlayerActions.Jump.WasPressedThisFrame() && _characterController.isGrounded && !_jumpingDelay.HasValue)
             {
+                _jumpingDelay = _playerConfig.JumpDelay;
+                _animator.SetBool(_jumpingAnimatorKey, true);
+            }
+            else if (_jumpingDelay is > 0)
+            {
+                _jumpingDelay -= deltaTime;
+            }
+            else if (_jumpingDelay is < 0)
+            {
+                _jumpingDelay = null;
                 _verticalVelocity = _playerConfig.JumpForce;
             }
             else if (!_characterController.isGrounded)
@@ -88,6 +105,7 @@ namespace Island.Gameplay.Player
             }
             else
             {
+                _animator.SetBool(_jumpingAnimatorKey, false);
                 _verticalVelocity = -_playerConfig.Gravity;
             }
         }
@@ -100,14 +118,26 @@ namespace Island.Gameplay.Player
             }
 
             var movementSpeed = Mathf.Lerp(_playerConfig.WalkSpeed, _playerConfig.SprintSpeed, _sprintLerp);
-            var moveInput = _inputService.PlayerActions.Move.ReadValue<Vector2>() * movementSpeed;
-            var moveDirection = NetworkObject.transform.right * moveInput.x + NetworkObject.transform.forward * moveInput.y + Vector3.up * _verticalVelocity;
+            var moveInput = _inputService.PlayerActions.Move.ReadValue<Vector2>();
+            var moveSpeed = moveInput * movementSpeed;
+            var moveDirection = NetworkObject.transform.right * moveSpeed.x + NetworkObject.transform.forward * moveSpeed.y + Vector3.up * _verticalVelocity;
             moveDirection *= deltaTime;
             _characterController.Move(moveDirection);
 
             if (moveInput.magnitude > 0 || !_characterController.isGrounded)
             {
                 _onPositionChanged.OnNext(NetworkObject.transform.position);
+            }
+
+            if (moveInput.magnitude > 0 && _characterController.isGrounded)
+            {
+                _animator.SetFloat(_speedAnimatorKey, moveInput.y + _sprintLerp);
+                _animator.SetFloat(_sideSpeedAnimatorKey, moveInput.x);
+            }
+            else
+            {
+                _animator.SetFloat(_sideSpeedAnimatorKey, 0);
+                _animator.SetFloat(_speedAnimatorKey, 0);
             }
         }
 
@@ -118,18 +148,25 @@ namespace Island.Gameplay.Player
                 return;
             }
 
+            var wrongDirection = _inputService.PlayerActions.Move.ReadValue<Vector2>().y < 0 || _inputService.PlayerActions.Move.ReadValue<Vector2>().x != 0;
+
             if (_inputService.PlayerActions.Sprint.WasPressedThisFrame())
             {
-                if (SprintButtonToggleState || !IsMoving)
+                _playerConfig.SprintFee.Deposit = 0;
+                
+                if (SprintButtonToggleState || !IsMoving || wrongDirection)
                 {
                     SprintButtonToggleState = false;
                     return;
                 }
-
-                _playerConfig.SprintFee.Deposit = 0;
             }
-
-            if (IsRunning && _statService.TrackFee(_playerConfig.SprintFee, deltaTime))
+            
+            if (wrongDirection)
+            {
+                SprintButtonToggleState = false;
+                _sprintLerp = 0;
+            }
+            else if (IsRunning && _statService.TrackFee(_playerConfig.SprintFee, deltaTime))
             {
                 SprintButtonToggleState = true;
                 _sprintLerp = Mathf.Lerp(_sprintLerp, 1, deltaTime * _playerConfig.SprintGetSpeed);

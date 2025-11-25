@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: PlayerConfig
   m_EditorClassIdentifier: 
   <SpawnPosition>k__BackingField: {x: -110, y: 12, z: -90}
-  <JumpForce>k__BackingField: 5
+  <JumpDelay>k__BackingField: 0.4
+  <JumpForce>k__BackingField: 3.5
   <Gravity>k__BackingField: 10
-  <WalkSpeed>k__BackingField: 5
-  <SprintSpeed>k__BackingField: 10
+  <WalkSpeed>k__BackingField: 2
+  <SprintSpeed>k__BackingField: 6
   <SprintGetSpeed>k__BackingField: 1
   <SprintFallSpeed>k__BackingField: 20
   <SprintFee>k__BackingField:
