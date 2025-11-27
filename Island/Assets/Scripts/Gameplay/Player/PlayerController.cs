@@ -19,7 +19,7 @@ namespace Island.Gameplay.Player
         private readonly int _jumpingAnimatorKey = Animator.StringToHash("Jumping");
         private readonly int _speedAnimatorKey = Animator.StringToHash("Speed");
         private readonly int _sideSpeedAnimatorKey = Animator.StringToHash("SideSpeed");
-        
+
         [SerializeField] private Transform _head;
         [SerializeField] private Animator _animator;
         [SerializeField] private CinemachineCamera _cinemachineCamera;
@@ -38,8 +38,10 @@ namespace Island.Gameplay.Player
         private float _cameraPitch;
         private float _verticalVelocity;
         private float _sprintLerp;
+        private bool _isRunning;
+        private float? _jumpingDelay;
         private bool IsMoving => _characterController.velocity.magnitude > 0;
-        private bool IsRunning => IsMoving && (_inputService.PlayerActions.Sprint.IsPressed() || SprintButtonToggleState);
+        private bool IsRunningInput => IsMoving && (_inputService.PlayerActions.Sprint.IsPressed() || SprintButtonToggleState);
 
         public IObservable<Vector3> OnPositionChanged => _onPositionChanged;
         private readonly ISubject<Vector3> _onPositionChanged = new Subject<Vector3>();
@@ -65,6 +67,7 @@ namespace Island.Gameplay.Player
             _cinemachineCamera.Lens.FieldOfView = _settingsService.Fov.Value;
 
             Observable.EveryUpdate().Subscribe(OnTick).AddTo(this);
+            Observable.EveryLateUpdate().Subscribe(HandleCamera).AddTo(this);
             _settingsService.Fov.Subscribe(OnFovChanged).AddTo(this);
         }
 
@@ -78,10 +81,7 @@ namespace Island.Gameplay.Player
             HandleSprint(Time.deltaTime);
             HandleVerticalVelocity(Time.deltaTime);
             HandleMove(Time.deltaTime);
-            HandleCamera();
         }
-
-        private float? _jumpingDelay;
 
         private void HandleVerticalVelocity(float deltaTime)
         {
@@ -119,6 +119,10 @@ namespace Island.Gameplay.Player
 
             var movementSpeed = Mathf.Lerp(_playerConfig.WalkSpeed, _playerConfig.SprintSpeed, _sprintLerp);
             var moveInput = _inputService.PlayerActions.Move.ReadValue<Vector2>();
+            if (_isRunning)
+            {
+                moveInput.x = 0;
+            }
             var moveSpeed = moveInput * movementSpeed;
             var moveDirection = NetworkObject.transform.right * moveSpeed.x + NetworkObject.transform.forward * moveSpeed.y + Vector3.up * _verticalVelocity;
             moveDirection *= deltaTime;
@@ -148,50 +152,50 @@ namespace Island.Gameplay.Player
                 return;
             }
 
-            var wrongDirection = _inputService.PlayerActions.Move.ReadValue<Vector2>().y < 0 || _inputService.PlayerActions.Move.ReadValue<Vector2>().x != 0;
+            var wrongDirection = _inputService.PlayerActions.Move.ReadValue<Vector2>().y <= 0;
 
             if (_inputService.PlayerActions.Sprint.WasPressedThisFrame())
             {
-                _playerConfig.SprintFee.Deposit = 0;
-                
                 if (SprintButtonToggleState || !IsMoving || wrongDirection)
                 {
                     SprintButtonToggleState = false;
+                    _isRunning = false;
                     return;
                 }
+
+                _playerConfig.SprintFee.Deposit = 0;
             }
-            
-            if (wrongDirection)
-            {
-                SprintButtonToggleState = false;
-                _sprintLerp = 0;
-            }
-            else if (IsRunning && _statService.TrackFee(_playerConfig.SprintFee, deltaTime))
+
+            if (IsRunningInput && _statService.TrackFee(_playerConfig.SprintFee, deltaTime) && !wrongDirection)
             {
                 SprintButtonToggleState = true;
+                _isRunning = true;
                 _sprintLerp = Mathf.Lerp(_sprintLerp, 1, deltaTime * _playerConfig.SprintGetSpeed);
             }
-            else if (_sprintLerp > 0)
+            else
             {
                 SprintButtonToggleState = false;
+                _isRunning = false;
                 _sprintLerp = Mathf.Lerp(_sprintLerp, 0, deltaTime * _playerConfig.SprintFallSpeed);
             }
         }
 
-        private void HandleCamera()
+        private void HandleCamera(long frame)
         {
             if (_panelService.IsAnyPopupOpen)
             {
                 return;
             }
 
+            var cameraFovSprintModifier = Mathf.Lerp(1, _cameraConfig.FovSprintModifier, _sprintLerp);
             var lookInput = _cameraInputService.GetCameraInput() * _settingsService.CameraSensitivity.Value / 100;
 
             NetworkObject.transform.Rotate(Vector3.up * lookInput.x);
             _cameraPitch -= lookInput.y;
-            _cameraPitch = Mathf.Clamp(_cameraPitch, _cameraConfig.PitchLimits.x, _cameraConfig.PitchLimits.y);
+            _cameraPitch = Mathf.Clamp(_cameraPitch, _cameraConfig.PitchLimits.x / cameraFovSprintModifier, _cameraConfig.PitchLimits.y / cameraFovSprintModifier);
             _head.transform.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
-            _cinemachineCamera.Lens.FieldOfView = Mathf.Lerp(_settingsService.Fov.Value, _settingsService.Fov.Value * _cameraConfig.FovSprintModifier, _sprintLerp);
+            _head.transform.rotation = Quaternion.Euler(_head.transform.rotation.eulerAngles.x, _head.transform.rotation.eulerAngles.y, 0f);
+            _cinemachineCamera.Lens.FieldOfView = _settingsService.Fov.Value * cameraFovSprintModifier;
 
             if (lookInput.magnitude > 0)
             {

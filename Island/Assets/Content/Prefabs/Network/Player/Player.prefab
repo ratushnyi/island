@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 353793199207999564}
   - component: {fileID: 7761614532104555079}
   - component: {fileID: 600560912083758617}
-  - component: {fileID: 146992220617866401}
+  - component: {fileID: 3990890732105422944}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -165,7 +165,7 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &146992220617866401
+--- !u!114 &3990890732105422944
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1103831478606982853}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Script: {fileID: 11500000, guid: d551cbcbf6d84ea490003a22c0a4e3b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
@@ -475,7 +475,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 2ac6fb92e29e34af184164f28cfb5221, type: 3}
       propertyPath: m_Name
-      value: Walking
+      value: Rig
       objectReference: {fileID: 0}
     - target: {fileID: 5866666021909216657, guid: 2ac6fb92e29e34af184164f28cfb5221, type: 3}
       propertyPath: m_Controller

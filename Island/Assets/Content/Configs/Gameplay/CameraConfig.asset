@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77a6bc723f2db49708244fc148fd5faf, type: 3}
   m_Name: CameraConfig
   m_EditorClassIdentifier: 
-  <FovSprintModifier>k__BackingField: 1.5
-  <PitchLimits>k__BackingField: {x: -85, y: 85}
+  <FovSprintModifier>k__BackingField: 1.35
+  <PitchLimits>k__BackingField: {x: -90, y: 45}
   <DefaultFov>k__BackingField: 75
   <DefaultCameraSensitivity>k__BackingField: 100
