@@ -14,13 +14,14 @@ namespace Island.Gameplay.Services.World.Objects
         [field: SerializeField] public WorldObjectType Type { get; private set; }
         [field: SerializeField] public BoxCollider[] Colliders { get; private set; }
         [field: SerializeField] public MeshRenderer[] Renderers { get; private set; }
+        public bool IsBusy => _isBusy.Value;
         public int Hash { get; private set; }
         public abstract string Name { get; }
         public abstract UniTask<bool> Perform(bool isJustUsed, float deltaTime);
         
-        private readonly NetworkVariable<Color> _color = new(Color.white);
-
         private readonly Collider[] _overlapResult = new Collider[1];
+        private readonly NetworkVariable<Color> _color = new(Color.white);
+        private readonly NetworkVariable<bool> _isBusy = new();
 
         public void Init(int hash)
         {
@@ -63,6 +64,12 @@ namespace Island.Gameplay.Services.World.Objects
         public void SetColor_ServerRpc(Color color)
         {
             _color.Value = color;
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void SetBusy_ServerRpc(bool value)
+        {
+            _isBusy.Value = value;
         }
 
         [ServerRpc(RequireOwnership = false)]

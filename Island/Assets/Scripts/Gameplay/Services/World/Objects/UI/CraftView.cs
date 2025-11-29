@@ -82,20 +82,23 @@ namespace Island.Gameplay.Services.World.Objects.UI
         {
             for (int i = 0; i < _ingredientViews.Count; i++)
             {
+                Color color;
                 if (_currentReceiptEntity.Ingredients.Length > i)
                 {
-                    var color = _inventoryService.IsEnough(_currentReceiptEntity.Ingredients[i], _count) ? Color.green : Color.red;
+                    color = _inventoryService.IsEnough(_currentReceiptEntity.Ingredients[i], _count) ? Color.green : Color.red;
                     _ingredientViews[i].SetItem(_inventoryConfig[_currentReceiptEntity.Ingredients[i].Type], _currentReceiptEntity.Ingredients[i].Count * _count);
-                    var colors = _ingredientViews[i].Button.colors;
-                    colors.disabledColor = color;
-                    _ingredientViews[i].Button.colors = colors;
                 }
                 else
                 {
+                    color = Color.white;
                     _ingredientViews[i].SetEmpty();
                 }
+
+                var colors = _ingredientViews[i].Button.colors;
+                colors.disabledColor = color;
+                _ingredientViews[i].Button.colors = colors;
             }
-            
+
             UpdateCraftButtonState();
         }
 
@@ -113,7 +116,7 @@ namespace Island.Gameplay.Services.World.Objects.UI
 
             _buttonCraft.interactable = result;
         }
-        
+
         private void Craft()
         {
             _onCraft.OnNext((_currentReceiptEntity, _count));

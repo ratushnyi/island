@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using Island.Gameplay.Services.Inventory.Items;
 using Island.Gameplay.Services.World.Objects;
 using UnityEngine;
 
@@ -14,6 +16,11 @@ namespace Island.Common
             AimHash,
             GroundHash
         };
+
+        public static ItemEntity[] Invert(this ItemEntity[] items)
+        {
+            return items.Select(t => new ItemEntity(t.Type, -t.Count)).ToArray();
+        }
 
         public static int GenerateHash(this WorldObjectBase objectBase)
         {

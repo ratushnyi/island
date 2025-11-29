@@ -6,4 +6,8 @@ namespace Island.Gameplay.Services.Inventory
     {
         UniTask<bool> Perform(bool isJustUsed, float deltaTime);
     }
+    
+    public interface ISelfPerformable
+    {
+    }
 }

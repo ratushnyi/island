@@ -1,6 +1,8 @@
+using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Island.Common;
 using Island.Gameplay.Configs.Craft;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Inventory.Items;
@@ -15,7 +17,7 @@ using Zenject;
 
 namespace Island.Gameplay.Services.World.Objects
 {
-    public class WorldCraftObject : WorldObjectBase
+    public class WorldCraftObject : WorldContainerBase, ISelfPerformable
     {
         [SerializeField] private bool _showPopup;
         [SerializeField] private WorldProgressBar _progressBar;
@@ -27,20 +29,8 @@ namespace Island.Gameplay.Services.World.Objects
 
         private readonly NetworkVariable<float> _progressValue = new(-1);
         private readonly NetworkVariable<CraftReceiptEntity> _receipt = new();
-        private readonly NetworkList<ItemEntity> _container = new();
 
         public override string Name => Type.ToString();
-
-        public void InitCraft(ItemEntity[] container)
-        {
-            if (container != null)
-            {
-                foreach (var item in container)
-                {
-                    _container.Add(item);
-                }
-            }
-        }
 
         public override void OnNetworkSpawn()
         {
@@ -51,52 +41,42 @@ namespace Island.Gameplay.Services.World.Objects
 
         public override async UniTask<bool> Perform(bool isJustUsed, float deltaTime)
         {
-            if (!isJustUsed)
+            if (!isJustUsed || IsBusy)
             {
                 return false;
             }
 
-            ItemEntity[] ingredients;
+            SetBusy_ServerRpc(true);
 
+            var ingredients = Array.Empty<ItemEntity>();
             if (_showPopup)
             {
                 var popup = await _popup.Show(extraArgs: new object[] { Type });
                 var result = await popup.WaitForResult();
-                if (result.Count == 0)
+                if (result.Count > 0 && result.Receipt.Ingredients.All(t => _inventoryService.IsEnough(t)))
                 {
-                    return false;
+                    UpdateReceipt_ServerRpc(result.Receipt);
+                    ingredients = result.Receipt.Ingredients.Select(t => new ItemEntity(t.Type, t.Count * result.Count)).ToArray();
                 }
-
-                UpdateReceipt_ServerRpc(result.Receipt);
-                ingredients = result.Receipt.Ingredients.Select(t => new ItemEntity(t.Type, t.Count * result.Count)).ToArray();
             }
             else
             {
-                if (!_craftConfig.Receipts.TryGetValue(Type, out var receipts) || receipts.IsEmpty())
+                if (!_craftConfig.Receipts.TryGetValue(Type, out var receipts))
                 {
-                    return false;
+                    Debug.LogError($"Can't find receipts for type {Type}");
                 }
-
-                var first = receipts[0].Entity.Ingredients.FirstOrDefault(t => t.Type == _inventoryService.SelectedItem.Type);
-                if (first.Type == InventoryItemType.None)
+                else if (receipts.IsEmpty())
                 {
-                    return false;
+                    Debug.LogError($"Receipts list for type {Type} is empty");
                 }
-
-                UpdateReceipt_ServerRpc(receipts[0].Entity);
-                ingredients = new ItemEntity[] { new(_inventoryService.SelectedItem.Type, 1) };
-            }
-
-            if (_receipt.Value.Ingredients == null)
-            {
-                return false;
-            }
-
-            foreach (var item in ingredients)
-            {
-                if (!_inventoryService.IsEnough(item))
+                else
                 {
-                    return false;
+                    var receipt = receipts.Find(t => t.Entity.Ingredients[0].Type == _inventoryService.SelectedItem.Type);
+                    if (receipt != null)
+                    {
+                        ingredients = new ItemEntity[] { new(_inventoryService.SelectedItem.Type, 1) };
+                        UpdateReceipt_ServerRpc(receipt.Entity);
+                    }
                 }
             }
 
@@ -123,7 +103,7 @@ namespace Island.Gameplay.Services.World.Objects
                 else
                 {
                     var maxCount = _receipt.Value.Ingredients.First(t => t.Type == item.Type).Count;
-                    var exist = _container.TryGet(t => t.Type == item.Type, out var entity);
+                    var exist = Container.TryGet(t => t.Type == item.Type, out var entity);
                     var overCapacity = maxCount != -1 && exist && entity.Count >= maxCount;
                     var isSuitableValue = (entity.Count + item.Count) > 0;
                     result = !overCapacity && isSuitableValue;
@@ -131,7 +111,7 @@ namespace Island.Gameplay.Services.World.Objects
 
                 if (!result)
                 {
-                    PerformTransaction_ClientRpc(null, targetClientId.ToClientRpcParams());
+                    PerformTransaction_ClientRpc(Array.Empty<ItemEntity>(), targetClientId.ToClientRpcParams());
                     return;
                 }
             }
@@ -142,11 +122,6 @@ namespace Island.Gameplay.Services.World.Objects
         [ClientRpc]
         private void PerformTransaction_ClientRpc(ItemEntity[] items, ClientRpcParams _)
         {
-            if (items == null || items.Length == 0)
-            {
-                return;
-            }
-
             foreach (var item in items)
             {
                 _inventoryService.TryRemove(item);
@@ -163,56 +138,22 @@ namespace Island.Gameplay.Services.World.Objects
             {
                 PerformCraft();
             }
-        }
-
-        private void ApplyContainer(ItemEntity[] stack)
-        {
-            foreach (var item in stack)
+            else
             {
-                ItemEntity resultItem;
-                var index = _container.IndexOf(t => t.Type == item.Type);
-                if (index == -1)
-                {
-                    if (item.Count >= 0)
-                    {
-                        resultItem = item;
-                        _container.Add(item);
-                    }
-                    else if (item.Count == 0)
-                    {
-                        Debug.LogError($"Trying to add empty item {item.Type} in container {name}");
-                        return;
-                    }
-                    else
-                    {
-                        Debug.LogError($"Trying to remove item {item.Type} not contained in container {name}");
-                        return;
-                    }
-                }
-                else
-                {
-                    var result = _container[index].Count + item.Count;
-                    if (result >= 0)
-                    {
-                        resultItem = new ItemEntity(item.Type, result);
-                        _container[index] = resultItem;
-                    }
-                    else
-                    {
-                        Debug.LogError($"Trying to remove item {item.Type} more ({item.Count}) than contained ({_container[index].Count}) in container {name}");
-                        return;
-                    }
-                }
-
-                _worldService.UpdateContainer(this, resultItem);
+                FinishCraft(false);
             }
         }
 
         private bool IsEnoughIngredients()
         {
+            if (_receipt.Value.Ingredients == null)
+            {
+                return false;
+            }
+            
             foreach (var item in _receipt.Value.Ingredients)
             {
-                _container.TryGet(t => t.Type == item.Type, out var entity);
+                Container.TryGet(t => t.Type == item.Type, out var entity);
                 if (entity.Count < item.Count)
                 {
                     return false;
@@ -230,20 +171,26 @@ namespace Island.Gameplay.Services.World.Objects
             }
 
             _progressValue.Value = 0;
-            _progressValue.DOValue(1, _receipt.Value.Duration).OnComplete(FinishCraft).SetEase(Ease.Linear);
+            _progressValue.DOValue(1, _receipt.Value.Duration).OnComplete(() => FinishCraft(true)).SetEase(Ease.Linear);
         }
 
-        private void FinishCraft()
+        private void FinishCraft(bool success)
         {
-            ApplyContainer(_receipt.Value.InvertIngredients);
-            var position = transform.position + Vector3.up + Vector3.up;
-            _worldService.Spawn(position, WorldObjectType.Collectable, _receipt.Value.Result);
-            _progressValue.Value = -1;
-
-            if (IsEnoughIngredients())
+            if (success)
             {
-                PerformCraft();
+                ApplyContainer(_receipt.Value.Ingredients.Invert());
+                var position = transform.position + Vector3.up + Vector3.up;
+                _worldService.Spawn(position, WorldObjectType.Collectable, _receipt.Value.Result);
+                _progressValue.Value = -1;
+
+                if (IsEnoughIngredients())
+                {
+                    PerformCraft();
+                    return;
+                }
             }
+
+            SetBusy_ServerRpc(false);
         }
     }
 }

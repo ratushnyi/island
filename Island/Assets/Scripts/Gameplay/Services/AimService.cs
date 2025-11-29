@@ -129,10 +129,9 @@ namespace Island.Gameplay.Services
         {
             if (_inputService.PlayerActions.Interact.inProgress)
             {
-                IPerformable performable = (TargetObject.Value, _panelService.IsAnyPopupOpen) switch
+                IPerformable performable = (TargetObject.Value is ISelfPerformable, _panelService.IsAnyPopupOpen) switch
                 {
-                    (WorldCollectableObject, false) => TargetObject.Value,
-                    (WorldCraftObject, false) => TargetObject.Value,
+                    (true, false) => TargetObject.Value,
                     _ => _inventoryService
                 };
 

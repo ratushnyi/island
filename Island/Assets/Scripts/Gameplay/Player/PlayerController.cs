@@ -174,6 +174,8 @@ namespace Island.Gameplay.Player
 
         private void HandleCamera(long frame)
         {
+            _head.transform.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
+            _head.transform.rotation = Quaternion.Euler(_head.transform.rotation.eulerAngles.x, _head.transform.rotation.eulerAngles.y, 0f);
             if (_panelService.IsAnyPopupOpen)
             {
                 return;
@@ -185,8 +187,6 @@ namespace Island.Gameplay.Player
             NetworkObject.transform.Rotate(Vector3.up * lookInput.x);
             _cameraPitch -= lookInput.y;
             _cameraPitch = Mathf.Clamp(_cameraPitch, _cameraConfig.PitchLimits.x / cameraFovSprintModifier, _cameraConfig.PitchLimits.y / cameraFovSprintModifier);
-            _head.transform.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
-            _head.transform.rotation = Quaternion.Euler(_head.transform.rotation.eulerAngles.x, _head.transform.rotation.eulerAngles.y, 0f);
             _cinemachineCamera.Lens.FieldOfView = _settingsService.Fov.Value * cameraFovSprintModifier;
 
             if (lookInput.magnitude > 0)

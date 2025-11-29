@@ -54,6 +54,7 @@ namespace Island.Gameplay.Module
         [SerializeField] private PausePopup _pausePopup;
         [SerializeField] private SettingsPopup _settingsPopup;
         [SerializeField] private WorldCraftPopup _worldCraftPopup;
+        [SerializeField] private WorldWarehousePopup _worldWarehousePopup;
 
         protected override void InstallModuleBindings()
         {
@@ -97,6 +98,7 @@ namespace Island.Gameplay.Module
             Container.BindPanel(_pausePopup, _canvas);
             Container.BindPanel(_settingsPopup, _canvas);
             Container.BindPanel(_worldCraftPopup, _canvas);
+            Container.BindPanel(_worldWarehousePopup, _canvas);
         }
 
         private void BindServices()

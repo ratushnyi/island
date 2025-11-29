@@ -90,3 +90,9 @@ MonoBehaviour:
     <IsCountable>k__BackingField: 1
     <IsDisposable>k__BackingField: 1
     <IsBuildable>k__BackingField: 1
+  - <Type>k__BackingField: 12
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 07f9013c4aa6648de95dbea485884b3c, type: 3}
+    <ItemEntity>k__BackingField: {fileID: 11400000, guid: f3daffd94bbcb4f7aace648ed0d92376, type: 2}
+    <IsCountable>k__BackingField: 1
+    <IsDisposable>k__BackingField: 1
+    <IsBuildable>k__BackingField: 1

@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77a6bc723f2db49708244fc148fd5faf, type: 3}
-  m_Name: CameraConfig
+  m_Script: {fileID: 11500000, guid: 9d930d231f404d3f98254eb7e671d705, type: 3}
+  m_Name: WarehouseBuild
   m_EditorClassIdentifier: 
-  <FovSprintModifier>k__BackingField: 1.35
-  <PitchLimits>k__BackingField: {x: -90, y: 70}
-  <DefaultFov>k__BackingField: 75
-  <DefaultCameraSensitivity>k__BackingField: 100
+  <StatFeeModel>k__BackingField: []
+  _resultType: 5

@@ -8,6 +8,7 @@ namespace Island.Gameplay.Services.World.Objects
         Tree = 1,
         Rock = 2,
         Fisher = 3,
-        Fireplace = 4
+        Fireplace = 4,
+        Warehouse = 5
     }
 }

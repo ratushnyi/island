@@ -36,7 +36,7 @@ namespace Island.Gameplay.Services.Server
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-            
+
             if (!IsServer)
             {
                 return;
@@ -69,20 +69,24 @@ namespace Island.Gameplay.Services.Server
             {
                 _worldProfile.SpawnedObjects.Add(request.Hash, request);
             }
+
             var worldObject = Instantiate(_worldConfig.WorldObjects[request.Type], request.Position, request.Rotation);
             worldObject.NetworkObject.SpawnWithOwnership(request.Owner);
             worldObject.Init(request.Hash);
-            switch (worldObject)
+            
+            if (worldObject is WorldDestroyableObject worldDestroyableObject)
             {
-                case WorldDestroyableObject worldDestroyableObject:
-                    worldDestroyableObject.InitHealth(request.Health);
-                    break;
-                case WorldCraftObject worldCraftObject:
-                    worldCraftObject.InitCraft(request.Container);
-                    break;
-                case WorldCollectableObject worldCollectableObject:
-                    worldCollectableObject.InitCollectable(request.CollectableItem);
-                    break;
+                worldDestroyableObject.InitHealth(request.Health);
+            }
+            
+            if (worldObject is WorldCollectableObject worldCollectableObject)
+            {
+                worldCollectableObject.InitCollectable(request.CollectableItem);
+            }
+            
+            if (worldObject is WorldContainerBase worldContainerBase)
+            {
+                worldContainerBase.InitContainer(request.Container);
             }
 
             worldObject.NetworkObject.TrySetParent(NetworkObject);

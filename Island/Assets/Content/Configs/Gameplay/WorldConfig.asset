@@ -26,6 +26,8 @@ MonoBehaviour:
       Value: {fileID: 8570223336612559781, guid: ad7d2cb4fb72c4223a2b1fa1ef50c716, type: 3}
     - Key: 4
       Value: {fileID: 8570223336612559781, guid: 21646163bdf1d4fd9b42345097abbd60, type: 3}
+    - Key: 5
+      Value: {fileID: 2222230356364609067, guid: facff0b3417bf4dd2b5e783a7b76bdc8, type: 3}
   WorldObjectPlacement:
   - Hash: 0
     Type: -1

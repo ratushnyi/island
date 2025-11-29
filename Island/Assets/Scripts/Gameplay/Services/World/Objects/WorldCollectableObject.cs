@@ -6,7 +6,7 @@ using Zenject;
 
 namespace Island.Gameplay.Services.World.Objects
 {
-    public class WorldCollectableObject : WorldObjectBase
+    public class WorldCollectableObject : WorldObjectBase, ISelfPerformable
     {
         [Inject] private InventoryService _inventoryService;
 
