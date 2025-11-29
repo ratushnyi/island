@@ -1,3 +1,4 @@
+using Island.Gameplay.Player;
 using Island.Gameplay.Services.Stats;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services.Input;
@@ -11,20 +12,21 @@ namespace Island.Gameplay.Panels.HUD
 {
     public class InputPanel : PanelBase
     {
-        public override bool ShowInstantly => Application.isMobilePlatform;
+        public override bool ShowInstantly => InputExtensions.IsMobileInput;
 
         [SerializeField] private Image _runImage;
         [SerializeField] private Color _runImageEnabledColor;
         [Inject] private StatsService _statService;
         [Inject] private InputService _inputService;
+        [Inject] private IPlayerPlatformInput _playerPlatformInput;
         private Color _runImageDefaultColor;
 
         protected override void Initialize()
         {
-            if (!InputExtensions.IsMouseKeyboardInput)
+            if (!InputExtensions.IsDesktopInput)
             {
                 _runImageDefaultColor = _runImage.color;
-                _statService.IsSprintPerformed.Subscribe(OnSprintButtonToggleChanged).AddTo(this);
+                _playerPlatformInput.IsSprintInput.Subscribe(OnSprintButtonToggleChanged).AddTo(this);
             }
         }
 

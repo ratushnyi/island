@@ -33,26 +33,19 @@ namespace Island.Gameplay.Player
         [Inject] private PlayerService _playerService;
         [Inject] private PlayerConfig _playerConfig;
         [Inject] private CameraConfig _cameraConfig;
+        [Inject] private IPlayerPlatformInput _platformInput;
 
         private Ray _aimRay;
         private float _cameraPitch;
         private float _verticalVelocity;
         private float _sprintLerp;
-        private bool _isRunning;
+        private bool _isSprint;
         private float? _jumpingDelay;
-        private bool IsMoving => _characterController.velocity.magnitude > 0;
-        private bool IsRunningInput => IsMoving && (_inputService.PlayerActions.Sprint.IsPressed() || SprintButtonToggleState);
 
         public IObservable<Vector3> OnPositionChanged => _onPositionChanged;
         private readonly ISubject<Vector3> _onPositionChanged = new Subject<Vector3>();
         public IObservable<Quaternion> OnRotationChanged => _onRotationChanged;
         private readonly ISubject<Quaternion> _onRotationChanged = new Subject<Quaternion>();
-
-        private bool SprintButtonToggleState
-        {
-            get => !InputExtensions.IsMouseKeyboardInput && _statService.IsSprintPerformed.Value;
-            set => _statService.IsSprintPerformed.Value = value;
-        }
 
         public override void OnNetworkSpawn()
         {
@@ -119,10 +112,11 @@ namespace Island.Gameplay.Player
 
             var movementSpeed = Mathf.Lerp(_playerConfig.WalkSpeed, _playerConfig.SprintSpeed, _sprintLerp);
             var moveInput = _inputService.PlayerActions.Move.ReadValue<Vector2>();
-            if (_isRunning)
+            if (_isSprint)
             {
                 moveInput.x = 0;
             }
+
             var moveSpeed = moveInput * movementSpeed;
             var moveDirection = NetworkObject.transform.right * moveSpeed.x + NetworkObject.transform.forward * moveSpeed.y + Vector3.up * _verticalVelocity;
             moveDirection *= deltaTime;
@@ -152,31 +146,29 @@ namespace Island.Gameplay.Player
                 return;
             }
 
-            var wrongDirection = _inputService.PlayerActions.Move.ReadValue<Vector2>().y <= 0;
+            var wrongDirection = _inputService.PlayerActions.Move.ReadValue<Vector2>().y < 0.9f;
 
             if (_inputService.PlayerActions.Sprint.WasPressedThisFrame())
             {
-                if (SprintButtonToggleState || !IsMoving || wrongDirection)
+                if (InputExtensions.IsMobileInput)
                 {
-                    SprintButtonToggleState = false;
-                    _isRunning = false;
-                    return;
+                    _platformInput.OnSprintClick();
                 }
 
                 _playerConfig.SprintFee.Deposit = 0;
             }
 
-            if (IsRunningInput && _statService.TrackFee(_playerConfig.SprintFee, deltaTime) && !wrongDirection)
+            if (_platformInput.IsSprintInput.Value && _statService.TrackFee(_playerConfig.SprintFee, deltaTime) && !wrongDirection)
             {
-                SprintButtonToggleState = true;
-                _isRunning = true;
+                _isSprint = true;
                 _sprintLerp = Mathf.Lerp(_sprintLerp, 1, deltaTime * _playerConfig.SprintGetSpeed);
+                _platformInput.OnSprintPerformed(_isSprint);
             }
             else
             {
-                SprintButtonToggleState = false;
-                _isRunning = false;
+                _isSprint = false;
                 _sprintLerp = Mathf.Lerp(_sprintLerp, 0, deltaTime * _playerConfig.SprintFallSpeed);
+                _platformInput.OnSprintPerformed(_isSprint);
             }
         }
 

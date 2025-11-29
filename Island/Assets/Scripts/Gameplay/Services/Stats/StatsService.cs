@@ -21,8 +21,6 @@ namespace Island.Gameplay.Services.Stats
         private StatsConfig _statsConfig;
         private StatsProfile _statsProfile;
 
-        public ReactiveProperty<bool> IsSprintPerformed { get; set; } = new();
-
         [Inject]
         private void Construct(
             HUDService hudService,

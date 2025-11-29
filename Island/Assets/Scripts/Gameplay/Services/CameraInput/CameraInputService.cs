@@ -16,7 +16,7 @@ namespace Island.Gameplay.Services.CameraInput
         
         public Vector2 GetCameraInput()
         {
-            if (!Application.isMobilePlatform)
+            if (!InputExtensions.IsMobileInput)
             {
                 return _inputService.PlayerActions.Look.ReadValue<Vector2>();
             }

@@ -57,10 +57,27 @@ namespace Island.Gameplay.Module
 
         protected override void InstallModuleBindings()
         {
+            BindPlatformInput();
             BindServices();
             BindConfigs();
             BindPanels();
             BindProfiles();
+        }
+
+        private void BindPlatformInput()
+        {
+            if (InputExtensions.IsMobileInput)
+            {
+                Container.BindInterfacesAndSelfTo<PlayerMobileInput>().AsSingle().NonLazy();
+            }
+            else if (InputExtensions.IsConsoleInput)
+            {
+                Container.BindInterfacesAndSelfTo<PlayerConsoleInput>().AsSingle().NonLazy();
+            }
+            else
+            {
+                Container.BindInterfacesAndSelfTo<PlayerDesktopInput>().AsSingle().NonLazy();
+            }
         }
 
         private void BindProfiles()
