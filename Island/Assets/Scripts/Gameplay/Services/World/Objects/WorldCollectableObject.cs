@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using Island.Gameplay.Profiles.Inventory;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.Inventory.Items;
 using Unity.Netcode;
@@ -9,6 +10,7 @@ namespace Island.Gameplay.Services.World.Objects
     public class WorldCollectableObject : WorldObjectBase, ISelfPerformable
     {
         [Inject] private InventoryService _inventoryService;
+        [Inject] private InventoryProfile _inventoryProfile;
 
         private readonly NetworkVariable<ItemEntity> _collectableItem = new();
 
@@ -29,6 +31,8 @@ namespace Island.Gameplay.Services.World.Objects
             if (_inventoryService.TryCollect(_collectableItem.Value))
             {
                 Despawn_ServerRpc();
+                
+                _inventoryProfile.Save();
             }
 
             return UniTask.FromResult(true);

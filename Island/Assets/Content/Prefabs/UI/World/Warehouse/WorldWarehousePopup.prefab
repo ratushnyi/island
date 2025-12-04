@@ -345,20 +345,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6621452507272268836}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3347288863971780896}
-        m_TargetAssemblyTypeName: Island.Gameplay.Services.World.Objects.UI.WorldWarehousePopup,
-          Island
-        m_MethodName: Hide
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &2235213084205523035
 GameObject:
   m_ObjectHideFlags: 0
@@ -1093,20 +1080,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7052456315165080729}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3347288863971780896}
-        m_TargetAssemblyTypeName: Island.Gameplay.Services.World.Objects.UI.WorldWarehousePopup,
-          Island
-        m_MethodName: Hide
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &6878792961102424397
 GameObject:
   m_ObjectHideFlags: 0
@@ -1229,20 +1203,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7175625349688802580}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3347288863971780896}
-        m_TargetAssemblyTypeName: Island.Gameplay.Services.World.Objects.UI.WorldWarehousePopup,
-          Island
-        m_MethodName: Hide
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &7293060457093973782
 GameObject:
   m_ObjectHideFlags: 0
@@ -1590,20 +1551,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8266333720210289308}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3347288863971780896}
-        m_TargetAssemblyTypeName: Island.Gameplay.Services.World.Objects.UI.WorldWarehousePopup,
-          Island
-        m_MethodName: Hide
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1001 &1260413515244824342
 PrefabInstance:
   m_ObjectHideFlags: 0

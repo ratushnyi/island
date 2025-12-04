@@ -103,7 +103,7 @@ namespace Island.Gameplay.Services.World.Objects
                 else
                 {
                     var maxCount = _receipt.Value.Ingredients.First(t => t.Type == item.Type).Count;
-                    var exist = Container.TryGet(t => t.Type == item.Type, out var entity);
+                    var exist = ContainerArray.TryGet(t => t.Type == item.Type, out var entity);
                     var overCapacity = maxCount != -1 && exist && entity.Count >= maxCount;
                     var isSuitableValue = (entity.Count + item.Count) > 0;
                     result = !overCapacity && isSuitableValue;
@@ -133,7 +133,7 @@ namespace Island.Gameplay.Services.World.Objects
         [ServerRpc(RequireOwnership = false)]
         private void PerformTransaction_ServerRpc(ItemEntity[] items)
         {
-            ApplyContainer(items);
+            ApplyContainer_ServerRpc(items);
             if (IsEnoughIngredients())
             {
                 PerformCraft();
@@ -153,7 +153,7 @@ namespace Island.Gameplay.Services.World.Objects
             
             foreach (var item in _receipt.Value.Ingredients)
             {
-                Container.TryGet(t => t.Type == item.Type, out var entity);
+                ContainerArray.TryGet(t => t.Type == item.Type, out var entity);
                 if (entity.Count < item.Count)
                 {
                     return false;
@@ -178,7 +178,7 @@ namespace Island.Gameplay.Services.World.Objects
         {
             if (success)
             {
-                ApplyContainer(_receipt.Value.Ingredients.Invert());
+                ApplyContainer_ServerRpc(_receipt.Value.Ingredients.Invert());
                 var position = transform.position + Vector3.up + Vector3.up;
                 _worldService.Spawn(position, WorldObjectType.Collectable, _receipt.Value.Result);
                 _progressValue.Value = -1;

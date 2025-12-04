@@ -1,6 +1,6 @@
 using System;
+using System.Linq;
 using Cysharp.Threading.Tasks;
-using Island.Common.Services;
 using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Panels.HUD;
 using Island.Gameplay.Profiles.Inventory;
@@ -43,12 +43,6 @@ namespace Island.Gameplay.Services.Inventory
         {
             _inventoryProfile.SelectedItem.Subscribe(type =>
             {
-                if (type == InventoryItemType.None)
-                {
-                    _hudPanel.Instance.SelectedItem.SetEmpty();
-                    return;
-                }
-
                 _hudPanel.Instance.SelectedItem.SetItem(_inventoryConfig[type], _inventoryProfile.InventoryItems[type]);
             }).AddTo(CompositeDisposable);
         }
@@ -80,7 +74,7 @@ namespace Island.Gameplay.Services.Inventory
                     _inventoryProfile.InventoryItems.Remove(type);
                     if (_inventoryProfile.SelectedItem.Value == type)
                     {
-                        _inventoryProfile.SelectedItem.Value = InventoryItemType.Hand;
+                        _inventoryProfile.SelectedItem.Value = _inventoryProfile.InventoryItems.ElementAt(0).Key;
                     }
                 }
 
@@ -116,14 +110,14 @@ namespace Island.Gameplay.Services.Inventory
             {
                 if (item.Value >= count)
                 {
-                    removeExistItem().Forget();
+                    removeItem().Forget();
                     return true;
                 }
             }
 
             return false;
 
-            async UniTask removeExistItem()
+            async UniTask removeItem()
             {
                 if (beforeItemRemove != null)
                 {
@@ -158,9 +152,9 @@ namespace Island.Gameplay.Services.Inventory
                 return false;
             }
 
-            if (_inventoryProfile.InventoryItems.TryGetValue(type, out var existItem))
+            if (_inventoryProfile.InventoryItems.ContainsKey(type))
             {
-                addExistItem().Forget();
+                updateItem().Forget();
                 return true;
             }
 
@@ -169,27 +163,18 @@ namespace Island.Gameplay.Services.Inventory
                 return false;
             }
 
-            addNewItem().Forget();
+            updateItem().Forget();
             return true;
 
-            async UniTask addExistItem()
+
+            async UniTask updateItem()
             {
                 if (beforeItemAdd != null)
                 {
                     await beforeItemAdd.Invoke();
                 }
 
-                existItem.Value += count;
-            }
-
-            async UniTask addNewItem()
-            {
-                if (beforeItemAdd != null)
-                {
-                    await beforeItemAdd.Invoke();
-                }
-
-                if (_inventoryProfile.InventoryItems.TryGetValue(type, out existItem))
+                if (_inventoryProfile.InventoryItems.TryGetValue(type, out var existItem))
                 {
                     existItem.Value += count;
                 }

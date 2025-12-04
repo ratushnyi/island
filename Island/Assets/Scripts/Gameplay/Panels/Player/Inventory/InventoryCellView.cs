@@ -3,6 +3,7 @@ using Island.Gameplay.Services.Inventory.Items;
 using TMPro;
 using UniRx;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Island.Gameplay.Panels.Player.Inventory
@@ -19,10 +20,12 @@ namespace Island.Gameplay.Panels.Player.Inventory
 
         public Button Button => _button;
         public IObservable<InventoryItemType> OnButtonClicked => _onButtonClicked;
+        public InventoryItemType Type => _model?.Type ?? InventoryItemType.None;
+        public bool IsEmpty() => _model == null;
 
         private void Start()
         {
-            _button.OnClickAsObservable().Subscribe(_ => _onButtonClicked.OnNext(_model?.Type ?? InventoryItemType.None)).AddTo(this);
+            _button.OnClickAsObservable().Subscribe(_ => _onButtonClicked.OnNext(Type)).AddTo(this);
         }
 
         public void SetItem(ItemModel model, ReactiveProperty<int> count)
@@ -45,11 +48,6 @@ namespace Island.Gameplay.Panels.Player.Inventory
             _countTMP.enabled = model.IsCountable;
         }
 
-        public bool IsEmpty()
-        {
-            return _model == null;
-        }
-
         private void OnCountChanged(int count)
         {
             if (count == 0)
@@ -67,6 +65,19 @@ namespace Island.Gameplay.Panels.Player.Inventory
             _image.sprite = null;
             _image.enabled = false;
             _countTMP.enabled = false;
+        }
+
+        public void SetSelected(bool isSelected)
+        {
+            var eventData = new BaseEventData(null);
+            if (isSelected)
+            {
+                _button.OnSelect(eventData);
+            }
+            else
+            {
+                _button.OnDeselect(eventData);
+            }
         }
     }
 }

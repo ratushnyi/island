@@ -379,7 +379,7 @@ MonoBehaviour:
       Value: {fileID: 6202359931895909143}
   _tools:
     _serializedList:
-    - Key: 1
+    - Key: -1
       Value: 5
     - Key: 10
       Value: 25

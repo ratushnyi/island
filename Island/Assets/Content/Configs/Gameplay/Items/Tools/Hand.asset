@@ -9,6 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35d975a678fe485da760cdd7214c4e9e, type: 3}
-  m_Name: NetworkConfig
+  m_Script: {fileID: 11500000, guid: dec2ecbe8f0743f0bd16c343f1051638, type: 3}
+  m_Name: Hand
   m_EditorClassIdentifier: 
+  <StatFeeModel>k__BackingField:
+  - <Type>k__BackingField: 1
+    <Rate>k__BackingField: 5
+    <Value>k__BackingField: -5
+  <IsUsable>k__BackingField: 1
+  _type: 0

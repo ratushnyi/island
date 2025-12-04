@@ -1,5 +1,4 @@
 using Cysharp.Threading.Tasks;
-using Island.Common;
 using Island.Gameplay.Services.Inventory;
 using Island.Gameplay.Services.World.Objects.UI;
 using TendedTarsier.Core.Panels;
@@ -13,23 +12,20 @@ namespace Island.Gameplay.Services.World.Objects
         [SerializeField] private string _name = "Warehouse";
         [Inject] private PanelLoader<WorldWarehousePopup> _popup;
         public override string Name => _name;
-        
+
         public override async UniTask<bool> Perform(bool isJustUsed, float deltaTime)
         {
             if (!isJustUsed || IsBusy)
             {
                 return false;
             }
-            
+
             SetBusy_ServerRpc(true);
-            var popup = await _popup.Show();
-            var result = await popup.WaitForResult();
-            
-            ApplyContainer(result.output.Invert());
-            ApplyContainer(result.input);
-            
+            var popup = await _popup.Show(extraArgs: new object[] { this });
+            await popup.WaitForHide();
+
             SetBusy_ServerRpc(false);
-            
+
             return true;
         }
     }

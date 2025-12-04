@@ -105,13 +105,13 @@ namespace Island.Gameplay.Player
 
         private void HandleMove(float deltaTime)
         {
+            var moveInput = _inputService.PlayerActions.Move.ReadValue<Vector2>();
             if (_panelService.IsAnyPopupOpen)
             {
-                return;
+                moveInput = Vector2.zero;
             }
 
             var movementSpeed = Mathf.Lerp(_playerConfig.WalkSpeed, _playerConfig.SprintSpeed, _sprintLerp);
-            var moveInput = _inputService.PlayerActions.Move.ReadValue<Vector2>();
             if (_isSprint)
             {
                 moveInput.x = 0;
@@ -141,12 +141,11 @@ namespace Island.Gameplay.Player
 
         private void HandleSprint(float deltaTime)
         {
+            var sprintDirection = _inputService.PlayerActions.Move.ReadValue<Vector2>().y > 0.9f;
             if (_panelService.IsAnyPopupOpen)
             {
-                return;
+                sprintDirection = false;
             }
-
-            var wrongDirection = _inputService.PlayerActions.Move.ReadValue<Vector2>().y < 0.9f;
 
             if (_inputService.PlayerActions.Sprint.WasPressedThisFrame())
             {
@@ -158,32 +157,31 @@ namespace Island.Gameplay.Player
                 _playerConfig.SprintFee.Deposit = 0;
             }
 
-            if (_platformInput.IsSprintInput.Value && _statService.TrackFee(_playerConfig.SprintFee, deltaTime) && !wrongDirection)
+            if (_platformInput.IsSprintInput.Value && _statService.TrackFee(_playerConfig.SprintFee, deltaTime) && sprintDirection)
             {
                 _isSprint = true;
                 _sprintLerp = Mathf.Lerp(_sprintLerp, 1, deltaTime * _playerConfig.SprintGetSpeed);
                 _platformInput.OnSprintPerformed(_isSprint);
+
+                return;
             }
-            else
-            {
-                _isSprint = false;
-                _sprintLerp = Mathf.Lerp(_sprintLerp, 0, deltaTime * _playerConfig.SprintFallSpeed);
-                _platformInput.OnSprintPerformed(_isSprint);
-            }
+
+            _isSprint = false;
+            _sprintLerp = Mathf.Lerp(_sprintLerp, 0, deltaTime * _playerConfig.SprintFallSpeed);
+            _platformInput.OnSprintPerformed(_isSprint);
         }
 
         private void HandleCamera(long frame)
         {
-            _head.transform.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
-            _head.transform.rotation = Quaternion.Euler(_head.transform.rotation.eulerAngles.x, _head.transform.rotation.eulerAngles.y, 0f);
+            var lookInput = _cameraInputService.GetCameraInput() * _settingsService.CameraSensitivity.Value / 100;
             if (_panelService.IsAnyPopupOpen)
             {
-                return;
+                lookInput = Vector2.zero;
             }
 
+            _head.transform.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
+            _head.transform.rotation = Quaternion.Euler(_head.transform.rotation.eulerAngles.x, _head.transform.rotation.eulerAngles.y, 0f);
             var cameraFovSprintModifier = Mathf.Lerp(1, _cameraConfig.FovSprintModifier, _sprintLerp);
-            var lookInput = _cameraInputService.GetCameraInput() * _settingsService.CameraSensitivity.Value / 100;
-
             NetworkObject.transform.Rotate(Vector3.up * lookInput.x);
             _cameraPitch -= lookInput.y;
             _cameraPitch = Mathf.Clamp(_cameraPitch, _cameraConfig.PitchLimits.x / cameraFovSprintModifier, _cameraConfig.PitchLimits.y / cameraFovSprintModifier);

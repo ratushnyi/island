@@ -2,22 +2,27 @@ namespace Island.Gameplay.Services.Inventory.Items
 {
     public enum InventoryItemType
     {
-        None,
-        Hand,
+        Hand = -1,
+        None = 0,
+
         //resources
-        Wood,
-        Stone,
-        RawFish,
+        Dirt = 1,
+        Wood = 2,
+        Stone = 3,
+        RawFish = 4,
+
         //usable
-        CookedFish,
-        Potion,
-        Soda,
+        CookedFish = 5,
+        Potion = 6,
+        Soda = 7,
+
         //tools
-        Hammer,
-        Shovel,
-        Axe,
+        Hammer = 8,
+        Shovel = 9,
+        Axe = 10,
+
         //build
-        Fireplace,
-        Warehouse
+        Fireplace = 11,
+        Warehouse = 12,
     }
 }
