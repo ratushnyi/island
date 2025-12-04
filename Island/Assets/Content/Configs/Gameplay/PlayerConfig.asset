@@ -16,8 +16,9 @@ MonoBehaviour:
   <JumpDelay>k__BackingField: 0.3
   <JumpForce>k__BackingField: 4
   <Gravity>k__BackingField: 10
-  <WalkSpeed>k__BackingField: 2
-  <SprintSpeed>k__BackingField: 6
+  <ForwardSpeed>k__BackingField: 2
+  <SideSpeed>k__BackingField: 0.75
+  <SprintMultiplier>k__BackingField: 6
   <SprintGetSpeed>k__BackingField: 1
   <SprintFallSpeed>k__BackingField: 5
   <SprintFee>k__BackingField:

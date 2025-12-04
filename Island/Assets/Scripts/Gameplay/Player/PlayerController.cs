@@ -111,7 +111,7 @@ namespace Island.Gameplay.Player
                 moveInput = Vector2.zero;
             }
 
-            var movementSpeed = Mathf.Lerp(_playerConfig.WalkSpeed, _playerConfig.SprintSpeed, _sprintLerp);
+            var movementSpeed = moveInput.y > 0 ? Mathf.Lerp(_playerConfig.ForwardSpeed, _playerConfig.SprintMultiplier, _sprintLerp) : _playerConfig.SideSpeed;
             if (_isSprint)
             {
                 moveInput.x = 0;
