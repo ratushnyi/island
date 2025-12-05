@@ -12,7 +12,7 @@ namespace Island.Gameplay.Panels.Player.Inventory
     public class PlayerPopupInventoryPage : PlayerPopupPage
     {
         public override string Name => "Inventory";
-        
+
         [SerializeField] private Transform _gridContainer;
         [SerializeField] private InventoryCellView _freehandCell;
         [Inject] private InventoryProfile _inventoryProfile;
@@ -22,53 +22,42 @@ namespace Island.Gameplay.Panels.Player.Inventory
 
         public override void Initialize()
         {
-            _inventoryProfile.InventoryItems.ObserveAdd().Subscribe(Put).AddTo(this);
-            _cellsList = new InventoryCellView[_inventoryConfig.InventoryCapacity + 1];
+            _cellsList = new InventoryCellView[_inventoryProfile.InventoryItems.Count];
             _cellsList[0] = _freehandCell;
-            _cellsList[0].SetItem(_inventoryConfig[InventoryItemType.Hand], _inventoryProfile.InventoryItems[InventoryItemType.Hand]);
+            _cellsList[0].SetItem(_inventoryProfile.InventoryItems, _inventoryConfig[InventoryItemType.Hand], 0);
             _cellsList[0].OnButtonClicked.Subscribe(onCellClicked).AddTo(this);
             _eventSystem.SetSelectedGameObject(_cellsList[0].gameObject);
 
             for (var i = 1; i < _cellsList.Length; i++)
             {
                 _cellsList[i] = Instantiate(_inventoryConfig.InventoryCellView, _gridContainer);
-                _cellsList[i].OnButtonClicked.Subscribe(onCellClicked).AddTo(this);
+                initCell(i);
+            }
 
-                if (_inventoryProfile.InventoryItems.Count > i)
+            _inventoryProfile.InventoryItems.ObserveAdd().Subscribe(t => initCell(t.Index)).AddTo(this);
+
+            void initCell(int index)
+            {
+                _cellsList[index].OnButtonClicked.Subscribe(onCellClicked).AddTo(this);
+
+                var item = _inventoryProfile.InventoryItems[index];
+                _cellsList[index].SetItem(_inventoryProfile.InventoryItems, _inventoryConfig[item.Type], index);
+                if (_inventoryProfile.SelectedItem.Value == index)
                 {
-                    var item = _inventoryProfile.InventoryItems.ElementAt(i);
-                    SetItem(_cellsList[i], item.Key, item.Value);
-                    if (_inventoryProfile.SelectedItem.Value == item.Key)
-                    {
-                        _eventSystem.SetSelectedGameObject(_cellsList[i].gameObject);
-                    }
+                    _eventSystem.SetSelectedGameObject(_cellsList[index].gameObject);
                 }
             }
 
-            void onCellClicked(InventoryItemType type)
+            void onCellClicked(int index)
             {
-                if (type == InventoryItemType.None)
+                if (_inventoryProfile.InventoryItems[index].Type == InventoryItemType.None)
                 {
                     return;
                 }
 
-                _inventoryProfile.SelectedItem.Value = type;
+                _inventoryProfile.SelectedItem.Value = index;
                 _inventoryProfile.Save();
             }
-        }
-
-        private void Put(DictionaryAddEvent<InventoryItemType, ReactiveProperty<int>> item)
-        {
-            var cell = _cellsList.FirstOrDefault(t => t.IsEmpty());
-            if (cell != null)
-            {
-                SetItem(cell, item.Key, item.Value);
-            }
-        }
-
-        private void SetItem(InventoryCellView cell, InventoryItemType type, ReactiveProperty<int> value)
-        {
-            cell.SetItem(_inventoryConfig[type], value);
         }
     }
 }

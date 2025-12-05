@@ -67,7 +67,7 @@ namespace Island.Gameplay.Services.World
             }
         }
 
-        public void Spawn(Vector3 position, WorldObjectType type, ItemEntity collectableItem = default)
+        public void Spawn(Vector3 position, WorldObjectType type, InventoryItemType collectableItem = default)
         {
             CheckPermissions();
             var hash = IslandExtensions.GenerateHash(position);
@@ -102,7 +102,7 @@ namespace Island.Gameplay.Services.World
             }
         }
 
-        public void UpdateContainer(WorldObjectBase worldObject, ItemEntity item)
+        public void UpdateContainer(WorldObjectBase worldObject, ItemStack item)
         {
             CheckPermissions();
             if (!_worldProfile.ObjectContainerDictionary.TryGetValue(worldObject.Hash, out var container))

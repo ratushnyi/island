@@ -1,3 +1,4 @@
+using System.Linq;
 using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Services.Inventory.Items;
 using JetBrains.Annotations;
@@ -12,12 +13,16 @@ namespace Island.Gameplay.Profiles.Inventory
     public partial class InventoryProfile : ServerProfileBase
     {
         protected override string NetworkName => "Inventory";
+        public ItemStack this[InventoryItemType type] => InventoryItems.FirstOrDefault(t => t.Type == type);
+
+        [MemoryPackIgnore]
+        public InventoryItemType SelectedItemType => InventoryItems[SelectedItem.Value].Type;
 
         [MemoryPackOrder(0)] 
-        public ReactiveDictionary<InventoryItemType, ReactiveProperty<int>> InventoryItems { get; [UsedImplicitly] set; } = new();
+        public ReactiveCollection<ItemStack> InventoryItems { get; [UsedImplicitly] set; } = new();
 
         [MemoryPackOrder(1), MemoryPackAllowSerialize]
-        public ReactiveProperty<InventoryItemType> SelectedItem { get; [UsedImplicitly] set; } = new(InventoryItemType.Hand);
+        public ReactiveProperty<int> SelectedItem { get; [UsedImplicitly] set; } = new(0);
 
         private InventoryConfig _config;
 
@@ -29,9 +34,14 @@ namespace Island.Gameplay.Profiles.Inventory
 
         public override void OnSectionCreated()
         {
-            foreach (var item in _config.DefaultItems)
+            for (int i = 0; i < _config.InventoryCapacity; i++)
             {
-                InventoryItems.Add(item.Type, new ReactiveProperty<int>(item.Count));
+                var item = new ItemStack();
+                if (_config.DefaultItems.Count > i)
+                {
+                    item = _config.DefaultItems[i];
+                }
+                InventoryItems.Add(item);
             }
         }
 
@@ -39,7 +49,7 @@ namespace Island.Gameplay.Profiles.Inventory
         {
             base.RegisterFormatters();
             MemoryPackFormatterProvider.Register(new ReactivePropertyFormatter<InventoryItemType>());
-            MemoryPackFormatterProvider.Register(new ReactiveDictionaryFormatter<InventoryItemType, ReactiveProperty<int>>());
+            MemoryPackFormatterProvider.Register(new ReactiveCollectionFormatter<ItemStack>());
         }
     }
 }

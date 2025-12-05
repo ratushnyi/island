@@ -17,11 +17,11 @@ namespace Island.Gameplay.Services.Server
         public Quaternion Rotation;
         public ulong Owner;
         public int Health;
-        public ItemEntity CollectableItem;
-        public ItemEntity[] Container;
+        public InventoryItemType CollectableItem;
+        public ItemStack[] Container;
         public bool NotifyOwner;
 
-        public ServerSpawnRequest(int hash, WorldObjectType type, Vector3 position, Quaternion rotation = default, ulong owner = 0, int health = 100, ItemEntity collectableItem = default, ItemEntity[] container = null, bool notifyOwner = false)
+        public ServerSpawnRequest(int hash, WorldObjectType type, Vector3 position, Quaternion rotation = default, ulong owner = 0, int health = 100, InventoryItemType collectableItem = default, ItemStack[] container = null, bool notifyOwner = false)
         {
             Hash = hash;
             Type = type;

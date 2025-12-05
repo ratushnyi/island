@@ -48,7 +48,7 @@ namespace Island.Gameplay.Services.World.Objects
 
             SetBusy_ServerRpc(true);
 
-            var ingredients = Array.Empty<ItemEntity>();
+            var ingredients = Array.Empty<ItemStack>();
             if (_showPopup)
             {
                 var popup = await _popup.Show(extraArgs: new object[] { Type });
@@ -56,7 +56,7 @@ namespace Island.Gameplay.Services.World.Objects
                 if (result.Count > 0 && result.Receipt.Ingredients.All(t => _inventoryService.IsEnough(t)))
                 {
                     UpdateReceipt_ServerRpc(result.Receipt);
-                    ingredients = result.Receipt.Ingredients.Select(t => new ItemEntity(t.Type, t.Count * result.Count)).ToArray();
+                    ingredients = result.Receipt.Ingredients.Select(t => new ItemStack(t.Type, t.Count * result.Count)).ToArray();
                 }
             }
             else
@@ -74,7 +74,7 @@ namespace Island.Gameplay.Services.World.Objects
                     var receipt = receipts.Find(t => t.Entity.Ingredients[0].Type == _inventoryService.SelectedItem.Type);
                     if (receipt != null)
                     {
-                        ingredients = new ItemEntity[] { new(_inventoryService.SelectedItem.Type, 1) };
+                        ingredients = new ItemStack[] { new(_inventoryService.SelectedItem.Type, 1) };
                         UpdateReceipt_ServerRpc(receipt.Entity);
                     }
                 }
@@ -89,7 +89,7 @@ namespace Island.Gameplay.Services.World.Objects
         private void UpdateReceipt_ServerRpc(CraftReceiptEntity receiptEntity) => _receipt.Value = receiptEntity;
 
         [ServerRpc(RequireOwnership = false)]
-        private void CheckItemsForReceipt_ServerRpc(ItemEntity[] items, ulong targetClientId)
+        private void CheckItemsForReceipt_ServerRpc(ItemStack[] items, ulong targetClientId)
         {
             foreach (var item in items)
             {
@@ -111,7 +111,7 @@ namespace Island.Gameplay.Services.World.Objects
 
                 if (!result)
                 {
-                    PerformTransaction_ClientRpc(Array.Empty<ItemEntity>(), targetClientId.ToClientRpcParams());
+                    PerformTransaction_ClientRpc(Array.Empty<ItemStack>(), targetClientId.ToClientRpcParams());
                     return;
                 }
             }
@@ -120,7 +120,7 @@ namespace Island.Gameplay.Services.World.Objects
         }
 
         [ClientRpc]
-        private void PerformTransaction_ClientRpc(ItemEntity[] items, ClientRpcParams _)
+        private void PerformTransaction_ClientRpc(ItemStack[] items, ClientRpcParams _)
         {
             foreach (var item in items)
             {
@@ -131,7 +131,7 @@ namespace Island.Gameplay.Services.World.Objects
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void PerformTransaction_ServerRpc(ItemEntity[] items)
+        private void PerformTransaction_ServerRpc(ItemStack[] items)
         {
             ApplyContainer_ServerRpc(items);
             if (IsEnoughIngredients())

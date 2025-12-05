@@ -11,12 +11,12 @@ namespace Island.Gameplay.Services.World.Objects
     public abstract class WorldContainerBase : WorldObjectBase
     {
         [Inject] private WorldService _worldService;
-        private readonly NetworkList<ItemEntity> _container = new();
+        private readonly NetworkList<ItemStack> _container = new();
         
-        public NativeArray<ItemEntity>.ReadOnly ContainerArray => _container.AsNativeArray();
-        public IObservable<NetworkListEvent<ItemEntity>> OnContainerChanged => _container.AsObservable();
+        public NativeArray<ItemStack>.ReadOnly ContainerArray => _container.AsNativeArray();
+        public IObservable<NetworkListEvent<ItemStack>> OnContainerChanged => _container.AsObservable();
 
-        public void InitContainer(ItemEntity[] container)
+        public void InitContainer(ItemStack[] container)
         {
             foreach (var item in container)
             {
@@ -25,11 +25,11 @@ namespace Island.Gameplay.Services.World.Objects
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void ApplyContainer_ServerRpc(ItemEntity[] stack)
+        public void ApplyContainer_ServerRpc(ItemStack[] stack)
         {
             foreach (var item in stack)
             {
-                ItemEntity resultItem;
+                ItemStack resultItem;
                 var index = _container.IndexOf(t => t.Type == item.Type);
                 if (index == -1)
                 {
@@ -53,11 +53,11 @@ namespace Island.Gameplay.Services.World.Objects
                     switch (result)
                     {
                         case > 0:
-                            resultItem = new ItemEntity(item.Type, result);
+                            resultItem = new ItemStack(item.Type, result);
                             _container[index] = resultItem;
                             break;
                         case 0:
-                            resultItem = new ItemEntity(item.Type, 0);
+                            resultItem = new ItemStack(item.Type, 0);
                             _container.RemoveAt(index);
                             break;
                         default:

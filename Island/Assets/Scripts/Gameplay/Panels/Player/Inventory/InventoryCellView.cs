@@ -1,4 +1,5 @@
 using System;
+using Island.Gameplay.Profiles.Inventory;
 using Island.Gameplay.Services.Inventory.Items;
 using TMPro;
 using UniRx;
@@ -10,53 +11,64 @@ namespace Island.Gameplay.Panels.Player.Inventory
 {
     public class InventoryCellView : MonoBehaviour
     {
-        private readonly ISubject<InventoryItemType> _onButtonClicked = new Subject<InventoryItemType>();
+        private readonly ISubject<int> _onButtonClicked = new Subject<int>();
 
         [SerializeField] private Image _image;
         [SerializeField] private Button _button;
         [SerializeField] private TextMeshProUGUI _countTMP;
 
         private ItemModel _model;
+        private ItemStack _stack;
+        private int _cellIndex;
 
         public Button Button => _button;
-        public IObservable<InventoryItemType> OnButtonClicked => _onButtonClicked;
-        public InventoryItemType Type => _model?.Type ?? InventoryItemType.None;
+        public IObservable<int> OnButtonClicked => _onButtonClicked;
+        public ItemStack Stack => _stack;
         public bool IsEmpty() => _model == null;
 
         private void Start()
         {
-            _button.OnClickAsObservable().Subscribe(_ => _onButtonClicked.OnNext(Type)).AddTo(this);
+            _button.OnClickAsObservable().Subscribe(_ => _onButtonClicked.OnNext(_cellIndex)).AddTo(this);
         }
 
-        public void SetItem(ItemModel model, ReactiveProperty<int> count)
+        public void SetItem(ReactiveCollection<ItemStack> collection, ItemModel model, int cellIndex)
         {
-            count.Subscribe(OnCountChanged).AddTo(this);
+            _cellIndex = cellIndex;
+            _stack = collection[_cellIndex];
+            
+            collection
+                .ObserveReplace()
+                .Where(t => t.Index == _cellIndex)
+                .Subscribe(t => SetCount(t.NewValue.Count))
+                .AddTo(this);
+
+            SetCount(_stack.Count);
             SetItemModel(model);
         }
 
         public void SetItem(ItemModel model, int count)
         {
-            OnCountChanged(count);
+            SetCount(count);
             SetItemModel(model);
         }
-
+        
         private void SetItemModel(ItemModel model)
         {
             _model = model;
-            _image.sprite = _model.Sprite;
-            _image.enabled = true;
-            _countTMP.enabled = model.IsCountable;
-        }
-
-        private void OnCountChanged(int count)
-        {
-            if (count == 0)
+            if (_model == null)
             {
                 SetEmpty();
-                return;
             }
+            else
+            {
+                SetImage();
+            }
+        }
 
-            _countTMP.SetText(count.ToString());
+        private void SetImage()
+        {
+            _image.sprite = _model.Sprite;
+            _image.enabled = true;
         }
 
         public void SetEmpty()
@@ -67,16 +79,20 @@ namespace Island.Gameplay.Panels.Player.Inventory
             _countTMP.enabled = false;
         }
 
-        public void SetSelected(bool isSelected)
+        private void SetCount(int count)
         {
-            var eventData = new BaseEventData(null);
-            if (isSelected)
+            switch (count)
             {
-                _button.OnSelect(eventData);
-            }
-            else
-            {
-                _button.OnDeselect(eventData);
+                case 0:
+                    SetEmpty();
+                    break;
+                case 1:
+                    _countTMP.enabled = false;
+                    break;
+                default:
+                    _countTMP.enabled = true;
+                    _countTMP.SetText(count.ToString());
+                    break;
             }
         }
     }

@@ -21,7 +21,7 @@ namespace Island.Gameplay.Services.World.Objects
         private SerializedDictionary<InventoryItemType, int> _tools;
 
         [SerializeField] private float _duration;
-        [SerializeField] private ItemEntity _dropItem;
+        [SerializeField] private ItemStack _dropItem;
 
         [Inject] private InputService _inputService;
         [Inject] private AimService _aimService;
@@ -105,7 +105,10 @@ namespace Island.Gameplay.Services.World.Objects
             _worldService.UpdateHealth(this, _health.Value);
 
             var position = transform.position + Vector3.up + Vector3.up;
-            _worldService.Spawn(position, WorldObjectType.Collectable, _dropItem);
+            for (int i = 0; i < _dropItem.Count; i++)
+            {
+                _worldService.Spawn(position, WorldObjectType.Collectable, _dropItem.Type);
+            }
 
             if (_health.Value <= 0)
             {

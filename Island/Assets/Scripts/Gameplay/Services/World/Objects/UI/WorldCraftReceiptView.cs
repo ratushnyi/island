@@ -2,6 +2,7 @@ using System;
 using Island.Gameplay.Configs.Craft;
 using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Panels.Player.Inventory;
+using Island.Gameplay.Profiles.Inventory;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -18,10 +19,10 @@ namespace Island.Gameplay.Services.World.Objects.UI
 
         public IObservable<CraftReceiptEntity> OnButtonClicked => _onButtonClicked;
 
-        public void Init(CraftReceiptEntity receiptEntity, InventoryConfig inventoryConfig)
+        public void Init(CraftReceiptEntity receiptEntity, InventoryConfig inventoryConfig, InventoryProfile inventoryProfile)
         {
-            _name.SetText(receiptEntity.Result.Type.ToString());
-            _result.SetItem(inventoryConfig[receiptEntity.Result.Type], receiptEntity.Result.Count);
+            _name.SetText(receiptEntity.Result.ToString());
+            _result.SetItem(inventoryProfile.InventoryItems, inventoryConfig[receiptEntity.Result], 1);
             _button.OnClickAsObservable().Subscribe(_ => _onButtonClicked.OnNext(receiptEntity)).AddTo(this);
         }
     }

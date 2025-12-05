@@ -20,7 +20,7 @@ namespace Island.Gameplay.Configs.Inventory
         public int InventoryCapacity { get; set; }
 
         [field: SerializeField]
-        public List<ItemEntity> DefaultItems { get; set; }
+        public List<ItemStack> DefaultItems { get; set; }
 
         [field: SerializeField]
         public List<ItemModel> InventoryItems { get; set; }

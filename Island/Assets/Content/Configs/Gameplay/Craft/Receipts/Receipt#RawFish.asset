@@ -16,7 +16,5 @@ MonoBehaviour:
     _ingredients:
     - _type: 3
       _count: 2
-    _result:
-      _type: 4
-      _count: 1
+    _result: 4
     _duration: 2

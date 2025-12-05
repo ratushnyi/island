@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using Island.Common;
 using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Panels.HUD;
 using Island.Gameplay.Profiles.Inventory;
@@ -10,6 +11,7 @@ using JetBrains.Annotations;
 using TendedTarsier.Core.Panels;
 using TendedTarsier.Core.Services;
 using UniRx;
+using UnityEngine;
 using Zenject;
 
 namespace Island.Gameplay.Services.Inventory
@@ -20,7 +22,7 @@ namespace Island.Gameplay.Services.Inventory
         private PanelLoader<HUDPanel> _hudPanel;
         private InventoryConfig _inventoryConfig;
         private InventoryProfile _inventoryProfile;
-        public ItemModel SelectedItem => _inventoryConfig[_inventoryProfile.SelectedItem.Value];
+        public ItemModel SelectedItem => _inventoryConfig[_inventoryProfile.SelectedItemType];
 
         [Inject]
         private void Construct(
@@ -35,65 +37,25 @@ namespace Island.Gameplay.Services.Inventory
 
         public void OnNetworkInitialize()
         {
-            SubscribeOnItemsChanged();
             SubscribeOnItemSelected();
         }
 
         private void SubscribeOnItemSelected()
         {
-            _inventoryProfile.SelectedItem.Subscribe(type =>
+            _inventoryProfile.SelectedItem.Subscribe(index =>
             {
-                _hudPanel.Instance.SelectedItem.SetItem(_inventoryConfig[type], _inventoryProfile.InventoryItems[type]);
+                _hudPanel.Instance.SelectedItem.SetItem(_inventoryProfile.InventoryItems, _inventoryConfig[_inventoryProfile.SelectedItemType], index);
             }).AddTo(CompositeDisposable);
         }
 
-        private void SubscribeOnItemsChanged()
-        {
-            foreach (var item in _inventoryProfile.InventoryItems)
-            {
-                subscribe(item.Key, item.Value);
-            }
-
-            _inventoryProfile.InventoryItems.ObserveAdd().Subscribe(t => subscribe(t.Key, t.Value)).AddTo(CompositeDisposable);
-
-            void subscribe(InventoryItemType type, ReactiveProperty<int> value)
-            {
-                var disposable = value.SkipLatestValueOnSubscribe().Subscribe(count => onCountChanged(count, type))
-                    .AddTo(CompositeDisposable);
-
-                _inventoryProfile.InventoryItems.ObserveRemove()
-                    .Where(t => t.Key == type)
-                    .First()
-                    .Subscribe(_ => onItemRemoved(disposable));
-            }
-
-            void onCountChanged(int count, InventoryItemType type)
-            {
-                if (count == 0)
-                {
-                    _inventoryProfile.InventoryItems.Remove(type);
-                    if (_inventoryProfile.SelectedItem.Value == type)
-                    {
-                        _inventoryProfile.SelectedItem.Value = _inventoryProfile.InventoryItems.ElementAt(0).Key;
-                    }
-                }
-
-                _inventoryProfile.Save();
-            }
-
-            void onItemRemoved(IDisposable disposable)
-            {
-                CompositeDisposable.Remove(disposable);
-            }
-        }
-
-        public bool IsEnough(ItemEntity itemEntity, int multiplier = 1) => IsEnough(itemEntity.Type, itemEntity.Count * multiplier);
+        public bool IsEnough(ItemStack itemStack, int multiplier = 1) => IsEnough(itemStack.Type, itemStack.Count * multiplier);
 
         public bool IsEnough(InventoryItemType type, int count)
         {
-            if (_inventoryProfile.InventoryItems.TryGetValue(type, out var item))
+            var stack = _inventoryProfile[type];
+            if (stack.Type != InventoryItemType.None)
             {
-                if (item.Value >= count)
+                if (stack.Count >= count)
                 {
                     return true;
                 }
@@ -102,88 +64,114 @@ namespace Island.Gameplay.Services.Inventory
             return false;
         }
 
-        public bool TryRemove(ItemEntity itemEntity, Func<UniTask> beforeItemRemove = null) => TryRemove(itemEntity.Type, itemEntity.Count, beforeItemRemove);
+        public bool TryRemove(ItemStack itemStack) => TryRemove(itemStack.Type, itemStack.Count);
 
-        public bool TryRemove(InventoryItemType type, int count, Func<UniTask> beforeItemRemove = null)
+        public bool TryRemove(InventoryItemType type, int count)
         {
-            if (_inventoryProfile.InventoryItems.TryGetValue(type, out var item))
+            var stack = _inventoryProfile[type];
+            if (stack.Type != InventoryItemType.None)
             {
-                if (item.Value >= count)
+                if (stack.Count >= count)
                 {
-                    removeItem().Forget();
+                    removeItem();
                     return true;
                 }
             }
 
             return false;
 
-            async UniTask removeItem()
+            void removeItem()
             {
-                if (beforeItemRemove != null)
+                var endValue = stack.Count - count;
+                var type = stack.Type;
+
+                if (endValue == 0)
                 {
-                    await beforeItemRemove.Invoke();
+                    type = InventoryItemType.None;
+                    
+                    if (_inventoryProfile.SelectedItemType == stack.Type)
+                    {
+                        _inventoryProfile.SelectedItem.Value = 0;
+                    }
                 }
 
-                item.Value -= count;
+                _inventoryProfile.InventoryItems.Populate(stack, new ItemStack(type, endValue));
             }
         }
 
-        public bool IsEnoughSpace(ItemEntity itemEntity) => IsEnoughSpace(itemEntity.Type);
-
-        public bool IsEnoughSpace(InventoryItemType type)
+        public bool TryRemove(int stackIndex, int count)
         {
-            if (!_inventoryProfile.InventoryItems.TryGetValue(type, out var item))
+            var stack = _inventoryProfile.InventoryItems[stackIndex];
+            var endValue = stack.Count - count;
+            switch (endValue)
             {
-                if (_inventoryProfile.InventoryItems.Count >= _inventoryConfig.InventoryCapacity)
-                {
+                case > 0:
+                    _inventoryProfile.InventoryItems.Populate(stack, new ItemStack(stack.Type, endValue));
+                    return true;
+                case 0:
+                    _inventoryProfile.InventoryItems.Populate(stack, new ItemStack(InventoryItemType.None, endValue));
+                    return true;
+                default:
                     return false;
-                }
             }
-
-            return true;
         }
 
-        public bool TryCollect(ItemEntity itemEntity, Func<UniTask> beforeItemAdd = null) => TryCollect(itemEntity.Type, itemEntity.Count, beforeItemAdd);
+        public bool IsEnoughSpace(ItemStack itemStack) => IsEnoughSpace(itemStack.Type, itemStack.Count);
 
-        public bool TryCollect(InventoryItemType type, int count, Func<UniTask> beforeItemAdd = null)
+        public bool IsEnoughSpace(InventoryItemType type, int count)
         {
-            if (type == InventoryItemType.None)
+            var stackSize = _inventoryConfig[type].StackSize;
+            var stack = _inventoryProfile.InventoryItems.FirstOrDefault(t => t.Type == type && t.Count < stackSize);
+            while (count > 0 && stack.Type != InventoryItemType.None)
+            {
+                var stackCount = Mathf.Min(stackSize - stack.Count, count);
+                count -= stackCount;
+                if (count > 0)
+                {
+                    stack = _inventoryProfile.InventoryItems.FirstOrDefault(t => t.Type == type && t.Count < stackSize);
+                }
+            }
+
+            while (count > 0 && _inventoryProfile.InventoryItems.Any(t => t.Type == InventoryItemType.None))
+            {
+                var stackCount = Mathf.Min(stackSize, count);
+                count -= stackCount;
+            }
+
+            return count == 0;
+        }
+
+        public bool TryCollect(ItemStack itemStack) => TryCollect(itemStack.Type, itemStack.Count);
+
+        public bool TryCollect(InventoryItemType type, int count)
+        {
+            if (!IsEnoughSpace(type, count))
             {
                 return false;
             }
-
-            if (_inventoryProfile.InventoryItems.ContainsKey(type))
+            
+            var stackSize = _inventoryConfig[type].StackSize;
+            var stack = _inventoryProfile.InventoryItems.FirstOrDefault(t => t.Type == type && t.Count < stackSize);
+            
+            while (count > 0 && stack.Type != InventoryItemType.None)
             {
-                updateItem().Forget();
-                return true;
+                var stackCount = Mathf.Min(stackSize - stack.Count, count);
+                _inventoryProfile.InventoryItems.Populate(stack, new ItemStack(stack.Type, stack.Count + stackCount));
+                count -= stackCount;
+                if (count > 0)
+                {
+                    stack = _inventoryProfile.InventoryItems.FirstOrDefault(t => t.Type == type && t.Count < stackSize);
+                }
             }
 
-            if (_inventoryProfile.InventoryItems.Count >= _inventoryConfig.InventoryCapacity)
+            while (count > 0 && _inventoryProfile.InventoryItems.Any(t => t.Type == InventoryItemType.None))
             {
-                return false;
+                var stackCount = Mathf.Min(stackSize, count);
+                _inventoryProfile.InventoryItems.Populate(_inventoryProfile[InventoryItemType.None], new ItemStack(type, stackCount));
+                count -= stackCount;
             }
 
-            updateItem().Forget();
             return true;
-
-
-            async UniTask updateItem()
-            {
-                if (beforeItemAdd != null)
-                {
-                    await beforeItemAdd.Invoke();
-                }
-
-                if (_inventoryProfile.InventoryItems.TryGetValue(type, out var existItem))
-                {
-                    existItem.Value += count;
-                }
-                else
-                {
-                    var property = new ReactiveProperty<int>(count);
-                    _inventoryProfile.InventoryItems.Add(type, property);
-                }
-            }
         }
 
         public async UniTask<bool> Perform(bool isJustUsed, float deltaTime)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Island.Gameplay.Configs.Craft;
 using Island.Gameplay.Configs.Inventory;
 using Island.Gameplay.Panels.Player.Inventory;
+using Island.Gameplay.Profiles.Inventory;
 using Island.Gameplay.Services.Inventory;
 using TendedTarsier.Core.Utilities.Extensions;
 using TMPro;
@@ -24,6 +25,7 @@ namespace Island.Gameplay.Services.World.Objects.UI
         [SerializeField] private List<InventoryCellView> _ingredientViews;
 
         [Inject] private InventoryService _inventoryService;
+        [Inject] private InventoryProfile _inventoryProfile;
         [Inject] private InventoryConfig _inventoryConfig;
         [Inject] private CraftConfig _craftConfig;
         [Inject] private EventSystem _eventSystem;
@@ -39,7 +41,7 @@ namespace Island.Gameplay.Services.World.Objects.UI
             for (var index = 0; index < receipts.Count; index++)
             {
                 var view = Instantiate(_craftConfig.WorldCraftReceiptView, _receiptsContainer);
-                view.Init(receipts[index].Entity, _inventoryConfig);
+                view.Init(receipts[index].Entity, _inventoryConfig, _inventoryProfile);
                 view.OnButtonClicked.Subscribe(OnReceiptClicked).AddTo(this);
                 if (index != 0)
                 {

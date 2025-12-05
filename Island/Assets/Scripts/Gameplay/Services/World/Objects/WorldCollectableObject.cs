@@ -12,11 +12,11 @@ namespace Island.Gameplay.Services.World.Objects
         [Inject] private InventoryService _inventoryService;
         [Inject] private InventoryProfile _inventoryProfile;
 
-        private readonly NetworkVariable<ItemEntity> _collectableItem = new();
+        private readonly NetworkVariable<InventoryItemType> _collectableItem = new();
 
-        public override string Name => _collectableItem.Value.Type.ToString();
+        public override string Name => _collectableItem.Value.ToString();
 
-        public void InitCollectable(ItemEntity collectableItem)
+        public void InitCollectable(InventoryItemType collectableItem)
         {
             _collectableItem.Value = collectableItem;
         }
@@ -28,7 +28,7 @@ namespace Island.Gameplay.Services.World.Objects
                 return UniTask.FromResult(false);
             }
 
-            if (_inventoryService.TryCollect(_collectableItem.Value))
+            if (_inventoryService.TryCollect(_collectableItem.Value, 1))
             {
                 Despawn_ServerRpc();
                 

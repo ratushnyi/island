@@ -6,12 +6,12 @@ using UnityEngine;
 namespace Island.Gameplay.Services.Inventory.Items
 {
     [Serializable, MemoryPackable]
-    public partial struct ItemEntity : IEquatable<ItemEntity>, INetworkSerializable
+    public partial struct ItemStack : IEquatable<ItemStack>, INetworkSerializable
     {
         [SerializeField] private InventoryItemType _type;
         [SerializeField] private int _count;
 
-        public ItemEntity(InventoryItemType type, int count)
+        public ItemStack(InventoryItemType type, int count)
         {
             _type = type;
             _count = count;
@@ -20,16 +20,14 @@ namespace Island.Gameplay.Services.Inventory.Items
         public InventoryItemType Type
         {
             get => _type;
-            set => _type = value;
         }
 
         public int Count
         {
             get => _count;
-            set => _count = value;
         }
 
-        public bool Equals(ItemEntity other)
+        public bool Equals(ItemStack other)
         {
             return Type == other.Type && Count == other.Count;
         }

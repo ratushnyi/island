@@ -32,7 +32,7 @@ namespace Island.Gameplay.Panels.Player.Inventory
 
         private void OnCraft((CraftReceiptEntity Receipt, int Count) order)
         {
-            if (!_inventory.IsEnoughSpace(order.Receipt.Result))
+            if (!_inventory.IsEnoughSpace(order.Receipt.Result, 1))
             {
                 return;
             }
@@ -68,7 +68,7 @@ namespace Island.Gameplay.Panels.Player.Inventory
                     _inventory.TryRemove(ingredientEntity);
                 }
 
-                _inventory.TryCollect(order.Receipt.Result);
+                _inventory.TryCollect(order.Receipt.Result, 1);
                 _view.UpdateReceiptIngredients();
             }
 

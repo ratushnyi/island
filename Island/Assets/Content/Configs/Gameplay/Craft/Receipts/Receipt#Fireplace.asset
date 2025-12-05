@@ -18,7 +18,5 @@ MonoBehaviour:
       _count: 10
     - _type: 3
       _count: 8
-    _result:
-      _type: 11
-      _count: 1
+    _result: 11
     _duration: 10

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Island.Gameplay.Services.Inventory.Items;
 using Island.Gameplay.Services.World.Objects;
@@ -17,9 +18,21 @@ namespace Island.Common
             GroundHash
         };
 
-        public static ItemEntity[] Invert(this ItemEntity[] items)
+        public static bool TryGet(this IEnumerable<ItemStack> items, Func<ItemStack, bool> predicate, out ItemStack item)
         {
-            return items.Select(t => new ItemEntity(t.Type, -t.Count)).ToArray();
+            item = items.FirstOrDefault(predicate);
+            return item.Type != default;
+        }
+
+        public static void Populate(this IList<ItemStack> items, ItemStack oldItem, ItemStack newItem)
+        {
+            var index = items.IndexOf(oldItem);
+            items[index] = newItem;
+        }
+
+        public static ItemStack[] Invert(this IEnumerable<ItemStack> items)
+        {
+            return items.Select(t => new ItemStack(t.Type, -t.Count)).ToArray();
         }
 
         public static int GenerateHash(this WorldObjectBase objectBase)
